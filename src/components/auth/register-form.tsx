@@ -1,7 +1,7 @@
 'use client'
 
 import * as z from "zod"
-import {RegisterSchema} from "@/schemas";
+import {RegisterSchema} from "@/schemas/auth";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
@@ -35,18 +35,13 @@ export const RegisterForm = () => {
         mutation.mutate(values, {
 
             onSuccess: (data: any) => {
-
-                if ('error' in data) {
-                    setError(data.error.message);
-                } else {
-                    setSuccess("Вы успешно зарегистрировались");
-                }
+                setError(data.error)
+                setSuccess(data.success)
             },
             onError: (error) => {
                 setError(error.message);
             }
         });
-
 
     };
 

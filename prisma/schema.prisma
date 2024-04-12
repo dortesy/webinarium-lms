@@ -90,17 +90,25 @@ model User {
 }
 
 model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
 
-  @@unique([identifier, token])
+  @@unique([email, token])
+}
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
 }
 
 model UserProfile {
-  id           Int      @id @default(autoincrement())
+  id           String   @id @default(cuid())
   user         User     @relation(fields: [userId], references: [id])
   userId       String   @unique
   firstName    String?
@@ -120,7 +128,7 @@ model Role {
 }
 
 model Category {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(cuid())
   name        String
   slug        String   @unique
   description String?
@@ -130,20 +138,20 @@ model Category {
 }
 
 model Course {
-  id          Int            @id @default(autoincrement())
+  id          String         @id @default(uuid())
   title       String
   slug        String         @unique
   description String?
   creator     User           @relation("CreatedCourses", fields: [creatorId], references: [id])
   creatorId   String
-  category    Category       @relation(fields: [categoryId], references: [id])
-  categoryId  Int
-  price       Decimal
+  category    Category?      @relation(fields: [categoryId], references: [id])
+  categoryId  String?
+  price       Decimal?
   duration    Int?
   level       String?
   language    String?
   image       Media?         @relation(fields: [imageId], references: [id])
-  imageId     Int?           @unique
+  imageId     String?        @unique
   status      CourseStatus?
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
@@ -157,9 +165,9 @@ model Course {
 }
 
 model Section {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid())
   course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  courseId    Int
+  courseId    String
   title       String
   description String?
   position    Int
@@ -169,14 +177,14 @@ model Section {
 }
 
 model Lesson {
-  id          Int            @id @default(autoincrement())
+  id          String         @id @default(uuid())
   section     Section        @relation(fields: [sectionId], references: [id], onDelete: Cascade)
-  sectionId   Int
+  sectionId   String
   title       String
   slug        String         @unique
   description String?
   video       Media?         @relation(fields: [videoId], references: [id])
-  videoId     Int?           @unique
+  videoId     String?        @unique
   duration    Int?
   position    Int
   createdAt   DateTime       @default(now())
@@ -185,7 +193,7 @@ model Lesson {
 }
 
 model Media {
-  id          Int       @id @default(autoincrement())
+  id          String    @id @default(uuid())
   url         String    @unique
   type        MediaType
   size        Int
@@ -206,7 +214,7 @@ model Enrollment {
   user        User              @relation(fields: [userId], references: [id])
   userId      String
   course      Course            @relation(fields: [courseId], references: [id])
-  courseId    Int
+  courseId    String
   enrolledAt  DateTime          @default(now())
   completedAt DateTime?
   status      EnrollmentStatus?
@@ -219,9 +227,9 @@ model UserProgress {
   user          User     @relation(fields: [userId], references: [id])
   userId        String
   course        Course   @relation(fields: [courseId], references: [id])
-  courseId      Int
+  courseId      String
   lesson        Lesson   @relation(fields: [lessonId], references: [id])
-  lessonId      Int
+  lessonId      String
   completed     Boolean  @default(false)
   videoProgress Int      @default(0)
   updatedAt     DateTime @updatedAt
@@ -230,11 +238,11 @@ model UserProgress {
 }
 
 model Rating {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   course    Course   @relation(fields: [courseId], references: [id])
-  courseId  Int
+  courseId  String
   rating    Int
   review    String?
   createdAt DateTime @default(now())
@@ -243,11 +251,11 @@ model Rating {
 }
 
 model Payment {
-  id            Int            @id @default(autoincrement())
+  id            String         @id @default(uuid())
   user          User           @relation(fields: [userId], references: [id])
   userId        String
   course        Course         @relation(fields: [courseId], references: [id])
-  courseId      Int
+  courseId      String
   amount        Decimal
   currency      String
   transactionId String?
@@ -259,27 +267,27 @@ model Payment {
 }
 
 model Wishlist {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   course    Course   @relation(fields: [courseId], references: [id])
-  courseId  Int
+  courseId  String
   createdAt DateTime @default(now())
 
   @@unique([userId, courseId])
 }
 
 model Tag {
-  id      Int         @id @default(autoincrement())
+  id      String      @id @default(uuid())
   name    String      @unique
   courses CourseTag[]
 }
 
 model CourseTag {
   course   Course @relation(fields: [courseId], references: [id])
-  courseId Int
+  courseId String
   tag      Tag    @relation(fields: [tagId], references: [id])
-  tagId    Int
+  tagId    String
 
   @@id([courseId, tagId])
 }

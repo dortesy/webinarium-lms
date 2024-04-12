@@ -1,7 +1,7 @@
 import NextAuth from "next-auth"
 import authConfig  from "@/auth.config";
 import {db} from "@/lib/db";
-import {getUserById} from "@/lib/auth-helpers/auth-helpers";
+import {getUserById} from "@/lib/helpers/auth-helper";
 import {PrismaAdapter} from "@auth/prisma-adapter";
 
 
@@ -12,6 +12,12 @@ export const {
     signIn,
     signOut
 } = NextAuth({
+    pages: {
+        signIn: "/auth/login",
+        signOut: "/auth/logout",
+        newUser: "/auth/register",
+        error: "/auth/error",
+    },
     events: {
         async linkAccount({user}) {
             if (user.id) {
@@ -23,6 +29,15 @@ export const {
         }
     },
     callbacks: {
+
+        async signIn({user, account}) {
+            if (account?.provider !== "credentials") return true;
+
+            const existingUser = user.id ? await getUserById(user.id) : undefined;
+            if (!existingUser?.emailVerified) return false;
+
+            return true;
+        },
         async session({token, session}) {
 
             if (token.sub && session.user) {
@@ -32,6 +47,11 @@ export const {
             if (token.roleId && session.user) {
                 session.user.roleId = Number(token.roleId);
             }
+
+            if (token.isVerified && session.user) {
+                session.user.isVerified = Boolean(token.isVerified);
+            }
+
             return session;
         },
 
@@ -43,6 +63,7 @@ export const {
             if(!existingUser) return token;
 
             token.roleId = existingUser.roleId;
+            token.isVerified = existingUser.isVerified;
 
             return token;
         }

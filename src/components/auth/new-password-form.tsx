@@ -8,45 +8,52 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import {LoginSchema} from "@/schemas/auth";
+import {NewPasswordSchema} from "@/schemas/auth";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {useState, useTransition} from "react";
-import {login} from "@/actions/login";
 import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";
+import {newPassword} from "@/actions/new-password";
 import {useSearchParams} from "next/navigation";
-import Link from "next/link";
+import {signIn} from "next-auth/react";
+import {DEFAULT_LOGIN_REDIRECT} from "@/routes";
 
-const Login = () => {
+export const NewPasswordForm = () => {
+    const searchParams = useSearchParams();
+    const token = searchParams.get('token');
 
-    const searchParams = useSearchParams()
-    const urlError = searchParams.get('error') === "OAuthAccountNotLinked" ? "E-mail уже используются в других источниках входа" : ''
     const [isPending, startTransition] = useTransition();
     const [error, setError] = useState<string|undefined>("");
     const [success, setSuccess] = useState<string|undefined>("");
 
-    const form = useForm<z.infer<typeof LoginSchema>>({
-        resolver: zodResolver(LoginSchema),
+    const form = useForm<z.infer<typeof NewPasswordSchema>>({
+        resolver: zodResolver(NewPasswordSchema),
         defaultValues: {
-            email: "",
             password: "",
         },
     });
 
-    const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+    const onSubmit = (values: z.infer<typeof NewPasswordSchema>) => {
         setError('')
         setSuccess('')
 
+
+
         startTransition(() => {
-            login(values)
+            newPassword(values, token)
                 .then((data: any) => {
                     if(data) {
                         setError(data.error)
                         setSuccess(data.success)
+                        if (data.success) {
+                            setTimeout(() => {
+                                window.location.href = DEFAULT_LOGIN_REDIRECT
+                            }, 3000)
+                        }
                     }
                 })
         })
@@ -54,28 +61,12 @@ const Login = () => {
 
     return (
         <CardWrapper
-            headerLabel="Вход"
-            backButtonHref="/auth/register"
-            backButtonLabel="Нет аккаунта? Зарегистрироваться"
-            showSocial
+            headerLabel="Введите новый пароль"
+            backButtonHref="/auth/login"
+            backButtonLabel="Вернуться на страницу входа"
         >
             <Form {...form}>
                 <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
-                    <FormField control={form.control} name="email" render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                                <Input
-                                    {...field}
-                                    disabled={isPending}
-                                    placeholder="john.doe@example.com"
-                                    type="email"
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}></FormField>
-
                     <FormField control={form.control} name="password" render={({ field }) => (
                         <FormItem>
                             <FormLabel>Пароль</FormLabel>
@@ -87,14 +78,13 @@ const Login = () => {
                                     type="password"
                                 />
                             </FormControl>
-                            <Button className="px-0  font-normal" variant="link" size="sm" asChild>
-                                <Link href="/auth/reset-password">Забыли пароль?</Link>
-                            </Button>
                             <FormMessage />
                         </FormItem>
                     )}></FormField>
 
-                    <FormError message={error || urlError}/>
+
+
+                    <FormError message={error}/>
                     <FormSuccess message={success}/>
 
                     <Button
@@ -102,7 +92,7 @@ const Login = () => {
                         type="submit"
                         className="w-full"
                     >
-                        Вход
+                       Изменить пароль
                     </Button>
 
 
@@ -113,4 +103,3 @@ const Login = () => {
     )
 }
 
-export default Login
