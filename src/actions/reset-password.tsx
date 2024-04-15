@@ -1,10 +1,10 @@
 "use server"
 
 import * as z from "zod";
-import {ForgotPasswordSchema} from "@/schemas/auth";
-import {getUserByEmail} from "@/lib/helpers/auth-helper";
-import {generatePasswordResetToken} from "@/lib/tokens";
-import {sendForgotPasswordEmail} from "@/lib/mail";
+import {ForgotPasswordSchema} from "@/schemas/auth.schema";
+import {getUserByEmail} from "@/lib/auth/auth-helper";
+import {generatePasswordResetToken} from "@/lib/auth/tokens";
+import {sendForgotPasswordEmail} from "@/lib/auth/mail";
 
 
 export const resetPassword = async (values: z.infer<typeof ForgotPasswordSchema>) => {

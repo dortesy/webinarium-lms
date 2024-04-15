@@ -8,7 +8,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import {ForgotPasswordSchema, LoginSchema} from "@/schemas/auth";
+import {ForgotPasswordSchema, LoginSchema} from "@/schemas/auth.schema";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

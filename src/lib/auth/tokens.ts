@@ -1,5 +1,5 @@
 import {v4 as uuidv4} from 'uuid';
-import {getVerificationTokenByEmail} from "@/lib/helpers/auth-helper";
+import {getVerificationTokenByEmail} from "@/lib/auth/auth-helper";
 import {db} from "@/lib/db";
 
 

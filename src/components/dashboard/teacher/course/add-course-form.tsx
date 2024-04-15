@@ -1,7 +1,7 @@
 'use client'
 import {useForm} from "react-hook-form";
 import * as z from "zod";
-import {CreateCourseSchema} from "@/schemas/courses/create-course";
+import {CreateCourseSchema} from "@/schemas/courses/course.schema";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
     Form,
@@ -14,7 +14,7 @@ import {
 import {Input} from "@/components/ui/input";
 import {useState, useTransition} from "react";
 import {Button} from "@/components/ui/button";
-import {RegisterSchema} from "@/schemas/auth";
+import {RegisterSchema} from "@/schemas/auth.schema";
 import {trpc} from "@/server/client";
 import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";

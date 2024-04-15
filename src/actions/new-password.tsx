@@ -1,7 +1,7 @@
 "use server"
 import * as z from "zod"
-import {NewPasswordSchema} from "@/schemas/auth";
-import {getPasswordResetToken, getUserByEmail} from "@/lib/helpers/auth-helper";
+import {NewPasswordSchema} from "@/schemas/auth.schema";
+import {getPasswordResetToken, getUserByEmail} from "@/lib/auth/auth-helper";
 import bycrypt from "bcryptjs";
 import {db} from "@/lib/db";
 import {login} from "@/actions/login";

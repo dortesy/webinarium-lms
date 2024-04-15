@@ -128,13 +128,16 @@ model Role {
 }
 
 model Category {
-  id          String   @id @default(cuid())
+  id          String     @id @default(cuid())
   name        String
-  slug        String   @unique
+  slug        String     @unique
   description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
   courses     Course[]
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  parentId    String?
+  children    Category[] @relation("CategoryTree")
 }
 
 model Course {

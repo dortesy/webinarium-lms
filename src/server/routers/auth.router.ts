@@ -1,12 +1,12 @@
 import { router, publicProcedure } from "@/server/trpc";
-import {RegisterSchema, LoginSchema} from "@/schemas/auth";
+import {RegisterSchema, LoginSchema} from "@/schemas/auth.schema";
 import {db} from '@/lib/db'
 import {z} from "zod";
 import {TRPCError} from "@trpc/server";
 import bcrypt from "bcryptjs";
-import {getUserByEmail} from "@/lib/helpers/auth-helper";
-import {generateVerificationToken} from "@/lib/tokens";
-import {sendVerificationEmail} from "@/lib/mail";
+import {getUserByEmail} from "@/lib/auth/auth-helper";
+import {generateVerificationToken} from "@/lib/auth/tokens";
+import {sendVerificationEmail} from "@/lib/auth/mail";
 
 export const authRouter = router({
     createUser: publicProcedure

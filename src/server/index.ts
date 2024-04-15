@@ -1,7 +1,7 @@
-import {authRouter} from "./routers/auth";
+import {authRouter} from "./routers/auth.router";
 import {helloRouter} from "@/server/routers/hello"
 import { router } from "./trpc";
-import {CourseRouter} from "@/server/routers/teacher/course-router";
+import {CourseRouter} from "@/server/routers/teacher/course.router";
 
 export const appRouter = router({
     hello: helloRouter,

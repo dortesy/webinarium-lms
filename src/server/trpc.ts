@@ -22,6 +22,9 @@ const t = initTRPC.context<typeof createTRPCContext>().create();
 
 
 export const router = t.router;
+
+export const createCallerFactory = t.createCallerFactory;
+
 export const publicProcedure = t.procedure;
 
 export const teacherProcedure = t.procedure.use(({ ctx, next }) => {
