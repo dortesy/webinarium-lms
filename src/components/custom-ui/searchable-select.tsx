@@ -21,6 +21,8 @@ const SearchableSelect = ( {
                                placeholder = "Выбрать",
                                ...props
                            }: SearchableSelectProps) => {
+
+    const [open, setOpen] = React.useState(false)
     const { field, fieldState } = useController(props);
     const findItemByValue = (items: CategoryData[], value: string): string | undefined => {
         for (const item of items) {
@@ -40,7 +42,7 @@ const SearchableSelect = ( {
 
     return (
 
-        <Popover>
+        <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
                     variant="outline"
@@ -66,7 +68,7 @@ const SearchableSelect = ( {
                                     <CommandItem
                                         value={childItem.label}
                                         key={childItem.value}
-                                        onSelect={() => field.onChange(childItem.value)}
+                                        onSelect={() => {field.onChange(childItem.value); setOpen(false);}}
                                     >
                                         <Check
                                             className={cn(

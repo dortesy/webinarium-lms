@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { RoleId } from '@/enums/roleId';
+import { RoleId } from '@/lib/enums/user';
 
 export const NewPasswordSchema = z.object({
     password: z.string().min(6, {

@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { RoleId } from '@/enums/roleId';
+import { RoleId } from '@/lib/enums/user';
 
 const prismaClient = new PrismaClient();
 

@@ -21,6 +21,7 @@ import { Course as PrismaCourse } from '@prisma/client';
 import SearchableSelect  from "@/components/custom-ui/searchable-select";
 
 import { CategoryData } from "@/lib/types/category";
+import {Textarea} from "@/components/ui/textarea";
 
 
 interface EditCourseFormProps {
@@ -80,10 +81,9 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
                         <FormItem>
                             <FormLabel>Описание курса</FormLabel>
                             <FormControl>
-                                <Input
+                                <Textarea
                                     {...field}
                                     placeholder={course.description ?? 'Описание курса'}
-                                    type="text"
                                 />
                             </FormControl>
                             <FormMessage/>

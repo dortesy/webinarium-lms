@@ -11,7 +11,7 @@ import {Button} from "@/components/ui/button";
 import {useState} from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { trpc } from "@/server/client";
-import { RoleId } from '@/enums/roleId';
+import { RoleId } from '@/lib/enums/user';
 import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";
 
