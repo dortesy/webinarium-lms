@@ -4,9 +4,7 @@ import {NewPasswordSchema} from "@/schemas/auth.schema";
 import {getPasswordResetToken, getUserByEmail} from "@/lib/auth/auth-helper";
 import bycrypt from "bcryptjs";
 import {db} from "@/lib/db";
-import {login} from "@/actions/login";
-import {signIn} from "@/auth";
-import {DEFAULT_LOGIN_REDIRECT} from "@/routes";
+
 
 
 export const newPassword = async (values:z.infer<typeof NewPasswordSchema>, token?: string | null) => {

@@ -16,19 +16,18 @@ export async function generateMetadata(
 
     if (!course) {
         return {
-            title: 'Course not found',
+            title: 'Курс не найден',
         }
     }
 
     return {
-        title: course.title ?? 'Loading...',
+        title: course.title ?? 'Загрузка...',
     }
 }
 
 
 
 export default async function CoursePage({ params }: { params: { courseId: string } }) {
-    //const course = trpc.courseRouter.getCourseById.fetch({ courseId: params.courseId });
     const course = await getCourseById(params.courseId);
     const categories = await getAllCategories();
 

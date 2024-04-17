@@ -1,6 +1,5 @@
 
 import "next-auth";
-import {PrismaAdapter} from "@auth/prisma-adapter";
 
 declare module "@auth/core/adapters" {
     interface AdapterUser {

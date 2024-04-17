@@ -17,7 +17,7 @@ import {Button} from "@/components/ui/button";
 import {useState, useTransition} from "react";
 import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";
-import {resetPassword} from "@/actions/reset-password";
+import {resetPassword} from "@/actions/auth/reset-password";
 
 export const ResetPasswordForm = () => {
     const [isPending, startTransition] = useTransition();

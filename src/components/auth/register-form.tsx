@@ -1,24 +1,22 @@
 'use client'
 
 import * as z from "zod"
-import {RegisterSchema} from "@/schemas/auth.schema";
+import {LoginSchema, RegisterSchema} from "@/schemas/auth.schema";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {CardWrapper} from "@/components/auth/card-wrapper";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
-import {useState} from "react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { trpc } from "@/server/client";
-import { RoleId } from '@/lib/enums/user';
+import {useState, useTransition} from "react";
 import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";
+import {Registration} from "@/actions/auth/registration";
 
 export const RegisterForm = () => {
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
-    const mutation = trpc.authRouter.createUser.useMutation();
+    const [isPending, startTransition] = useTransition();
 
     const form = useForm<z.infer<typeof RegisterSchema>>({
         resolver: zodResolver(RegisterSchema),
@@ -29,21 +27,22 @@ export const RegisterForm = () => {
     })
 
 
-    const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-        setError("");
-        setSuccess("");
-        mutation.mutate(values, {
+    const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+        setError('')
+        setSuccess('')
 
-            onSuccess: (data: any) => {
-                setError(data.error)
-                setSuccess(data.success)
-            },
-            onError: (error) => {
-                setError(error.message);
-            }
-        });
-
-    };
+        startTransition(() => {
+            Registration(values)
+                .then((data) => {
+                    if('error' in data){
+                        setError(data.error)
+                    }
+                    if('success' in data){
+                        setSuccess(data.success)
+                    }
+                })
+        })
+    }
 
     return (
         <CardWrapper headerLabel={'Регистрация'} backButtonLabel={'Уже есть аккаунт? Войти'}
@@ -58,7 +57,7 @@ export const RegisterForm = () => {
                                     {...field}
                                     placeholder="E-mail"
                                     type="email"
-                                    disabled={mutation.isPending}
+                                    disabled={isPending}
                                 />
                             </FormControl>
                             <FormMessage/>
@@ -70,7 +69,7 @@ export const RegisterForm = () => {
                         <FormItem>
                             <FormLabel>Пароль</FormLabel>
                             <FormControl>
-                                <Input {...field} placeholder="******" type="password" disabled={mutation.isPending} />
+                                <Input {...field} placeholder="******" type="password" disabled={isPending} />
                             </FormControl>
                             <FormMessage/>
                         </FormItem>
@@ -81,7 +80,7 @@ export const RegisterForm = () => {
                     <FormError message={error}/>
                     <FormSuccess message={success}/>
 
-                    <Button disabled={mutation.isPending} className="w-full" type="submit">Отправить</Button>
+                    <Button disabled={isPending} className="w-full" type="submit">Отправить</Button>
                 </form>
             </Form>
 

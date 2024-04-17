@@ -5,7 +5,6 @@ import { Header } from "@/app/(landing)/header";
 import { Footer } from "@/app/(landing)/footer";
 import {auth} from "@/auth";
 import { SessionProvider } from "next-auth/react";
-import Provider from "@/components/providers/provider";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,7 +25,7 @@ export default async function RootLayout({
             <div className="min-h-screen flex flex-col bg-gray-50">
               <Header/>
               <main className="lg:max-w-screen-lg  mx-auto flex-1 flex w-full">
-                <Provider>{children}</Provider>
+                {children}
               </main>
               <Footer/>
             </div>

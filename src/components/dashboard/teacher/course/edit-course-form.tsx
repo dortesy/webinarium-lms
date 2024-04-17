@@ -14,7 +14,6 @@ import {
 import {Input} from "@/components/ui/input";
 import {useEffect, useState, useTransition} from "react";
 import {Button} from "@/components/ui/button";
-import {trpc} from "@/server/client";
 import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";
 import { Course as PrismaCourse } from '@prisma/client';
@@ -22,6 +21,7 @@ import SearchableSelect  from "@/components/custom-ui/searchable-select";
 
 import { CategoryData } from "@/lib/types/category";
 import {Textarea} from "@/components/ui/textarea";
+import RichEditor from "@/components/rich-editor/rich-editor";
 
 
 interface EditCourseFormProps {
@@ -31,7 +31,6 @@ interface EditCourseFormProps {
 export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
-    //const mutation = trpc.courseRouter.createCourse.useMutation();
 
 
     if (!course) {
@@ -75,15 +74,14 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
                 </FormField>
 
                 <FormField
-                    control={form.control}
                     name="description"
                     render={({field}) => (
                         <FormItem>
                             <FormLabel>Описание курса</FormLabel>
                             <FormControl>
-                                <Textarea
-                                    {...field}
-                                    placeholder={course.description ?? 'Описание курса'}
+                                <RichEditor
+                                    name={field.name}
+                                    control={form.control}
                                 />
                             </FormControl>
                             <FormMessage/>

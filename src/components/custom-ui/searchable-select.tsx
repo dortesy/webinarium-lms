@@ -13,7 +13,6 @@ import { CategoryData } from "@/lib/types/category";
 interface SearchableSelectProps extends UseControllerProps {
     items: CategoryData[];
     placeholder?: string;
-    onChange?: (value: string) => void;
 }
 
 const SearchableSelect = ( {
@@ -66,6 +65,7 @@ const SearchableSelect = ( {
 
                                 {item.children?.map((childItem) => (
                                     <CommandItem
+                                        className="cursor-pointer"
                                         value={childItem.label}
                                         key={childItem.value}
                                         onSelect={() => {field.onChange(childItem.value); setOpen(false);}}

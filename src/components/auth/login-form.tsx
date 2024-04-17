@@ -15,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {useState, useTransition} from "react";
-import {login} from "@/actions/login";
+import {login} from "@/actions/auth/login";
 import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";
 import {useSearchParams} from "next/navigation";

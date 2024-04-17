@@ -1,4 +1,5 @@
 import {db} from "@/lib/db";
+import {auth} from "@/auth";
 
 export const getUserByEmail = async (email: string) => {
     try {
@@ -57,3 +58,5 @@ export const getPasswordResetToken = async (token: string) => {
     }
 
 }
+
+

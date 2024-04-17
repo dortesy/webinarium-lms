@@ -17,7 +17,7 @@ import {Button} from "@/components/ui/button";
 import {useState, useTransition} from "react";
 import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";
-import {newPassword} from "@/actions/new-password";
+import {newPassword} from "@/actions/auth/new-password";
 import {useSearchParams} from "next/navigation";
 import {signIn} from "next-auth/react";
 import {DEFAULT_LOGIN_REDIRECT} from "@/routes";
