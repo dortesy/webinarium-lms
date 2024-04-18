@@ -1,7 +1,11 @@
 import Image from "next/image";
 import {LoginPanel} from "@/components/auth/login-panel";
+import {useLocale} from "next-intl";
+import LangSwitcher from "@/components/lang-switcher";
 
 export const Header = () => {
+
+    const locale = useLocale();
 
     return (
         <header className="h-20 w-full border-b border-gray-200 px4">
@@ -12,12 +16,13 @@ export const Header = () => {
                         <a href="/">Webinarium</a>
                     </h1>
                 </div>
+                <div className="flex items-center gap-x-3 pt-8 pr-4 pb-7">
+                    <LangSwitcher locale={locale}/>
+                    <LoginPanel/>
+                </div>
 
-
-                <LoginPanel />
-
-            </div>
+                </div>
         </header>
-    );
+);
 };
 

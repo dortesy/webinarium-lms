@@ -1,6 +1,6 @@
 import { Metadata, ResolvingMetadata } from 'next'
-import {getCourseById} from "@/lib/course/course-helper";
-import {EditCourseForm} from "@/components/dashboard/teacher/course/edit-course-form";
+import {getCourseById} from "../../../../../../../lib/course/course-helper";
+import {EditCourseForm} from "../../../../../../../components/dashboard/teacher/course/edit-course-form";
 import {getAllCategories} from "@/lib/category/category-helper";
 type Props = {
     params: { courseId: string }

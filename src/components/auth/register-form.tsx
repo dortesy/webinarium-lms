@@ -12,11 +12,13 @@ import {useState, useTransition} from "react";
 import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";
 import {Registration} from "@/actions/auth/registration";
+import {useTranslations} from "next-intl";
 
 export const RegisterForm = () => {
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
+    const t =  useTranslations("Registration");
 
     const form = useForm<z.infer<typeof RegisterSchema>>({
         resolver: zodResolver(RegisterSchema),
@@ -45,7 +47,7 @@ export const RegisterForm = () => {
     }
 
     return (
-        <CardWrapper headerLabel={'Регистрация'} backButtonLabel={'Уже есть аккаунт? Войти'}
+        <CardWrapper headerLabel={t('headerLabel')} backButtonLabel={t('backButtonLabel')}
                      backButtonHref={'/auth/login'} showSocial>
             <Form {...form}>
                 <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
@@ -67,7 +69,7 @@ export const RegisterForm = () => {
 
                     <FormField control={form.control} name="password" render={({field}) => (
                         <FormItem>
-                            <FormLabel>Пароль</FormLabel>
+                            <FormLabel>{t('password')}</FormLabel>
                             <FormControl>
                                 <Input {...field} placeholder="******" type="password" disabled={isPending} />
                             </FormControl>
@@ -80,7 +82,7 @@ export const RegisterForm = () => {
                     <FormError message={error}/>
                     <FormSuccess message={success}/>
 
-                    <Button disabled={isPending} className="w-full" type="submit">Отправить</Button>
+                    <Button disabled={isPending} className="w-full" type="submit">{t('submit')}</Button>
                 </form>
             </Form>
 

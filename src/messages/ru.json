@@ -1,0 +1,23 @@
+{
+  "Index": {
+    "title": "Hello world!"
+  },
+
+  "Registration": {
+    "headerLabel": "Регистрация",
+    "backButtonLabel": "Уже зарегистрированы? Войти",
+    "password": "Пароль",
+    "submit": "Отправить"
+  },
+
+  "LoginPanel": {
+   "myCourses": "Мои курсы",
+   "settings": "Настройки",
+   "logout": "Выйти",
+   "profile": "Профиль",
+   "login": "Вход",
+   "register": "Регистрация"
+  }
+
+}
+

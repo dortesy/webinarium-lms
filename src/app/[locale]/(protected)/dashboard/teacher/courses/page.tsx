@@ -1,4 +1,4 @@
-import {AddCourseForm} from "@/components/dashboard/teacher/course/add-course-form";
+import {AddCourseForm} from "../../../../../../components/dashboard/teacher/course/add-course-form";
 
 const MyCoursesPage = () => {
 

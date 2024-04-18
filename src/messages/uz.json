@@ -1,0 +1,12 @@
+{
+  "Index": {
+    "title": "Hello Uzbeklar!"
+  },
+
+  "Registration": {
+    "headerLabel": "Ro'yxatdan o'tish",
+    "backButtonLabel": "Hisobingiz bormi? Kirish",
+    "password": "Parol",
+    "submit": "Yuborish"
+  }
+}

@@ -1,5 +1,8 @@
 import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
+import createMiddleware from 'next-intl/middleware';
+import {localePrefix, locales} from "@/i18n";
+
 
 import {
     DEFAULT_LOGIN_REDIRECT,
@@ -9,37 +12,52 @@ import {
 } from "@/routes";
 
 const { auth } = NextAuth(authConfig)
+
+
+const intlMiddleware = createMiddleware({
+    defaultLocale: 'ru',
+    localePrefix,
+    locales
+});
+
+
+const createPagesRegex = (pages: string[]) =>
+    RegExp(
+        `^(/(${['ru', 'uz'].join("|")}))?(${pages
+            .flatMap((p) => (p === "/" ? ["", "/"] : p))
+            .join("|")})/?$`,
+        "i"
+    );
+
+
+
 export default auth((req) => {
+
     const  {nextUrl} = req;
     const isLoggedIn = !!req.auth
 
     const isApiAuthRoute = apiAuthPrefix.some(prefix => nextUrl.pathname.startsWith(prefix));
-    const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
-    const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+    const isPublicRoute = createPagesRegex(publicRoutes).test(nextUrl.pathname);
+    const isAuthRoute = createPagesRegex(authRoutes).test(nextUrl.pathname);
 
     if (isApiAuthRoute) {
-        return;
+        return
     }
 
     if (isAuthRoute) {
         if (isLoggedIn) {
             return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
         }
-        return
+        return intlMiddleware(req);
     }
 
     if (!isLoggedIn && !isPublicRoute) {
         return Response.redirect(new URL('/auth/login', nextUrl));
     }
-    return
+
+    return intlMiddleware(req);
 })
 
 export const config = {
-    matcher: [
-        // Exclude files with a "." followed by an extension, which are typically static files.
-        // Exclude files in the _next directory, which are Next.js internals.
-        "/((?!.+\\.[\\w]+$|_next).*)",
-        // Re-include any files in the api or trpc folders that might have an extension
-        "/(api|trpc)(.*)"
-    ]
+    matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };

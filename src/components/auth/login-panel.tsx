@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import {CircleUserRound, LibraryBig, LogOut, LucideIcon, Settings} from 'lucide-react';
 import {FC, ReactNode} from "react";
+import {useTranslations} from "next-intl";
 
 
 interface MenuItemProps {
@@ -51,6 +52,7 @@ const MenuItem: FC<MenuItemProps> = ({ href, onClick, icon: Icon, children }) =>
 
 export const LoginPanel: FC = () => {
     const user = useCurrentUser();
+    const t = useTranslations('LoginPanel')
 
     const handleLogout = () => {
         signOut();
@@ -68,22 +70,22 @@ export const LoginPanel: FC = () => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56">
                         <MenuItem href="/dashboard" icon={CircleUserRound}>
-                            Профиль
+                            {t('profile')}
                         </MenuItem>
-                        <MenuItem icon={LibraryBig}>Мои курсы</MenuItem>
-                        <MenuItem icon={Settings}>Настройки</MenuItem>
+                        <MenuItem icon={LibraryBig}>{t('profile')}</MenuItem>
+                        <MenuItem icon={Settings}>{t('settings')}</MenuItem>
                         <MenuItem onClick={handleLogout} icon={LogOut}>
-                            Выйти
+                            {t('logout')}
                         </MenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             ) : (
                 <div>
                     <Link href="/auth/login" passHref>
-                        <Button variant="ghost">Вход</Button>
+                        <Button variant="ghost">{t('login')}</Button>
                     </Link>
                     <Link href="/auth/register" passHref>
-                        <Button variant="outline">Регистрация</Button>
+                        <Button variant="outline">{t('register')}</Button>
                     </Link>
                 </div>
             )}
