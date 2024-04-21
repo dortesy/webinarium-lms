@@ -72,7 +72,7 @@ export const LoginPanel: FC = () => {
                         <MenuItem href="/dashboard" icon={CircleUserRound}>
                             {t('profile')}
                         </MenuItem>
-                        <MenuItem icon={LibraryBig}>{t('profile')}</MenuItem>
+                        <MenuItem icon={LibraryBig}>{t('myCourses')}</MenuItem>
                         <MenuItem icon={Settings}>{t('settings')}</MenuItem>
                         <MenuItem onClick={handleLogout} icon={LogOut}>
                             {t('logout')}

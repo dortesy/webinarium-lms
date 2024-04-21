@@ -166,7 +166,8 @@ model Course {
   language    Language?
   image       Media?         @relation(fields: [imageId], references: [id])
   imageId     String?        @unique
-  status      CourseStatus?
+  status      CourseStatus? // DRAFT, PUBLISHED, ARCHIVED - TODO NOT ACTIVE RIGHT NOW
+  published   Boolean        @default(false)
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
   sections    Section[]

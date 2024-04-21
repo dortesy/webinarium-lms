@@ -47,12 +47,14 @@ const SearchableSelect = ( {
                     variant="outline"
                     role="combobox"
                     className={cn(
-                        "w-full justify-between",
+                        "w-full justify-between min-w-full relative",
                         !field.value && "text-muted-foreground"
                     )}
                 >
+                    <span className="truncate mr-4">
                     {field.value ? findItemByValue(items, field.value) || placeholder : placeholder}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </span>
+                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50 absolute right-2"/>
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-full p-0">

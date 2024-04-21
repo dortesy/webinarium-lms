@@ -17,6 +17,34 @@
    "profile": "Профиль",
    "login": "Вход",
    "register": "Регистрация"
+  },
+
+  "CreateCourseForm": {
+    "errors": {
+      "title": "Название курса должно быть не менее 6 символов"
+    }
+  },
+
+  "EditCourseForm": {
+    "BEGINNER": "Начальный",
+    "INTERMEDIATE": "Средний",
+    "ADVANCED": "Продвинутый",
+    "RU": "Русский",
+    "UZ": "Узбекский",
+
+    "image": {
+      "size": "Максимальный размер файла: {size}MB",
+      "type": "Разрешены только изображения формата: .jpg, .png, .webp"
+    }
+  },
+
+
+  "SidebarLabels": {
+    "courses": "Курсы",
+    "profile": "Профиль",
+    "courseDetails": "Детали",
+    "coursePricing": "Настройка цены",
+    "courseContent": "Содержание"
   }
 
 }

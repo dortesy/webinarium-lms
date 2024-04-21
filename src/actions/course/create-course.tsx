@@ -1,12 +1,21 @@
 'use server'
-import { CreateCourseSchema } from "@/schemas/courses/course.schema";
+import {CreateCourseSchema, CreateCourseSchemaType} from "@/schemas/courses/course.schema";
 import { db } from "@/lib/db";
 import slugify from "slugify";
 import * as z from "zod";
 import {currentUser} from "@/lib/auth";
+import {getTranslations} from "next-intl/server";
 
 
-export const CreateCourse = async (values: z.infer<typeof CreateCourseSchema>) => {
+export const CreateCourse = async (values: CreateCourseSchemaType) => {
+    const t = await getTranslations("CreateCourseForm");
+    const paramSchema = CreateCourseSchema(t);
+    const validatedFields = paramSchema.safeParse(values);
+
+    if (!validatedFields.success) {
+        return validatedFields.error.errors;
+    }
+
     const { title } = values;
     const user = await currentUser()
 

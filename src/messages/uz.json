@@ -8,5 +8,23 @@
     "backButtonLabel": "Hisobingiz bormi? Kirish",
     "password": "Parol",
     "submit": "Yuborish"
+  },
+  "LoginPanel": {
+    "myCourses": "Mening kurslarim",
+    "settings": "Sozlamalar",
+    "logout": "Chiqish",
+    "profile": "Profil",
+    "login": "Kirish",
+    "register": "Ro'yxatdan o'tish"
+  },
+
+  "EditCourseForm": {
+    "BEGINNER": "Boshlang'ich",
+    "INTERMEDIATE": "O'rtacha",
+    "ADVANCED": "Ilg'or",
+    "RU": "Rus",
+    "UZ": "O'zbek"
   }
+
+
 }

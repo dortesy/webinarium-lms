@@ -18,21 +18,25 @@ import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";
 import { useRouter } from 'next/navigation'
 import { CreateCourse } from "@/actions/course/create-course";
+import {useTranslations} from "next-intl";
 
 export const AddCourseForm = () => {
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
     const router = useRouter()
+    const t = useTranslations('CreateCourseForm')
 
-    const form = useForm<z.infer<typeof CreateCourseSchema>>({
-        resolver: zodResolver(CreateCourseSchema),
+    const formSchema = CreateCourseSchema(t)
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
         defaultValues: {
             title: ''
         }
     });
 
-    const onSubmit = (values: z.infer<typeof CreateCourseSchema>) => {
+    const onSubmit = (values: z.infer<typeof formSchema>) => {
         setError('');
         setSuccess('');
 
