@@ -13,6 +13,7 @@ export const CreateCourse = async (values: CreateCourseSchemaType) => {
     const validatedFields = paramSchema.safeParse(values);
 
     if (!validatedFields.success) {
+        console.log(validatedFields.error.errors);
         return validatedFields.error.errors;
     }
 

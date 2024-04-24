@@ -17,12 +17,12 @@ export const SidebarItem = ({ icon: Icon, label, href }: SidebarItemProps) => {
 
     const isActive = (pathName === "/" && href === "/") || pathName === href || pathName?.startsWith(`${href}/`)
 
-    const onClick = () => {
-        router.push(href)
-    }
+    // const onClick = () => {
+    //     router.push(href)
+    // }
 
     return (
-        <li className="mt-2 space-y-1" onClick={onClick}>
+        <li className="mt-2 space-y-1" >
             <Link href={href} className={cn("flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium hover:bg-gray-100 hover:text-gray-700", isActive && "bg-gray-100")}>
                 <Icon className={cn("w-6 h-6 mr-2 stroke-gray-600", isActive && "stroke-blue-700")} strokeWidth={1}/>
                 <span className={cn('text-gray-700', isActive && "text-blue-700")}>{label}</span>

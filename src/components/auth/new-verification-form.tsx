@@ -17,7 +17,6 @@ export const NewVerificationForm = () => {
     const onSubmit = useCallback(() => {
         console.log(token)
         if (!token) {
-            console.log(token)
             setError("Токен не найден")
             return;
         }

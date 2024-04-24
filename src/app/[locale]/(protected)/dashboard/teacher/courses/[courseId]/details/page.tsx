@@ -1,9 +1,11 @@
 import { Metadata, ResolvingMetadata } from 'next'
-import {getCourseById} from "../../../../../../../lib/course/course-helper";
-import {EditCourseForm} from "../../../../../../../components/dashboard/teacher/course/edit-course-form";
+import {getCourseById} from "@/lib/course/course-helper";
+import {EditCourseForm} from "@/components/dashboard/teacher/course/edit-course-form";
 import {getAllCategories} from "@/lib/category/category-helper";
+import {CourseContext} from "@/context/course-context";
 type Props = {
     params: { courseId: string }
+
 }
 
 export async function generateMetadata(
@@ -16,7 +18,7 @@ export async function generateMetadata(
 
     if (!course) {
         return {
-            title: 'Курс не найден',
+            title: 'Webinarium - Курс не найден',
         }
     }
 
@@ -36,5 +38,7 @@ export default async function CoursePage({ params }: { params: { courseId: strin
     }
 
 
-    return <div><EditCourseForm course={course} categories={categories}/></div>
+    return (
+        <div><EditCourseForm course={course} categories={categories}/></div>
+    )
 }

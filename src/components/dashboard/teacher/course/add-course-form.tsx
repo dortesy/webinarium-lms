@@ -16,9 +16,10 @@ import {useState, useTransition} from "react";
 import {Button} from "@/components/ui/button";
 import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/navigation'
 import { CreateCourse } from "@/actions/course/create-course";
 import {useTranslations} from "next-intl";
+import {ROUTES} from "@/config/routes";
 
 export const AddCourseForm = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -48,34 +49,11 @@ export const AddCourseForm = () => {
                     }
                     if('success' in data){
                         setSuccess(data.success)
-                        router.push(`/dashboard/teacher/courses/${data.courseId}/`)
+                        router.push(`${ROUTES.TEACHER.COURSE.DETAILS(data.courseId)}`)
                     }
                 })
         })
     }
-
-    // const onSubmit = (values: z.infer<typeof CreateCourseSchema>) => {
-    //     setError("");
-    //     setSuccess("");
-    //     mutation.mutate(values, {
-    //
-    //         onSuccess: (data) => {
-    //             if('error' in data) { setError(data.error)}
-    //
-    //             if('success' in data) {
-    //                 setSuccess(data.success)
-    //                 router.push(`/dashboard/teacher/courses/${data.courseId}/`)
-    //             }
-    //         },
-    //         onError: (error) => {
-    //             if (error instanceof Error &&  error.message == 'UNAUTHORIZED') {
-    //                 setError('Для добавление курса вы должны пройти верификацию аккаунта');
-    //             }
-    //         }
-    //     });
-    // }
-
-
 
     return (
 

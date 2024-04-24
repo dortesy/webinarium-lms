@@ -35,7 +35,7 @@ const RootLayout: React.FC<Props> = async ({
                     <body className={inter.className}>
                     <div className="min-h-screen flex flex-col bg-stone-50">
                         <Header/>
-                        <main className="lg:max-w-screen-lg  mx-auto flex-1 flex w-full box-content">
+                        <main className="lg:max-w-screen-lg  mx-auto flex-1 w-full box-content">
                             {children}
                         </main>
                         <Footer/>

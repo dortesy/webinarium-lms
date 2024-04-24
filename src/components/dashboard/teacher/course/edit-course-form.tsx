@@ -1,7 +1,7 @@
 'use client'
-import {useForm} from "react-hook-form";
+import {useForm, useFormState} from "react-hook-form";
 import * as z from "zod";
-import {EditCourseSchema, MAX_FILE_SIZE} from "@/schemas/courses/course.schema";
+import {EditCourseSchema, EditCourseSchemaType, MAX_FILE_SIZE} from "@/schemas/courses/course.schema";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
     Form,
@@ -12,13 +12,12 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
-import React, {useEffect, useRef, useState, useTransition} from "react";
+import React, {startTransition, useContext, useEffect, useRef, useState, useTransition} from "react";
 import {Button} from "@/components/ui/button";
 import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";
-import { Course as PrismaCourse } from '@prisma/client';
+import { Course as PrismaCourse, Media } from '@prisma/client';
 import SearchableSelect  from "@/components/custom-ui/searchable-select";
-
 import { CategoryData } from "@/lib/types/category";
 import RichEditor from "@/components/rich-editor/rich-editor";
 import {CourseLanguageEnum,  CourseLevelEnum} from "@/lib/enums/course";
@@ -31,57 +30,142 @@ import '@uppy/drag-drop/dist/style.min.css';
 import Dropzone from "@/components/ui/dropzone";
 import {CircleX, ImageUp} from "lucide-react";
 import {Switch} from "@/components/ui/switch";
-import {validateFileType} from "@/lib/validation/validation";
+import {CourseContext} from "@/context/course-context";
+import {EditCourse} from "@/actions/course/edit-course";
+import DOMPurify from "isomorphic-dompurify";
+import {cn} from "@/lib/utils";
+import path from "path";
+
+interface CourseWithMedia extends PrismaCourse {
+    image?: Media | null; // Add the image property here
+}
 interface EditCourseFormProps {
-    course: PrismaCourse;
+    course: CourseWithMedia;
     categories: CategoryData[];
 }
 export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
     const [error, setError] = useState<string | undefined>("");
+    const [isFileInputDirty, setIsFileInputDirty] = useState(false);
     const [success, setSuccess] = useState<string | undefined>("");
+    const [isPending, startTransition] = useTransition();
     const t = useTranslations("EditCourseForm");
+    const { setCourseTitle } = useContext(CourseContext);
+
 
     const formSchema = EditCourseSchema(t);
-
-
     const resetFileInput = React.useRef<() => void>(() => {});
-
-    if (!course) {
-        return <div>Course not found</div>
-    }
+    const description =  course.description ? DOMPurify.sanitize(course.description) : '';
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            id: course.id,
             title: course.title || '',
-            description: course.description || '',
+            description: description,
             categoryId: course.categoryId || '',
             level: course.level || CourseLevelEnum[0],
             language: course.language || CourseLanguageEnum[0],
-            image: undefined,
+            imageId: course.imageId || '',
             published: course.published || false,
+            creatorId: course.creatorId,
+            file: undefined,
         }
     });
 
-    const onSubmit = (values: any) => {
-        console.log(values);
+
+    useEffect(() => {
+        setCourseTitle(course.title || "No Title");
+        if(course.image) {
+            const imageUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/${course.image.url}`
+            fetch(imageUrl).then(res => res.blob())
+                .then(blob => {
+                    const fileType = path.extname(imageUrl).replace('.', 'image/');
+                    let file = new File([blob], course.image?.title!, { type: fileType });
+                    form.setValue('file', file)
+                });
+        }
+    }, [course]);
+
+    const { isDirty } = useFormState({ control: form.control });
+
+    useEffect(() => {
+        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+            if (isDirty || isFileInputDirty) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [isDirty, isFileInputDirty]);
+
+    const onSubmit = (values: EditCourseSchemaType) => {
+
+        const formData = new FormData();
+        if (values.file) {
+            formData.append('image', values.file)
+        }
+
+        values.file = undefined;
+
+        console.log(course.imageId)
+
+        startTransition(() => {
+        EditCourse(values, formData)
+            .then((data) => {
+                if('error' in data){
+                    setError(data.error)
+                }
+                if('success' in data){
+                    setSuccess(data.success)
+                }
+
+                //form.reset();
+                setIsFileInputDirty(false);
+            })
+        })
+
     }
 
 
+    // if client does not have imageId and server does not have imageId, we are uploading image first time
+    // than user have current image, he can choose handleRemoveImage and save, in this situation we are deleting image, the client passes course.imageId to the server because we still have it
+    // but if formdata is empty we just broke relationship between course and image, so we need to handle this case
+
+    // if we have imageId and we have file, we are updating image, so we need to delete old image and upload new image
+
+    // but how check if user did not change image, we can check if imageId is the same as in the course, if it is the same, we do not need to update image
+
+    // so on drop and handleremove we are setting courseImageId to undefined, and if courseImageId is undefined we are unlinking image from course
+
+    // if client has imageId and server does not have imageId, how to handle this?
+    // if client does not have imageId and server has imageId, how to handle this?
+    // if client has imageId and server has imageId, how to handle this?
+
+
     const renderDropzoneContent = () => {
-        const image = form.watch("image");
+
+        const file = form.watch("file");
+
 
         const handleRemoveImage = (e: React.MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation();
             e.preventDefault()
-            form.setValue("image", undefined);
+
+            setIsFileInputDirty(true);
+            form.setValue("file", undefined);
+            form.setValue("imageId", '');
             resetFileInput.current();
 
         };
 
         return (
             <div className="flex flex-col items-center justify-center p-5 space-y-4">
-                {!image && (
+                {!file && (
                     <>
                         <ImageUp className="w-8 h-8" />
                         <p className="text-base font-medium text-gray-600">Перетащите изображение сюда или нажмите для загрузки</p>
@@ -89,7 +173,7 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
                         <p className="text-sm text-gray-500">{t('image.size', {size: MAX_FILE_SIZE / 1024 / 1024})}</p>
                     </>
                 )}
-                {image && (
+                {file && (
                     <div className="relative sm:w-2/3 md:w-1/2 lg:w-1/3 flex flex-col items-center p-3 space-y-4 bg-white shadow-md rounded-lg transition-all duration-300 ease-in-out hover:shadow-lg">
                         <button
                             type="button"
@@ -100,14 +184,14 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
                         </button>
                         <div className="w-full max-h-48 rounded-t-lg overflow-hidden">
                             <Image
-                                src={URL.createObjectURL(image)}
-                                alt={image.name}
+                                src={URL.createObjectURL(file)}
+                                alt={file.name}
                                 width={100}
                                 height={100}
                                 className="object-contain w-full"
                             />
                         </div>
-                        <p className="text-sm font-medium text-gray-800 truncate w-full px-2 border-t pt-3">{image.name}</p>
+                        <p className="text-sm font-medium text-gray-800 truncate w-full px-2 border-t pt-3">{file.name}</p>
                     </div>
                 )}
             </div>
@@ -117,19 +201,19 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
 
 
     function handleOnDrop(acceptedFiles: FileList | null) {
-        console.log(acceptedFiles);
-
         if (acceptedFiles && acceptedFiles.length > 0) {
             const file = acceptedFiles[0];
-
+            form.setValue("imageId", '');
             try {
-                formSchema.shape.image.parse(file);
-                form.setValue('image', file);
-                form.clearErrors('image');
+                formSchema.shape.file.parse(file);
+                form.setValue('file', file as File);
+                form.clearErrors('file');
+                setIsFileInputDirty(true);
+
             } catch (error) {
                 if (error instanceof z.ZodError) {
                     const errorMessage = error.errors[0].message;
-                    form.setError('image', {
+                    form.setError('file', {
                         message: errorMessage
                     });
                 } else {
@@ -143,7 +227,9 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
     return (
 
         <Form {...form}>
-            <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+            <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)} encType="multipart/form-data" >
+
+
                 <FormField
                     control={form.control}
                     name="title"
@@ -153,8 +239,8 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
                             <FormControl>
                                 <Input
                                     {...field}
-                                    placeholder={course.title ?? 'Название курса'}
                                     type="text"
+                                    disabled={isPending}
                                 />
                             </FormControl>
                             <FormMessage/>
@@ -164,13 +250,13 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
 
                 <FormField
                     name="description"
+                    control={form.control}
                     render={({field}) => (
-                        <FormItem>
+                        <FormItem className={isPending ? 'opacity-50 cursor-not-allowed' : ''}>
                             <FormLabel>Описание курса</FormLabel>
                             <FormControl>
                                 <RichEditor
                                     name={field.name}
-                                    control={form.control}
                                 />
                             </FormControl>
                             <FormMessage/>
@@ -182,15 +268,17 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
 
                 <div className="flex flex-wrap -mx-3 mb-2">
 
-                    <FormItem className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                    <FormField name="categoryId" control={form.control} render={({field}) => (
+                    <FormItem className={cn("w-full md:w-1/3 px-3 mb-6 md:mb-0", isPending ? 'opacity-50 cursor-not-allowed pointer-events-none' : '')}>
                         <FormLabel>Категория</FormLabel>
                         <SearchableSelect
                             items={categories}
                             placeholder="Выбрать"
                             name="categoryId"
-                            control={form.control}
+
                         />
-                    </FormItem>
+                    </FormItem>)}>
+                    </FormField>
 
 
                     <FormField
@@ -200,7 +288,7 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
                             <FormItem className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                                 <FormLabel>Уровень сложности</FormLabel>
                                 <FormControl>
-                                    <Select defaultValue={CourseLevelEnum[0]}>
+                                    <Select defaultValue={CourseLevelEnum[0]} disabled={isPending}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Выберите уровень сложности"/>
                                         </SelectTrigger>
@@ -226,7 +314,7 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
                             <FormItem className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                                 <FormLabel>Язык</FormLabel>
                                 <FormControl>
-                                    <Select defaultValue={CourseLanguageEnum[0]}>
+                                    <Select defaultValue={CourseLanguageEnum[0]} disabled={isPending}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Выберите язык"/>
                                         </SelectTrigger>
@@ -247,7 +335,7 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
 
                 <FormField
                     control={form.control}
-                    name="image"
+                    name="file"
                     render={({field}) => (
                         <FormItem className="w-full">
                             <FormLabel>Изображение для курса</FormLabel>
@@ -283,6 +371,7 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
                                         <Switch
                                             checked={field.value}
                                             onCheckedChange={field.onChange}
+                                            disabled={isPending}
                                         />
                                     </FormControl>
                                 </FormItem>
@@ -290,12 +379,10 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
                         />
                     </div>
 
-
-
                         <FormError message={error}/>
                         <FormSuccess message={success}/>
 
-                        <Button className="mt-4" type="submit">Сохранить</Button>
+                        <Button className="mt-4" type="submit" disabled={isPending}>Сохранить</Button>
             </form>
         </Form>
 

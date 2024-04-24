@@ -15,7 +15,7 @@ interface SearchableSelectProps extends UseControllerProps {
     placeholder?: string;
 }
 
-const SearchableSelect = ( {
+const SearchableSelect = React.memo(( {
                                items,
                                placeholder = "Выбрать",
                                ...props
@@ -45,6 +45,7 @@ const SearchableSelect = ( {
             <PopoverTrigger asChild>
                 <Button
                     variant="outline"
+                    disabled={field.disabled}
                     role="combobox"
                     className={cn(
                         "w-full justify-between min-w-full relative",
@@ -92,7 +93,7 @@ const SearchableSelect = ( {
 
 
     );
-}
+})
 
 
 export default SearchableSelect

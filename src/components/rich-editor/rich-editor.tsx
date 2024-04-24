@@ -7,7 +7,7 @@ import Underline from "@tiptap/extension-underline";
 import Toolbar from "@/components/rich-editor/toolbar";
 import {TextAlign} from "@tiptap/extension-text-align";
 
-
+import { useFormContext } from 'react-hook-form';
 import BaseHeading from '@tiptap/extension-heading'
 import { mergeAttributes } from '@tiptap/core'
 
@@ -36,8 +36,11 @@ export const Heading = BaseHeading.configure({ levels: [1, 2, 3, 4, 5, 6] }).ext
         ]
     },
 })
+
+
+
 const RichEditor = (props: UseControllerProps) => {
-    const { field, fieldState } = useController(props);
+    const { field } = useController(props);
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
@@ -94,10 +97,13 @@ const RichEditor = (props: UseControllerProps) => {
         },
     })
 
+    if(!editor) {
+        return null
+    }
 
     return (
         <div className="w-full flex flex-col justify-stretch">
-            <Toolbar editor={editor} content={field.value}/>
+            <Toolbar editor={editor} content={field.value} />
             <EditorContent editor={editor} />
         </div>
     )

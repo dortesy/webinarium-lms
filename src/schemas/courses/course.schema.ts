@@ -17,17 +17,25 @@ export type CreateCourseSchemaType  = z.infer<ReturnType<typeof CreateCourseSche
 
 
 export const EditCourseSchema = (t: ReturnType<typeof useTranslations<'EditCourseForm'>>) => z.object({
-        title: z.string().min(6).max(100).optional(),
+        id: z.string(),
+        title: z.string().min(6).max(500),
         description: z.string().max(1000).optional(),
         categoryId: z.string().optional(),
         price: z.number().min(0).optional(),
         duration: z.number().int().min(0).optional(),
-        level: z.enum(CourseLevelEnum).optional(),
+        level: z.enum(CourseLevelEnum),
         language: z.enum(CourseLanguageEnum).optional(),
-        image: z
+        file: z
             .instanceof(File)
             .refine(createFileSizeValidator(MAX_FILE_SIZE), t('image.size', {size: MAX_FILE_SIZE / 1024 / 1024}))
             .refine(validateFileType, t('image.type'))
             .optional(),
-        published: z.boolean().default(false).optional()
+        published: z.boolean().default(false).optional(),
+        creatorId: z.string(),
+        imageId: z.string().optional(),
 });
+
+
+export type EditCourseSchemaType  = z.infer<ReturnType<typeof EditCourseSchema>>;
+
+

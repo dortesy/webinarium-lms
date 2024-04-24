@@ -39,7 +39,12 @@
   },
 
 
+
+
   "SidebarLabels": {
+    "mainHeader": "Панель управления",
+    "sidebarHeader": "Меню",
+    "courseHeader": "Редактирование курса",
     "courses": "Курсы",
     "profile": "Профиль",
     "courseDetails": "Детали",

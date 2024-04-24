@@ -1,24 +1,19 @@
 'use client'
-import { usePathname } from 'next/navigation';
 import { SidebarItem } from "@/components/dashboard/sidebar/sidebar-item";
 import {
     GraduationCap,
     UserCircle,
-    ArrowLeft,
-    Info,
-    DollarSign,
-    Book,
-    FileText,
     Banknote,
     Rows3,
-    ReceiptText
+    ReceiptText, BookOpenText, Receipt, ListVideo
 } from "lucide-react";
 import { ROUTES } from "@/config/routes";
 import {useTranslations} from "next-intl";
+import {useParams} from "next/navigation";
 
 export const SidebarRoutes = () => {
-    const pathname = usePathname();
-    const courseId = pathname?.split('/').pop();
+    const params = useParams();
+    const courseId = params.courseId ? params.courseId as string : undefined;
     const t = useTranslations('SidebarLabels')
 
     const mainRoutes = [
@@ -34,31 +29,32 @@ export const SidebarRoutes = () => {
         },
     ];
 
+
     const courseRoutes = [
         {
             label: t('courseDetails'),
-            href: `${ROUTES.TEACHER.COURSES}/${courseId}/details`,
-            icon: ReceiptText,
+            href: ROUTES.TEACHER.COURSE.DETAILS(courseId),
+            icon: BookOpenText,
         },
         {
             label: t('coursePricing'),
-            href: `${ROUTES.TEACHER.COURSES}/${courseId}/pricing`,
-            icon: Banknote,
+            href: ROUTES.TEACHER.COURSE.PRICING(courseId),
+            icon: Receipt,
         },
         {
             label: t('courseContent'),
-            href: `${ROUTES.TEACHER.COURSES}/${courseId}/outline`,
-            icon: Rows3,
+            href: ROUTES.TEACHER.COURSE.OUTLINE(courseId),
+            icon: ListVideo,
         },
     ];
 
-    const isCourseRoute = pathname?.includes(`${ROUTES.TEACHER.COURSES}/`);
+    let sidebarTitle = courseId ? t('courseHeader') : t('sidebarHeader');
 
     return (
         <nav>
-            <h3 className="text-xs font-medium uppercase text-gray-400">Панель инструктора</h3>
+            <h3 className="text-xs font-medium uppercase text-gray-400">{sidebarTitle}</h3>
             <ul className="flex flex-col space-y-2">
-                {isCourseRoute
+                {courseId
                     ? courseRoutes.map((route) => (
                         <SidebarItem
                             key={route.href}
