@@ -1,3 +1,4 @@
+"use server"
 import {db} from "@/lib/db";
 import {cache} from "react"
 

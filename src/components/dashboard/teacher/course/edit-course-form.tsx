@@ -35,19 +35,46 @@ import {EditCourse} from "@/actions/course/edit-course";
 import DOMPurify from "isomorphic-dompurify";
 import {cn} from "@/lib/utils";
 import path from "path";
+import {getCourseById} from "@/lib/course/course-helper";
 
 interface CourseWithMedia extends PrismaCourse {
     image?: Media | null; // Add the image property here
 }
 interface EditCourseFormProps {
-    course: CourseWithMedia;
+    initialCourse: CourseWithMedia;
     categories: CategoryData[];
 }
-export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
+export const EditCourseForm = ({initialCourse, categories}: EditCourseFormProps) => {
+    const [course, setCourse] = useState<CourseWithMedia>(initialCourse);
+    const [success, setSuccess] = useState<string | undefined>("");
     const [error, setError] = useState<string | undefined>("");
     const [isFileInputDirty, setIsFileInputDirty] = useState(false);
-    const [success, setSuccess] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
+    function updateCourse(course: any) {
+        setCourse(course);
+    }
+
+
+    useEffect(() => {
+        // This code runs anyway because after form submission happens re-render
+        console.log('THIS AFFECT RUNS')
+        setCourseTitle(course.title || "No Title");
+        form.reset()
+        if(course.image) {
+            const imageUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/${course.image.url}`
+            console.log('fetching image')
+            fetch(imageUrl).then(res => res.blob())
+                .then(blob => {
+                    const fileType = path.extname(imageUrl).replace('.', 'image/');
+                    let file = new File([blob], course.image?.title!, { type: fileType });
+                    form.setValue('file', file)
+                });
+
+            setIsFileInputDirty(false);
+        }
+    }, [course]);
+
+
     const t = useTranslations("EditCourseForm");
     const { setCourseTitle } = useContext(CourseContext);
 
@@ -73,22 +100,12 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
     });
 
 
-    useEffect(() => {
-        setCourseTitle(course.title || "No Title");
-        if(course.image) {
-            const imageUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/${course.image.url}`
-            fetch(imageUrl).then(res => res.blob())
-                .then(blob => {
-                    const fileType = path.extname(imageUrl).replace('.', 'image/');
-                    let file = new File([blob], course.image?.title!, { type: fileType });
-                    form.setValue('file', file)
-                });
-        }
-    }, [course]);
 
-    const { isDirty } = useFormState({ control: form.control });
+
+    const { isDirty, dirtyFields } = useFormState({ control: form.control });
 
     useEffect(() => {
+        console.log('when dirty')
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {
             if (isDirty || isFileInputDirty) {
                 event.preventDefault();
@@ -103,6 +120,8 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
         };
     }, [isDirty, isFileInputDirty]);
 
+
+
     const onSubmit = (values: EditCourseSchemaType) => {
 
         const formData = new FormData();
@@ -115,40 +134,27 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
         console.log(course.imageId)
 
         startTransition(() => {
-        EditCourse(values, formData)
-            .then((data) => {
-                if('error' in data){
-                    setError(data.error)
-                }
-                if('success' in data){
-                    setSuccess(data.success)
-                }
+            EditCourse(values, formData)
+                .then((data) => {
+                    if('error' in data){
+                        setError(data.error)
+                    }
+                    if('success' in data){
+                        setSuccess(data.success)
+                        //updateCourse(data.course)
+                        console.log(course)
+                        setIsFileInputDirty(false);
 
-                //form.reset();
-                setIsFileInputDirty(false);
-            })
+                    }
+                })
         })
 
     }
 
 
-    // if client does not have imageId and server does not have imageId, we are uploading image first time
-    // than user have current image, he can choose handleRemoveImage and save, in this situation we are deleting image, the client passes course.imageId to the server because we still have it
-    // but if formdata is empty we just broke relationship between course and image, so we need to handle this case
-
-    // if we have imageId and we have file, we are updating image, so we need to delete old image and upload new image
-
-    // but how check if user did not change image, we can check if imageId is the same as in the course, if it is the same, we do not need to update image
-
-    // so on drop and handleremove we are setting courseImageId to undefined, and if courseImageId is undefined we are unlinking image from course
-
-    // if client has imageId and server does not have imageId, how to handle this?
-    // if client does not have imageId and server has imageId, how to handle this?
-    // if client has imageId and server has imageId, how to handle this?
-
-
     const renderDropzoneContent = () => {
 
+        //console.log('rendering dropzone')
         const file = form.watch("file");
 
 
@@ -229,7 +235,6 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
         <Form {...form}>
             <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)} encType="multipart/form-data" >
 
-
                 <FormField
                     control={form.control}
                     name="title"
@@ -269,15 +274,15 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
                 <div className="flex flex-wrap -mx-3 mb-2">
 
                     <FormField name="categoryId" control={form.control} render={({field}) => (
-                    <FormItem className={cn("w-full md:w-1/3 px-3 mb-6 md:mb-0", isPending ? 'opacity-50 cursor-not-allowed pointer-events-none' : '')}>
-                        <FormLabel>Категория</FormLabel>
-                        <SearchableSelect
-                            items={categories}
-                            placeholder="Выбрать"
-                            name="categoryId"
+                        <FormItem className={cn("w-full md:w-1/3 px-3 mb-6 md:mb-0", isPending ? 'opacity-50 cursor-not-allowed pointer-events-none' : '')}>
+                            <FormLabel>Категория</FormLabel>
+                            <SearchableSelect
+                                items={categories}
+                                placeholder="Выбрать"
+                                name="categoryId"
 
-                        />
-                    </FormItem>)}>
+                            />
+                        </FormItem>)}>
                     </FormField>
 
 
@@ -353,39 +358,38 @@ export const EditCourseForm = ({course, categories} : EditCourseFormProps) => {
                 />
 
 
-                    <div className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="published"
-                            render={({field}) => (
-                                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                                    <div className="space-y-0.5">
-                                        <FormLabel className="text-base">
-                                            Опубликовать
-                                        </FormLabel>
-                                        <FormDescription>
-                                            После публикации курс будет доступен для всех пользователей
-                                        </FormDescription>
-                                    </div>
-                                    <FormControl>
-                                        <Switch
-                                            checked={field.value}
-                                            onCheckedChange={field.onChange}
-                                            disabled={isPending}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                    </div>
+                <div className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="published"
+                        render={({field}) => (
+                            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                                <div className="space-y-0.5">
+                                    <FormLabel className="text-base">
+                                        Опубликовать
+                                    </FormLabel>
+                                    <FormDescription>
+                                        После публикации курс будет доступен для всех пользователей
+                                    </FormDescription>
+                                </div>
+                                <FormControl>
+                                    <Switch
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                        disabled={isPending}
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                </div>
 
-                        <FormError message={error}/>
-                        <FormSuccess message={success}/>
+                <FormError message={error}/>
+                <FormSuccess message={success}/>
 
-                        <Button className="mt-4" type="submit" disabled={isPending}>Сохранить</Button>
+                <Button className="mt-4" type="submit" disabled={isPending}>Сохранить</Button>
             </form>
         </Form>
 
-)
+    )
 }
-

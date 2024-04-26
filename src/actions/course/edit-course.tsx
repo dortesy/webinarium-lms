@@ -94,7 +94,6 @@ export const EditCourse = async (values: EditCourseSchemaType, formData: FormDat
             where: {
                 id: id,
             },
-            include: {image: true},
             data: {
                 title: title.trim(),
                 slug: slug,
@@ -127,7 +126,18 @@ export const EditCourse = async (values: EditCourseSchemaType, formData: FormDat
             })
         }
 
-        return { success: 'Изменения сохранены', course: course};
+
+        const newCourse = await db.course.findFirst({
+            where: {
+                id: id
+            },
+            include: {
+                category: true,
+                image: true
+            }
+        })
+
+        return { success: 'Изменения сохранены', course: newCourse};
     }
     catch (error) {
         console.error("Error updating course:", error);

@@ -37,8 +37,7 @@ export default async function CoursePage({ params }: { params: { courseId: strin
         return <div>Course not found</div>
     }
 
-
     return (
-        <div><EditCourseForm course={course} categories={categories}/></div>
+        <div><EditCourseForm initialCourse={course}  categories={categories}/></div>
     )
 }

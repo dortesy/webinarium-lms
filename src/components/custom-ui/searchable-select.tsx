@@ -21,6 +21,8 @@ const SearchableSelect = React.memo(( {
                                ...props
                            }: SearchableSelectProps) => {
 
+
+    console.log('rendering searchable select')
     const [open, setOpen] = React.useState(false)
     const { field, fieldState } = useController(props);
     const findItemByValue = (items: CategoryData[], value: string): string | undefined => {
@@ -40,6 +42,8 @@ const SearchableSelect = React.memo(( {
 
 
     return (
+
+
 
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>

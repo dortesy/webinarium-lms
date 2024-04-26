@@ -71,7 +71,7 @@ export const RegisterForm = () => {
                         <FormItem>
                             <FormLabel>{t('password')}</FormLabel>
                             <FormControl>
-                                <Input {...field} placeholder="******" type="password" disabled={isPending} />
+                                <Input {...field} placeholder="******" type="password" disabled={isPending}  />
                             </FormControl>
                             <FormMessage/>
                         </FormItem>
