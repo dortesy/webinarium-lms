@@ -21,7 +21,7 @@ import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 
 type Props = {
     editor: Editor | null;
-    content: string;
+    content: string | "";
 };
 
 const Toolbar = ({ editor, content }: Props) => {

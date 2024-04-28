@@ -26,6 +26,12 @@
   },
 
   "EditCourseForm": {
+    "title": "Название курса",
+    "description": "Описание",
+    "category": "Категория",
+    "language": "Язык",
+    "level": "Уровень",
+    "price": "Цена",
     "BEGINNER": "Начальный",
     "INTERMEDIATE": "Средний",
     "ADVANCED": "Продвинутый",

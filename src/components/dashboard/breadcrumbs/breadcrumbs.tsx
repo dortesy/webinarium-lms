@@ -15,7 +15,7 @@ export const Breadcrumbs = () => {
     const items = getBreadcrumbItems(pathname);
 
     return (
-        <Breadcrumb className="pl-8 pt-8 pb-4">
+        <Breadcrumb className="pl-8 pt-8 pb-4 ">
             <BreadcrumbList>
                 {items.map((item, index) => (
                     <Fragment key={item.href}>

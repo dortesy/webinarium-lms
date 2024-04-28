@@ -112,19 +112,40 @@ export const EditCourse = async (values: EditCourseSchemaType, formData: FormDat
             },
         });
 
+
+        // if image size is 0 means user did not change the image
+        // if validatedImage is null means user removed the image
+        // if image size > 0 means user uploaded a new image
+
+        console.log(imageId)
+
+
         const validatedImage = formData.get('image') ? editCourseSchema.shape.file.parse(formData.get('image')) as File : null;
 
-        if(!imageId && validatedImage) {
-            await UploadImage(course, validatedImage)
-        }
 
-        if(!imageId && !validatedImage && course.imageId) {
+        console.log(validatedImage)
+        if (validatedImage && validatedImage.size > 0) {
+            await UploadImage(course, validatedImage);
+        }
+        if (!validatedImage && imageId) {
             await db.media.delete({
                 where: {
-                    id: course.imageId
-                }
-            })
+                    id: imageId,
+                },
+            });
         }
+
+        // if(!imageId && validatedImage) {
+        //     await UploadImage(course, validatedImage)
+        // }
+        //
+        // if(!imageId && !validatedImage && course.imageId) {
+        //     await db.media.delete({
+        //         where: {
+        //             id: course.imageId
+        //         }
+        //     })
+        // }
 
 
         const newCourse = await db.course.findFirst({

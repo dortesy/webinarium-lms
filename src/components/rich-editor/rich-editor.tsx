@@ -2,7 +2,7 @@
 
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import {useController, UseControllerProps} from "react-hook-form";
+import {Field, useController, UseControllerProps} from "react-hook-form";
 import Underline from "@tiptap/extension-underline";
 import Toolbar from "@/components/rich-editor/toolbar";
 import {TextAlign} from "@tiptap/extension-text-align";
@@ -38,10 +38,17 @@ export const Heading = BaseHeading.configure({ levels: [1, 2, 3, 4, 5, 6] }).ext
 })
 
 
+interface RichEditorProps {
+    value: string | "";        // assuming the value is a string, adjust based on your actual data structure
+    name: string;
+    disabled?: boolean;
+    onChange: (newValue: string) => void;  // the type of newValue should match the expected new value type
+}
 
-const RichEditor = (props: UseControllerProps) => {
-    console.log('rich editor rendering')
-    const { field } = useController(props);
+const RichEditor = ({ value, name, disabled, onChange, }: RichEditorProps) => {
+
+    console.log('render rich editor')
+
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
@@ -91,10 +98,10 @@ const RichEditor = (props: UseControllerProps) => {
             },
         },
 
-        content: field.value || '',
+        content: value || '',
 
         onUpdate({ editor }) {
-            field.onChange(editor.getHTML())
+            onChange(editor.getHTML())
         },
     })
 
@@ -104,8 +111,8 @@ const RichEditor = (props: UseControllerProps) => {
 
     return (
         <div className="w-full flex flex-col justify-stretch">
-            <Toolbar editor={editor} content={field.value} />
-            <EditorContent editor={editor} />
+            <Toolbar editor={editor} content={value} />
+            <EditorContent editor={editor}  className={disabled ? 'opacity-50 cursor-not-allowed' : ''}/>
         </div>
     )
 }

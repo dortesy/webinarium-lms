@@ -13,18 +13,21 @@ import { CategoryData } from "@/lib/types/category";
 interface SearchableSelectProps extends UseControllerProps {
     items: CategoryData[];
     placeholder?: string;
+    value: string | "";
+    disabled?: boolean;
+    onChange: (newValue: string) => void;
 }
 
 const SearchableSelect = React.memo(( {
                                items,
                                placeholder = "Выбрать",
-                               ...props
+                               value, disabled, onChange
                            }: SearchableSelectProps) => {
 
-
     console.log('rendering searchable select')
+
+
     const [open, setOpen] = React.useState(false)
-    const { field, fieldState } = useController(props);
     const findItemByValue = (items: CategoryData[], value: string): string | undefined => {
         for (const item of items) {
             if (item.value === value) {
@@ -40,24 +43,21 @@ const SearchableSelect = React.memo(( {
         }
     };
 
-
     return (
-
-
 
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
                     variant="outline"
-                    disabled={field.disabled}
+                    disabled={disabled}
                     role="combobox"
                     className={cn(
                         "w-full justify-between min-w-full relative",
-                        !field.value && "text-muted-foreground"
+                        !value && "text-muted-foreground"
                     )}
                 >
                     <span className="truncate mr-4">
-                    {field.value ? findItemByValue(items, field.value) || placeholder : placeholder}
+                    {value ? findItemByValue(items, value) || placeholder : placeholder}
                     </span>
                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50 absolute right-2"/>
                 </Button>
@@ -75,12 +75,12 @@ const SearchableSelect = React.memo(( {
                                         className="cursor-pointer"
                                         value={childItem.label}
                                         key={childItem.value}
-                                        onSelect={() => {field.onChange(childItem.value); setOpen(false);}}
+                                        onSelect={() => {onChange(childItem.value); setOpen(false);}}
                                     >
                                         <Check
                                             className={cn(
                                                 "mr-2 h-4 w-4",
-                                                childItem.value == field.value ? "opacity-100" : "opacity-0"
+                                                childItem.value == value ? "opacity-100" : "opacity-0"
                                             )}
                                         />
                                         {childItem.label}
