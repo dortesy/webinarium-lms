@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Webinarium
 
-## Getting Started
+Welcome to Webinarium, an upcoming e-learning platform tailored for the educational needs of Uzbekistan. Inspired by the likes of Udemy, Webinarium aims to democratize education by allowing anyone to upload their courses and monetize their knowledge.
 
-First, run the development server:
+## Description
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Webinarium is built using the powerful Next.js 14 framework, leveraging its full-stack capabilities to deliver a seamless user experience. We employ next-auth for robust authentication processes, Prisma for object-relational mapping, and zod for schema validation, ensuring that our platform stands on a foundation of reliable and secure technologies.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Why Next.js?
 
-You can start editing the page by modifying `app/login-form.tsx`. The page auto-updates as you edit the file.
+We chose Next.js for its versatility as a React framework, providing both client and server-side functionality which is crucial for a platform with dynamic content like Webinarium. Next.js's support for server-side rendering and static generation makes it the ideal choice for a performant and scalable e-learning solution.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Current Features
 
-## Learn More
+- **User Authentication**: Register, log in, forgot password, and verification processes are in place to secure user access.
+- **Multi-Language Support**: With next-intl, we ensure that Webinarium is accessible to a diverse user base, embracing the linguistic variety of our audience.
+- **Dashboard Development**: A dedicated space for educators to manage their courses and track their progress.
 
-To learn more about Next.js, take a look at the following resources:
+## Technologies Used
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Next.js 14**: For full-stack capabilities, server-side rendering, and static site generation.
+- **Next-auth**: For handling authentication workflows with ease and security.
+- **Prisma**: As our ORM of choice for interacting with the database in a type-safe manner.
+- **Zod**: To enforce validation schemas within our APIs.
+- **React-Hook-Form**: For building performant, flexible, and extensible forms.
+- **Typescript**: For adding strong typing to JavaScript, increasing the maintainability and robustness of the code.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Installation
 
-## Deploy on Vercel
+As the platform is currently under development, detailed installation instructions will be provided once the project reaches a more mature phase.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Database Schema UML Diagram
+
+Here's the UML diagram representing the database schema used in Webinarium:
+
+![UML Diagram of Webinarium Database](https://github.com/dortesy/webinarium-lms/tree/main/public/database.svg "Webinarium Database Schema")

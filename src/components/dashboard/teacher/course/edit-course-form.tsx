@@ -38,18 +38,6 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
     const [success, setSuccess] = useState<string | undefined>("");
     const [error, setError] = useState<string | undefined>("");
 
-    // const [defaultValues, setDefaultValues] = useState<EditCourseSchemaType | undefined>({
-    //     id: course.id,
-    //     title: course.title || '',
-    //     description: course.description ? DOMPurify.sanitize(course.description) : '',
-    //     categoryId: course.categoryId || '',
-    //     level: course.level || CourseLevelEnum[0],
-    //     language: course.language || CourseLanguageEnum[0],
-    //     imageId: course.imageId || '',
-    //     published: course.published || false,
-    //     creatorId: course.creatorId,
-    //     file: (course.image) ? new File([], course.image.url, {type: "image/png"}) : undefined
-    // });
 
     const t = useTranslations("EditCourseForm");
     const { setCourseTitle } = useContext(CourseContext);
@@ -71,14 +59,12 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
 
 
     useEffect(() => {
-        // This code runs anyway because after form submission happens re-render
         setCourseTitle(defaultValues.title || "No Title");
 
     }, [success]);
 
 
     const formSchema = EditCourseSchema(t);
-    //const resetFileInput = React.useRef<() => void>(() => {});
     const resetFileInput = React.useRef<() => void>(() => {});
 
 
@@ -89,7 +75,6 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
         defaultValues,
     });
 
-    //const watchableTitle = watch('title')
 
     const { isDirty, dirtyFields } = useFormState({ control: control });
 
@@ -113,14 +98,6 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
                     if('success' in data){
                         setSuccess(data.success)
 
-
-                        console.log(dirtyFields)
-                                                // setDefaultValues(
-                        //     {
-                        //         ...values,
-                        //         file: (course.image) ? new File([], course.image.url, {type: "image/png"}) : undefined
-                        //     }
-                        // )
                         if(data.course) {
                             reset({
                                 ...values,
@@ -129,9 +106,6 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
                                 file: (data.course.image) ? new File([], data.course.image.url, {type: "image/png"}) : undefined
                             })
                         }
-
-                        //setIsFileInputDirty(false);
-
                     }
                 })
         })
