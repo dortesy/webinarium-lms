@@ -34,4 +34,4 @@ As the platform is currently under development, detailed installation instructio
 
 Here's the UML diagram representing the database schema used in Webinarium:
 
-![UML Diagram of Webinarium Database](https://github.com/dortesy/webinarium-lms/tree/main/public/database.svg "Webinarium Database Schema")
+![UML Diagram of Webinarium Database](https://raw.githubusercontent.com/dortesy/webinarium-lms/main/public/database.svg?token=GHSAT0AAAAAACLMB4K3ZBX3APOUOG46UNLKZRQELXA "Webinarium Database Schema")
