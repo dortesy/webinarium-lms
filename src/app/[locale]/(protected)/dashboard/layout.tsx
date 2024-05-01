@@ -1,4 +1,4 @@
-import {ReactNode} from "react";
+import {ReactNode, Suspense} from "react";
 import {Sidebar} from "@/components/dashboard/sidebar/sidebar";
 import {Breadcrumbs} from "@/components/dashboard/breadcrumbs/breadcrumbs";
 

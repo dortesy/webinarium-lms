@@ -70,7 +70,7 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
 
 
 
-    const {control , watch, reset, register, handleSubmit, setValue, clearErrors } = useForm<z.infer<typeof formSchema>>({
+    const {control , watch, reset, register, handleSubmit, setValue, clearErrors, formState: { errors }} = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues,
     });
@@ -160,24 +160,25 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
     return (
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
             <div className="flex-col space-y-2">
-                <Label htmlFor="title">{t("title")}</Label>
+                <Label htmlFor="title" className={errors.title && 'text-red-500'}>{t("title")}</Label>
                 <Input
                     {...register("title")}
                     id="title"
                     type="text"
                     disabled={isPending}
                 />
+                {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
             </div>
 
             <Controller name="description" control={control} render={({field}) => (
                 <div className="flex-col space-y-2">
-                    <Label htmlFor="description">{t("description")}</Label>
+                    <Label htmlFor="description" className={errors.description && 'text-red-500'}>{t("description")}</Label>
                     <RichEditor value={field.value} name={field.name} onChange={field.onChange} disabled={isPending}/>
+                    {errors.description && <p className="text-red-500 text-sm">{errors.description.message}</p>}
                 </div>
             )}/>
 
             <div className="flex flex-wrap -mx-3 mb-2">
-
 
                 <Controller name="categoryId" control={control} render={({field}) => (
                     <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
@@ -240,19 +241,20 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
             <Controller
                 control={control}
                 name="file"
-
                 render={({field}) => (
                     <div className="w-full">
-                        <Label>Изображение для курса</Label>
+                        <Label htmlFor="file" className={error && 'text-red-500'}>Изображение для курса</Label>
                             <ImageDropzone
                                 {...field}
                                 handleOnDrop={handleOnDrop}
                                 resetFileInput={resetFileInput}
                                 file={field.value}
+                                id="file"
                             />
                     </div>
                 )}
             />
+
 
             <FormError message={error}/>
             <FormSuccess message={success}/>

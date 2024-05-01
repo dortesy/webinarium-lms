@@ -7,6 +7,7 @@ import {auth} from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import {NextIntlClientProvider} from "next-intl";
 import {getMessages} from "@/i18n";
+import {Toaster} from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -38,6 +39,7 @@ const RootLayout: React.FC<Props> = async ({
                         <main className="lg:max-w-screen-lg  mx-auto flex-1 w-full box-content">
                             {children}
                         </main>
+                        <Toaster />
                         <Footer/>
                     </div>
                     </body>

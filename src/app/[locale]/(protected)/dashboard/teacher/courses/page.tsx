@@ -20,7 +20,7 @@ const MyCoursesPage = async () => {
             <h2 className="text-4xl font-extrabold dark:text-white">Список ваших курсов</h2>
             <p className="my-4 text-sm text-gray-500">На этой странице вы найдете все ваши добавленные курсы</p>
 
-            <CourseList courses={courses}/>
+            <CourseList initialCourses={courses}/>
         </div>
     );
 }

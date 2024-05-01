@@ -16,6 +16,7 @@ const UploadImage = async (course: PrismaCourse, file: File) => {
     const fileExtension = path.extname(file.name);
 
 
+
     const media = await db.media.create({
         data: {
             title: file.name,

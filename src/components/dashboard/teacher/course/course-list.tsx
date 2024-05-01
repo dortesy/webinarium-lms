@@ -3,23 +3,58 @@ import {ROUTES} from "@/config/routes";
 import {Category, Course, Media} from "@prisma/client";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
-import Link from "next/link";
-
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import {useState, useTransition} from "react";
+import {CourseDeletion} from "@/actions/course/course-deletion";
+import {useToast} from "@/components/ui/use-toast";
 
 interface CourseWithImage extends Course {
     image?: Media | null;
     category?: Category | null;
 }
 interface CourseListProps {
-    courses: CourseWithImage[]
+    initialCourses: CourseWithImage[]
 }
-const CourseList = ({courses}: CourseListProps) => {
+const CourseList = ({initialCourses}: CourseListProps) => {
+    const [courses, setCourses] = useState(initialCourses);
+    const { toast } = useToast()
+    const [isPending, startTransition] = useTransition();
+    const removeCourse = (id: string) => () => {
+        startTransition(() => {
+            CourseDeletion(id).then((data) => {
+                if('error' in data){
+                    toast({
+                        variant: "destructive",
+                        title: "Произошла ошибка",
+                        description: data.error,
+                    })
+                }
+                if('success' in data){
+                    setCourses(courses.filter(course => course.id !== id));
+                    toast({
+                        variant: "success",
+                        title: "Курс удален",
+                        description: data.success,
+                    })
+                }
+            }).finally(() => {
 
-    console.log(courses)
+            })
+        });
+    }
+
+    if (!courses) {
+        return <div>Loading...</div>
+    }
 
     return (
-        <div>
-        <h1>Course List</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
                 {courses.map(course => (
@@ -32,19 +67,27 @@ const CourseList = ({courses}: CourseListProps) => {
                         <CardContent>
                             {course.image && <img src={course.image.url} alt={course.title} className="w-full h-40 object-cover" />}
                         </CardContent>
-                        <CardFooter>
-                          <a href={ROUTES.TEACHER.COURSE.DETAILS(course.id)}><Button variant="outline">Редактировать</Button> </a>
+                        <CardFooter className="flex justify-between">
+                          <a href={ROUTES.TEACHER.COURSE.DETAILS(course.id)}><Button variant="outline">Редактировать</Button></a>
+                            <Dialog>
+                                <DialogTrigger>Удалить</DialogTrigger>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle>Вы уверены, что хотите удалить курс?</DialogTitle>
+                                        <DialogDescription  className="flex flex-col gap-y-6 ">
+                                            Это действие нельзя отменить. Это навсегда удалит ваш курс и все данные курса с наших серверов.
+                                            <div className="flex gap-x-2">
+                                                <Button variant="destructive" onClick={removeCourse(course.id)}>Удалить</Button>
+                                                <DialogTrigger asChild><Button variant="outline">Отмена</Button></DialogTrigger>
+                                            </div>
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                </DialogContent>
+                            </Dialog>
                         </CardFooter>
                     </Card>
-                    // <div  className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
-                    //     <h2 className="text-xl font-bold dark:text-white">{course.title}</h2>
-                    //     <p className="text-gray-500 dark:text-gray-300">{course.description}</p>
-                    //     <a href={ROUTES.TEACHER.COURSE.DETAILS(course.id)} className="text-blue-500 dark:text-blue-400">Подробнее</a>
-                    // </div>
                 ))}
             </div>
-
-        </div>
     );
 }
 
