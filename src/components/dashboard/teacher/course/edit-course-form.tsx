@@ -3,9 +3,9 @@ import {Course as PrismaCourse} from '@prisma/client';
 import {Media} from "@prisma/client";
 import {CategoryData} from "@/lib/types/category";
 import {useTranslations} from "next-intl";
-import React, {Fragment, useCallback, useContext, useEffect, useState, useTransition} from "react";
+import React, {useContext, useEffect, useState, useTransition} from "react";
 import {CourseContext} from "@/context/course-context";
-import {EditCourseSchema, EditCourseSchemaType, MAX_FILE_SIZE} from "@/schemas/courses/course.schema";
+import {EditCourseSchema, EditCourseSchemaType} from "@/schemas/courses/course.schema";
 import DOMPurify from "isomorphic-dompurify";
 import {Controller, useForm, useFormState} from "react-hook-form";
 import * as z from "zod";
@@ -18,9 +18,6 @@ import {Button} from "@/components/ui/button";
 import RichEditor from "@/components/rich-editor/rich-editor";
 import SearchableSelect from "@/components/custom-ui/searchable-select";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import Dropzone from "@/components/custom-ui/image-dropzone";
-import {CircleX, ImageUp} from "lucide-react";
-import Image from 'next/image'
 import ImageDropzone from "@/components/custom-ui/image-dropzone";
 import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";
@@ -32,16 +29,12 @@ interface EditCourseFormProps {
     categories: CategoryData[];
 }
 const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
-
-
     const [isPending, startTransition] = useTransition();
     const [success, setSuccess] = useState<string | undefined>("");
     const [error, setError] = useState<string | undefined>("");
 
-
     const t = useTranslations("EditCourseForm");
     const { setCourseTitle } = useContext(CourseContext);
-
 
     const defaultValues = {
         id: course.id,
@@ -56,28 +49,21 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
         file: (course.image) ? new File([], course.image.url, {type: "image/png"}) : undefined
     }
 
-
-
-    useEffect(() => {
-        setCourseTitle(defaultValues.title || "No Title");
-
-    }, [success]);
-
-
     const formSchema = EditCourseSchema(t);
     const resetFileInput = React.useRef<() => void>(() => {});
-
-
-
 
     const {control , watch, reset, register, handleSubmit, setValue, clearErrors, formState: { errors }} = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues,
     });
+    //
+    // const { isDirty, dirtyFields } = useFormState({ control: control });
+    //
 
+    useEffect(() => {
+        setCourseTitle(defaultValues.title || "No Title");
 
-    const { isDirty, dirtyFields } = useFormState({ control: control });
-
+    }, [success]);
 
 
     const onSubmit = (values: EditCourseSchemaType) => {
@@ -86,7 +72,6 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
         if (values.file) {
             formData.append('image', values.file)
         }
-
 
         values.file = undefined;
         startTransition(() => {
@@ -97,7 +82,6 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
                     }
                     if('success' in data){
                         setSuccess(data.success)
-
                         if(data.course) {
                             reset({
                                 ...values,
@@ -111,23 +95,21 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
         })
     }
 
-    useEffect(() => {
-
-        console.log(dirtyFields)
-        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-            if (isDirty) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-        };
-
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        return () => {
-            console.log(dirtyFields)
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, [isDirty]);
+    // useEffect(() => {
+    //
+    //     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+    //         if (isDirty) {
+    //             event.preventDefault();
+    //             event.stopPropagation();
+    //         }
+    //     };
+    //
+    //     window.addEventListener('beforeunload', handleBeforeUnload);
+    //
+    //     return () => {
+    //         window.removeEventListener('beforeunload', handleBeforeUnload);
+    //     };
+    // }, [isDirty]);
 
     const handleOnDrop = (acceptedFiles: FileList | null): boolean =>  {
             if (acceptedFiles && acceptedFiles.length > 0) {
@@ -137,7 +119,6 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
                     formSchema.shape.file.parse(file);
                     setValue('file', file as File);
                     clearErrors('file');
-                    //setIsFileInputDirty(true);
                     return true;
 
                 } catch (error) {
@@ -155,7 +136,6 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
             }
             return false
     }
-
 
     return (
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
@@ -255,10 +235,8 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
                 )}
             />
 
-
             <FormError message={error}/>
             <FormSuccess message={success}/>
-
 
 
            <Button className="mt-4" type="submit" disabled={isPending}>Сохранить</Button>

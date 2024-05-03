@@ -7,7 +7,7 @@ import {
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
 import {ROUTES} from "@/config/routes";
-import {usePathname} from "@/navigation";
+import {Link, usePathname} from "@/navigation";
 import {getBreadcrumbItems} from "@/components/dashboard/breadcrumbs/breadcrumbItems";
 import {Fragment} from "react";
 export const Breadcrumbs = () => {
@@ -21,7 +21,7 @@ export const Breadcrumbs = () => {
                     <Fragment key={item.href}>
                         {index !== 0 && <BreadcrumbSeparator />}
                         <BreadcrumbItem>
-                             {index == items.length - 1 ? (<BreadcrumbPage>{item.label}</BreadcrumbPage>) : (<BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>)}
+                            {index == items.length - 1 ? (<BreadcrumbPage>{item.label}</BreadcrumbPage>) : (<BreadcrumbLink  asChild><Link href={item.href}>{item.label}</Link></BreadcrumbLink>)}
                         </BreadcrumbItem>
                     </Fragment>
                 ))}

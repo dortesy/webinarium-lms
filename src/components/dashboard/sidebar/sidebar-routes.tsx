@@ -37,15 +37,16 @@ export const SidebarRoutes = () => {
             icon: BookOpenText,
         },
         {
-            label: t('coursePricing'),
-            href: ROUTES.TEACHER.COURSE.PRICING(courseId),
-            icon: Receipt,
-        },
-        {
             label: t('courseContent'),
             href: ROUTES.TEACHER.COURSE.OUTLINE(courseId),
             icon: ListVideo,
         },
+        {
+            label: t('coursePricing'),
+            href: ROUTES.TEACHER.COURSE.PRICING(courseId),
+            icon: Receipt,
+        },
+
     ];
 
     let sidebarTitle = courseId ? t('courseHeader') : t('sidebarHeader');

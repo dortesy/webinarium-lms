@@ -36,6 +36,7 @@ const CourseList = ({initialCourses}: CourseListProps) => {
                         description: data.error,
                     })
                 }
+
                 if('success' in data){
                     setCourses(courses.filter(course => course.id !== id));
                     toast({
@@ -44,15 +45,11 @@ const CourseList = ({initialCourses}: CourseListProps) => {
                         description: data.success,
                     })
                 }
-            }).finally(() => {
-
             })
         });
     }
 
-    if (!courses) {
-        return <div>Loading...</div>
-    }
+
 
     return (
 
@@ -77,7 +74,7 @@ const CourseList = ({initialCourses}: CourseListProps) => {
                                         <DialogDescription  className="flex flex-col gap-y-6 ">
                                             Это действие нельзя отменить. Это навсегда удалит ваш курс и все данные курса с наших серверов.
                                             <div className="flex gap-x-2">
-                                                <Button variant="destructive" onClick={removeCourse(course.id)}>Удалить</Button>
+                                                <Button variant="destructive" onClick={removeCourse(course.id)} disabled={isPending}>Удалить</Button>
                                                 <DialogTrigger asChild><Button variant="outline">Отмена</Button></DialogTrigger>
                                             </div>
                                         </DialogDescription>
