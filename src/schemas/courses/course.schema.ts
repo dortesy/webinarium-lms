@@ -39,3 +39,15 @@ export const EditCourseSchema = (t: ReturnType<typeof useTranslations<'EditCours
 export type EditCourseSchemaType  = z.infer<ReturnType<typeof EditCourseSchema>>;
 
 
+
+export const SectionSchema =  (t: ReturnType<typeof useTranslations<'CourseOutlinePage'>>) => z.object({
+        id: z.string().optional(),
+        title: z.string().min(6, {message: t('errors.minSectionTitle')}).max(200, {  message: t('errors.maxSectionTitle'),}),
+        description: z.string().max(900, {message: t('errors.maxDescription')}).optional(),
+        courseId: z.string().optional(),
+});
+
+
+
+
+export type SectionSchemaType  = z.infer<ReturnType<typeof SectionSchema>>;

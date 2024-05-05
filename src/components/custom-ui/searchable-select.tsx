@@ -18,7 +18,7 @@ interface SearchableSelectProps extends UseControllerProps {
     onChange: (newValue: string) => void;
 }
 
-const SearchableSelect = React.memo(( {
+const SearchableSelect = React.memo(({
                                items,
                                placeholder = "Выбрать",
                                value, disabled, onChange
@@ -99,5 +99,5 @@ const SearchableSelect = React.memo(( {
     );
 })
 
-
+SearchableSelect.displayName = 'SearchableSelect';
 export default SearchableSelect

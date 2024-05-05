@@ -185,7 +185,7 @@ model Section {
   courseId    String
   title       String
   description String?
-  position    Int
+  position    Float
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   lessons     Lesson[]
@@ -201,7 +201,7 @@ model Lesson {
   video       Media?         @relation(fields: [videoId], references: [id])
   videoId     String?        @unique
   duration    Int?
-  position    Int
+  position    Float
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
   progress    UserProgress[]

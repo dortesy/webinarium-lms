@@ -51,7 +51,7 @@ const breadcrumbItemsMap: Record<string, BreadcrumbItem> = {
     },
 };
 
-export const getBreadcrumbItems = (pathname: string): BreadcrumbItem[] => {
+export const GetBreadcrumbItems = (pathname: string): BreadcrumbItem[] => {
     const pathSegments = pathname.split("/").filter(Boolean);
     let currentItem = breadcrumbItemsMap[ROUTES.HOME];
     const items: BreadcrumbItem[] = [currentItem];

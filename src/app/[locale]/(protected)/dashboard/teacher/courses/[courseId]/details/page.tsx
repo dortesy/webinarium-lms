@@ -1,8 +1,6 @@
 import { Metadata, ResolvingMetadata } from 'next'
 import {getCourseById} from "@/lib/course/course-helper";
-import {EditCourseFormOld} from "@/components/dashboard/teacher/course/edit-course-form-old";
 import {getAllCategories} from "@/lib/category/category-helper";
-import {CourseContext} from "@/context/course-context";
 import EditCourseForm from "@/components/dashboard/teacher/course/edit-course-form";
 import {currentUser} from "@/lib/auth";
 type Props = {
@@ -25,7 +23,7 @@ export async function generateMetadata(
     }
 
     return {
-        title: course.title ?? 'Загрузка...',
+        title: `${course.title} - Редактирование курса` ?? 'Загрузка...',
     }
 }
 

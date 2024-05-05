@@ -5,7 +5,18 @@ import {Prisma} from "@prisma/client";
 
 export const getCourseById = async (id: string) => {
     try {
-        return await db.course.findUnique({ where: {id: id },  include: {image: true}});
+        return await db.course.findUnique({
+            where: { id: id },
+            include: {
+                image: true,
+                sections: {
+                    orderBy: {
+                        position: Prisma.SortOrder.asc  // Сортируем по полю position в порядке возрастания
+                    }
+                }
+            }
+        });
+
     } catch {
         return null;
     }
@@ -21,6 +32,23 @@ export const getAllUserCourses = async (userId: string) => {
             orderBy: { createdAt: Prisma.SortOrder.desc }
         });
 
+    } catch {
+        return [];
+    }
+}
+
+
+
+export const getSectionsByCourseId = async (courseId: string) => {
+    try {
+        return await db.section.findMany({
+            where: { courseId: courseId },
+            include: { lessons: true },
+            orderBy: {
+                position: Prisma.SortOrder.asc  // Сортируем по полю position в порядке возрастания
+            }
+
+        });
     } catch {
         return [];
     }

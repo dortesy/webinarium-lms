@@ -30,22 +30,24 @@ const RootLayout: React.FC<Props> = async ({
     const messages = await getMessages(locale);
 
     return (
-        <NextIntlClientProvider messages={messages}>
-        <SessionProvider session={session}>
+
             <html lang={locale}>
-                    <body className={inter.className}>
-                    <div className="min-h-screen flex flex-col bg-stone-50">
-                        <Header/>
-                        <main className="lg:max-w-screen-lg  mx-auto flex-1 w-full box-content">
-                            {children}
-                        </main>
-                        <Toaster />
-                        <Footer/>
-                    </div>
-                    </body>
+                <body className={inter.className}>
+                <NextIntlClientProvider messages={messages}>
+                    <SessionProvider session={session}>
+                        <div className="min-h-screen flex flex-col bg-stone-50">
+                            <Header/>
+                            <main className="lg:max-w-screen-lg  mx-auto flex-1 w-full box-content">
+                                {children}
+                            </main>
+                            <Toaster />
+                            <Footer/>
+                        </div>
+                    </SessionProvider>
+                </NextIntlClientProvider>
+                </body>
             </html>
-        </SessionProvider>
-        </NextIntlClientProvider>
+
 
 
 

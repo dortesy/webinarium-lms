@@ -14,6 +14,7 @@ import {
 import {useState, useTransition} from "react";
 import {CourseDeletion} from "@/actions/course/course-deletion";
 import {useToast} from "@/components/ui/use-toast";
+import DeleteDialog from "@/components/dashboard/teacher/course/dialog/delete-dialog";
 
 interface CourseWithImage extends Course {
     image?: Media | null;
@@ -66,21 +67,7 @@ const CourseList = ({initialCourses}: CourseListProps) => {
                         </CardContent>
                         <CardFooter className="flex justify-between">
                           <a href={ROUTES.TEACHER.COURSE.DETAILS(course.id)}><Button variant="outline">Редактировать</Button></a>
-                            <Dialog>
-                                <DialogTrigger>Удалить</DialogTrigger>
-                                <DialogContent>
-                                    <DialogHeader>
-                                        <DialogTitle>Вы уверены, что хотите удалить курс?</DialogTitle>
-                                        <DialogDescription  className="flex flex-col gap-y-6 ">
-                                            Это действие нельзя отменить. Это навсегда удалит ваш курс и все данные курса с наших серверов.
-                                            <div className="flex gap-x-2">
-                                                <Button variant="destructive" onClick={removeCourse(course.id)} disabled={isPending}>Удалить</Button>
-                                                <DialogTrigger asChild><Button variant="outline">Отмена</Button></DialogTrigger>
-                                            </div>
-                                        </DialogDescription>
-                                    </DialogHeader>
-                                </DialogContent>
-                            </Dialog>
+                            <DeleteDialog dialogTrigger={<Button variant="destructive" >Удалить</Button>} dialogDescription="Это действие нельзя отменить. Это навсегда удалит ваш курс и все данные курса с наших серверов." removeData={removeCourse(course.id)} />
                         </CardFooter>
                     </Card>
                 ))}

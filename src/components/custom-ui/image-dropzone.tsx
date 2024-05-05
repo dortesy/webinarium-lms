@@ -177,4 +177,6 @@ const ImageDropzone = React.forwardRef<HTMLDivElement, DropzoneProps>(
     }
 );
 
+ImageDropzone.displayName = "ImageDropzone";
+
 export default memo(ImageDropzone);

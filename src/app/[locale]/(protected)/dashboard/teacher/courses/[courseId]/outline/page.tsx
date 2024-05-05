@@ -1,12 +1,60 @@
-import {useTranslations} from 'next-intl';
 
-export default function CourseOutlinePage() {
-  const t = useTranslations('CourseOutlinePage');
+import {getTranslations} from 'next-intl/server';
+import { Metadata, ResolvingMetadata } from 'next'
+import {getCourseById} from "@/lib/course/course-helper";
+import {currentUser} from "@/lib/auth";
+import CourseSections from "@/components/dashboard/teacher/course/course-sections";
+type Props = {
+    params: { courseId: string }
+
+}
+
+export async function generateMetadata(
+    { params }: Props,
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+    // read route params
+    const courseId = params.courseId;
+    const course = await getCourseById(courseId);
+
+    if (!course) {
+        return {
+            title: 'Webinarium - Курс не найден',
+        }
+    }
+
+    return {
+        title: `${course.title} - Добавление уроков к курсу` ?? 'Загрузка...',
+    }
+}
+
+
+
+export default async function CourseOutlinePage({ params }: { params: { courseId: string } }) {
+    const t = await getTranslations('CourseOutlinePage');
+    const user = await currentUser();
+    if (!user) {
+        return <div>У вас нет доступка к редактированию этого курса</div>
+    }
+
+    const course = await getCourseById(params.courseId);
+
+    if (!course) {
+        return <div>Course not found</div>
+    }
+
+    if (user.id !== course.creatorId) {
+        return <div>У вас нет доступка к редактированию этого курса</div>
+    }
 
   return (
-      <div>
+      <div className="h-full">
           <h2 className="text-4xl font-extrabold dark:text-white">{t('pageTitle')}</h2>
           <p className="my-4 text-sm text-gray-500">{t('pageDescription')}</p>
+
+            {/* Section component */}
+
+            <CourseSections initialSections={course.sections} courseId={course.id} />
 
       </div>
   );
