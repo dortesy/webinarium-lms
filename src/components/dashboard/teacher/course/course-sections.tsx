@@ -1,10 +1,9 @@
 'use client'
-import * as React from "react";
 import {Lesson, Section} from '@prisma/client';
 import {Button} from "@/components/ui/button";
 import {SectionSchemaType} from "@/schemas/courses/course.schema";
 import {useTranslations} from "next-intl";
-import {useId, useTransition} from "react";
+import {useId, useTransition, useState} from "react";
 import {CreateSection} from "@/actions/course/create-section";
 import {useToast} from "@/components/ui/use-toast";
 import SectionDialog from "@/components/dashboard/teacher/course/dialog/section-dialog";
@@ -12,7 +11,12 @@ import {EditSection, EditSectionPosition} from "@/actions/course/edit-section";
 import DeleteSection from "@/actions/course/delete-section";
 import {DndContext, DragEndEvent} from '@dnd-kit/core';
 import SectionItem from "@/components/dashboard/teacher/course/section-item";
-import {SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
+import {SortableContext} from "@dnd-kit/sortable";
+import {
+    restrictToVerticalAxis,
+  } from '@dnd-kit/modifiers';
+
+
 interface SectionsWithLessons extends Section {
     lessons: Lesson[];
 }
@@ -22,8 +26,8 @@ interface CourseSectionsProps{
 }
 
 const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
-    const [sections, setSections] = React.useState<SectionsWithLessons[]>(initialSections)
-    const [error, setError] = React.useState<string | undefined>("");
+    const [sections, setSections] = useState<SectionsWithLessons[]>(initialSections)
+    const [error, setError] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
     const t = useTranslations("CourseOutlinePage");
     const { toast } = useToast()
@@ -95,7 +99,6 @@ const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
     }
 
     const onDelete = (sectionId: string) => () =>  {
-        console.log('huy', sectionId)
         setError('')
         startTransition(() => {
             DeleteSection(sectionId).then((data) => {
@@ -116,7 +119,9 @@ const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
+        
         if (!active || !over || active.id === over.id) {
+            console.log('huy')
             return;
         }
 
@@ -136,9 +141,6 @@ const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
 
 
         startTransition(() => {
-
-
-
             EditSectionPosition(active.id as string, newPosition)
                 .then((data) => {
                     if ('error' in data) {
@@ -195,25 +197,27 @@ const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
     const id = useId()
 
     return (
-        <div>
-            {!sections.length && <div>Для добавление уроков пожалуйста добавьте необходимые разделы</div>}
-            <SectionDialog dialogTrigger={<Button>{t('addSection')}</Button>}
-                           dialogDescription={t.rich('addForm.section.formDescription', { br: () => <br /> })}
-                           dialogFooterButton={t('add')}
-                           onSubmit={onSubmit}/>
+            <div>
+                <DndContext onDragEnd={handleDragEnd} id={id} modifiers={[restrictToVerticalAxis]}>
+
+                {!sections.length && <div>Для добавление уроков пожалуйста добавьте необходимые разделы</div>}
+                <SectionDialog dialogTrigger={<Button>{t('addSection')}</Button>}
+                            dialogDescription={t.rich('addForm.section.formDescription', { br: () => <br /> })}
+                            dialogFooterButton={t('add')}
+                            onSubmit={onSubmit}/>
 
 
-            {/*render sections*/}
-            <DndContext onDragEnd={handleDragEnd} id={id}>
-                <div className="mt-5">
-                    <SortableContext items={sections.map(section => section.id)} strategy={verticalListSortingStrategy}>
-                        {sections.map((section, index) => (
-                            <SectionItem key={section.id} section={section} onDelete={onDelete(section.id)} onSubmit={onSubmit} />
-                        ))}
-                    </SortableContext>
-                </div>
-            </DndContext>
-        </div>
+                {/*render sections*/}
+                    <div className="mt-5">
+                        <SortableContext items={sections.map(section => section.id)}>
+                            {sections.map((section, index) => (
+                                <SectionItem key={section.id} section={section} onDelete={onDelete(section.id)} onSubmit={onSubmit} />
+                            ))}
+                        </SortableContext>
+                    </div>
+                 </DndContext>
+            </div>
+
     )
 }
 

@@ -80,7 +80,8 @@
       },
       "lesson": {
         "title": "Добавить урок",
-        "placeholder": "Название урока"
+        "placeholder": "Название урока",
+        "description": "Описание урока"
       }
     }
   },

@@ -12,6 +12,13 @@ export const getCourseById = async (id: string) => {
                 sections: {
                     orderBy: {
                         position: Prisma.SortOrder.asc  // Сортируем по полю position в порядке возрастания
+                    },
+                    include: {
+                        lessons: {
+                            orderBy: {
+                                position: Prisma.SortOrder.asc  // Сортируем по полю position в порядке возрастания
+                            }
+                        }
                     }
                 }
             }
@@ -51,5 +58,23 @@ export const getSectionsByCourseId = async (courseId: string) => {
         });
     } catch {
         return [];
+    }
+}
+
+export const getSectionById = async (id: string) => {
+    try {
+        return await db.section.findUnique({
+            where: { id: id },
+            include: {
+                course: true,
+                lessons: {
+                    orderBy: {
+                        position: Prisma.SortOrder.asc
+                    }
+                }
+            }
+        });
+    } catch {
+        return null;
     }
 }

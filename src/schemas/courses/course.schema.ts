@@ -13,8 +13,6 @@ export const CreateCourseSchema = (t: ReturnType<typeof useTranslations<'CreateC
         title: z.string().min(6, {  message: t('errors.title'),}),
 });
 
-export type CreateCourseSchemaType  = z.infer<ReturnType<typeof CreateCourseSchema>>;
-
 
 export const EditCourseSchema = (t: ReturnType<typeof useTranslations<'EditCourseForm'>>) => z.object({
         id: z.string(),
@@ -36,9 +34,6 @@ export const EditCourseSchema = (t: ReturnType<typeof useTranslations<'EditCours
 });
 
 
-export type EditCourseSchemaType  = z.infer<ReturnType<typeof EditCourseSchema>>;
-
-
 
 export const SectionSchema =  (t: ReturnType<typeof useTranslations<'CourseOutlinePage'>>) => z.object({
         id: z.string().optional(),
@@ -47,7 +42,17 @@ export const SectionSchema =  (t: ReturnType<typeof useTranslations<'CourseOutli
         courseId: z.string().optional(),
 });
 
+export const LessonSchema = (t: ReturnType<typeof useTranslations<'CourseOutlinePage'>>) => z.object({
+        id: z.string().optional(),
+        title: z.string().min(6, { message: t('errors.minSectionTitle') }).max(200, { message: t('errors.maxLessonTitle') }),
+        description: z.string().max(5000, { message: t('errors.maxDescription') }).optional(),
+        sectionId: z.string().optional(),
+    });
 
 
 
 export type SectionSchemaType  = z.infer<ReturnType<typeof SectionSchema>>;
+export type CreateCourseSchemaType  = z.infer<ReturnType<typeof CreateCourseSchema>>;
+export type EditCourseSchemaType  = z.infer<ReturnType<typeof EditCourseSchema>>;
+export type LessonSchemaType  = z.infer<ReturnType<typeof LessonSchema>>;
+
