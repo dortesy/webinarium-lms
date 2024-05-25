@@ -1,36 +1,88 @@
 import { Lesson } from "@prisma/client";
 import LessonDialog from "./dialog/lesson-dialog";
-import { FilePenLine, Trash2 } from "lucide-react";
+import { FilePenLine, Trash2, Video } from "lucide-react";
 import DeleteDialog from "./dialog/delete-dialog";
+import { useTranslations } from "next-intl";
+import { LessonSchemaType } from "@/schemas/courses/course.schema";
+import DeleteLesson from "@/actions/course/delete-lesson";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator"
+import VideoDropzone from "@/components/custom-ui/video-dropzone";
+
+type TranslationsFunction = ReturnType<typeof useTranslations>;
+
 
 interface LessonItemProps {
   lesson: Lesson;
   index: number;
+  t: TranslationsFunction;
+  handleUpdate: (values: LessonSchemaType) => void;
+  handleDelete: (lessonId: string) => void;
 }
 
-const LessonItem = ({ lesson, index }: LessonItemProps) => {
+const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete }: LessonItemProps) => {
+
+
+    const [isVideoUploadVisible, setIsVideoUploadVisible] = useState(false);
+
+    const handleVideoButtonClick = () => {
+        if(isVideoUploadVisible) {
+            setIsVideoUploadVisible(false);
+        } else {
+            setIsVideoUploadVisible(true);
+        }
+    };
+    
+    const onSubmit = (values: LessonSchemaType) => {
+        handleUpdate(values);
+    };
+
+    const onDelete = () => {
+        handleDelete(lesson.id);
+    };
+
+
   return (
-    <div className="flex justify-between items-center p-4 border-b hover:bg-gray-50 transition duration-200">
+    <div>
+      <div className="flex justify-between items-center p-4 hover:bg-gray-50 transition duration-200">
+
       <div className="flex items-center gap-4">
         <div className="text-lg font-bold">{index + 1}</div>
         <div>
           <h3 className="text-sm">{lesson.title}</h3>
           <p className="text-sm text-gray-600">{lesson.description}</p>
         </div>
+
       </div>
-      <div className="flex gap-3">
+      <div className="flex gap-3 items-center">
+
+        <Button size="icon" variant={isVideoUploadVisible ? "secondary" : "ghost"} onClick={handleVideoButtonClick} >
+            <Video className="cursor-pointer" width={18} height={18} strokeWidth={1}  />
+        </Button>
+
         <LessonDialog
+          dialogTitle={t('addForm.lesson.dialogTitleEdit')}
+          defaultValues={{ ...lesson, description: lesson.description ?? undefined }}
           dialogTrigger={<FilePenLine className="cursor-pointer" width={16} height={16} strokeWidth={1} />}
-          dialogDescription={lesson.description}
-          dialogFooterButton="Редактировать урок"
-          onSubmit={() => {}}
+          dialogDescription={t('addForm.lesson.formDescriptionEdit')}
+          dialogFooterButton={t('addForm.lesson.editText')}
+          onSubmit={onSubmit}
         />
         <DeleteDialog
           dialogTrigger={<Trash2 className="cursor-pointer"  width={16} height={16} strokeWidth={1} />}
-          dialogDescription="Вы уверены, что хотите удалить урок?"
-          removeData={() => {}}
+          dialogDescription={t('addForm.lesson.deleteText')}
+          removeData={onDelete}
         />
       </div>
+      </div>
+
+      {isVideoUploadVisible ? (
+                <VideoDropzone />
+            ): <Separator /> }
+
+
+          
     </div>
   );
 };

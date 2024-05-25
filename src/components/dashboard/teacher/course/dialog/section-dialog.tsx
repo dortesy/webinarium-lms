@@ -21,6 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {SectionSchema, SectionSchemaType} from "@/schemas/courses/course.schema";
 
 interface SectionDialogProps {
+    dialogTitle: string;
     dialogTrigger: React.ReactNode;
     dialogDescription: React.ReactNode;
     dialogFooterButton: string;
@@ -28,7 +29,7 @@ interface SectionDialogProps {
     defaultValues?: SectionSchemaType;
 }
 
-const SectionDialog = ({ dialogTrigger, dialogDescription, dialogFooterButton, onSubmit, defaultValues }: SectionDialogProps) => {
+const SectionDialog = ({ dialogTitle, dialogTrigger, dialogDescription, dialogFooterButton, onSubmit, defaultValues }: SectionDialogProps) => {
     const [open, setOpen] = React.useState(false);
     const t = useTranslations('CourseOutlinePage');
     const formSchema = SectionSchema(t);
@@ -52,7 +53,7 @@ const SectionDialog = ({ dialogTrigger, dialogDescription, dialogFooterButton, o
             <DialogTrigger asChild>{dialogTrigger}</DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{t('addSection')}</DialogTitle>
+                    <DialogTitle>{dialogTitle}</DialogTitle>
                     <DialogDescription>
                         {dialogDescription}
                     </DialogDescription>

@@ -47,8 +47,10 @@ const SectionItem = ({ section, onDelete, onSubmit }:SectionItemProps ) => {
             </div>
             <div className="flex items-center">
                 
-                    <SectionDialog dialogTrigger={<Button size="icon" variant="ghost" className="mr-2"><Pencil width={16} height={16}/> </Button>}
-                                   dialogDescription={t.rich('addForm.section.formDescription', {br: () => <br/>})}
+                    <SectionDialog 
+                                   dialogTitle={t('addForm.section.dialogTitleEdit')}
+                                   dialogTrigger={<Button size="icon" variant="ghost" className="mr-2"><Pencil width={16} height={16}/> </Button>}
+                                   dialogDescription={t.rich('addForm.section.formDescriptionEdit', {br: () => <br/>})}
                                    dialogFooterButton='Редактировать' onSubmit={handleOnSubmit}
                                    defaultValues={{
                                        id: section.id,

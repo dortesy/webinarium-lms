@@ -1,14 +1,15 @@
 {
   "Index": {
-    "title": "Hello Uzbeklar!"
+    "title": "Salom dunyo!"
   },
 
   "Registration": {
     "headerLabel": "Ro'yxatdan o'tish",
-    "backButtonLabel": "Hisobingiz bormi? Kirish",
+    "backButtonLabel": "Ro'yxatdan o'tganmisiz? Kiring",
     "password": "Parol",
     "submit": "Yuborish"
   },
+
   "LoginPanel": {
     "myCourses": "Mening kurslarim",
     "settings": "Sozlamalar",
@@ -18,13 +19,101 @@
     "register": "Ro'yxatdan o'tish"
   },
 
+  "CreateCourseForm": {
+    "errors": {
+      "title": "Kurs nomi kamida 6 belgidan iborat bo'lishi kerak"
+    }
+  },
+
   "EditCourseForm": {
+    "title": "Kurs nomi",
+    "description": "Tavsif",
+    "category": "Kategoriya",
+    "language": "Til",
+    "level": "Daraja",
+    "price": "Narx",
     "BEGINNER": "Boshlang'ich",
-    "INTERMEDIATE": "O'rtacha",
+    "INTERMEDIATE": "O'rta",
     "ADVANCED": "Ilg'or",
-    "RU": "Rus",
-    "UZ": "O'zbek"
+    "RU": "Ruscha",
+    "UZ": "O'zbekcha",
+
+    "image": {
+      "size": "Faylning maksimal hajmi: {size}MB",
+      "type": "Faqatgina quyidagi formatlardagi rasmlarga ruxsat etilgan: .jpg, .png, .webp"
+    },
+    "errors": {
+      "minTitle": "Kurs nomi kamida 6 belgidan iborat bo'lishi kerak",
+      "maxTitle": "Kurs nomi ko'pi bilan 150 belgidan iborat bo'lishi kerak",
+      "description": "Kurs tavsifi ko'pi bilan 4000 belgidan iborat bo'lishi kerak"
+    }
+  },
+
+  "CourseOutlinePage": {
+    "pageTitle": "Kurs mazmuni",
+    "pageDescription": "Bu yerda siz kursingizga bo'limlar va darslar qo'shishingiz mumkin",
+    "addLesson": "Dars qo'shish",
+    "addSection": "Bo'lim qo'shish",
+    "deleteSection": "Bo'limni o'chirish",
+    "deleteLesson": "Darsni o'chirish",
+    "save": "Saqlash",
+    "add": "Qo'shish",
+    "cancel": "Bekor qilish",
+    "section": "Bo'lim",
+    "lesson": "Dars",
+    "sectionTitle": "Bo'lim nomi",
+    "lessonTitle": "Dars nomi",
+    "lessonContent": "Dars mazmuni",
+    "errors": {
+      "minSectionTitle": "Bo'lim nomi kamida 6 belgidan iborat bo'lishi kerak",
+      "maxSectionTitle": "Bo'lim nomi ko'pi bilan 150 belgidan iborat bo'lishi kerak",
+      "minLessonTitle": "Dars nomi kamida 6 belgidan iborat bo'lishi kerak",
+      "maxLessonTitle": "Dars nomi ko'pi bilan 150 belgidan iborat bo'lishi kerak",
+      "maxDescription": "Dars mazmuni ko'pi bilan 900 belgidan iborat bo'lishi kerak"
+    },
+    "addForm": {
+      "section": {
+        "dialogTitle": "Bo'lim qo'shish",
+        "dialogTitleEdit": "Bo'limni tahrirlash",
+        "title": "Sarlavha",
+        "formDescription": "Bu formada siz kurs bo'limi qo'shishingiz mumkin <br></br> Bo'lim nomi va tavsifini to'ldirishingiz lozim",
+        "formDescriptionEdit": "Bu formada siz kurs bo'lim nomi va tavsifini o'zgartirishingiz mumkin",
+        "description": "Tavsif"
+      },
+      "lesson": {
+        "dialogTitle": "Dars qo'shish",
+        "dialogTitleEdit": "Darsni tahrirlash",
+        "title": "Dars nomi",
+        "formDescription": "Bu formada siz kurs bo'limiga dars qo'shishingiz mumkin. Dars nomi va tavsifini to'ldirishingiz lozim",
+        "formDescriptionEdit": "Bu formada siz dars nomi va tavsifini o'zgartirishingiz mumkin",
+        "description": "Dars tavsifi",
+        "editText": "Tahrirlash",
+        "deleteText": "Darsni o'chirishga ishonchingiz komilmi?"
+      }
+    }
+  },
+
+  "VideoDropzone": {
+    "instructions": {
+      "dragAndDrop": "Darsingiz uchun videoni faol yuklash maydoniga tortish yoki faylni tanlash uchun bosish. Fayl tanlanganidan keyin video avtomatik yuklanadi.",
+      "supportedFormats": "Qo'llab-quvvatlanadigan formatlar: .mp4, .webm, .ogg",
+      "maxFileSize": "Faylning maksimal hajmi: 700 MB"
+    },
+    "errors": {
+      "file-too-large": "Fayl juda katta. Maksimal hajm 700MB",
+      "file-invalid-type": "Fayl turi noto'g'ri. Faqat video fayllar qabul qilinadi",
+      "too-many-files": "Siz faqat bitta video fayl yuklashingiz mumkin"
+    }
+  },
+
+  "SidebarLabels": {
+    "mainHeader": "Boshqaruv paneli",
+    "sidebarHeader": "Menyu",
+    "courseHeader": "Kurs tahrirlash",
+    "courses": "Kurslar",
+    "profile": "Profil",
+    "courseDetails": "Tafsilotlar",
+    "coursePricing": "Narxni sozlash",
+    "courseContent": "Mazmun"
   }
-
-
 }

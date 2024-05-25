@@ -22,13 +22,14 @@ import { LessonSchema, LessonSchemaType } from "@/schemas/courses/course.schema"
 
 interface LessonDialogProps {
     dialogTrigger: React.ReactNode;
+    dialogTitle: string;
     dialogDescription: React.ReactNode;
     dialogFooterButton: string;
     onSubmit: (values: LessonSchemaType) => void;
     defaultValues?: LessonSchemaType;
 }
 
-const LessonDialog = ({ dialogTrigger, dialogDescription, dialogFooterButton, onSubmit, defaultValues }: LessonDialogProps) => {
+const LessonDialog = ({ dialogTrigger, dialogTitle, dialogDescription, dialogFooterButton, onSubmit, defaultValues }: LessonDialogProps) => {
     const [open, setOpen] = React.useState(false);
     const t = useTranslations('CourseOutlinePage');
     const formSchema = LessonSchema(t);
@@ -52,7 +53,7 @@ const LessonDialog = ({ dialogTrigger, dialogDescription, dialogFooterButton, on
             <DialogTrigger asChild>{dialogTrigger}</DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{t('addLesson')}</DialogTitle>
+                    <DialogTitle>{dialogTitle}</DialogTitle>
                     <DialogDescription>
                         {dialogDescription}
                     </DialogDescription>

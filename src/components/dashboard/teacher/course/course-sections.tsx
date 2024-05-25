@@ -201,7 +201,9 @@ const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
                 <DndContext onDragEnd={handleDragEnd} id={id} modifiers={[restrictToVerticalAxis]}>
 
                 {!sections.length && <div>Для добавление уроков пожалуйста добавьте необходимые разделы</div>}
-                <SectionDialog dialogTrigger={<Button>{t('addSection')}</Button>}
+                <SectionDialog 
+                            dialogTitle={t('addForm.section.dialogTitle')}
+                            dialogTrigger={<Button>{t('addSection')}</Button>}
                             dialogDescription={t.rich('addForm.section.formDescription', { br: () => <br /> })}
                             dialogFooterButton={t('add')}
                             onSubmit={onSubmit}/>
