@@ -14,6 +14,7 @@ export const authRoutes = [
 
 export const apiAuthPrefix = [
     '/api/auth',
+    '/api/upload/video'
 ]
 
 //export const apiAuthPrefix = '/api/auth'

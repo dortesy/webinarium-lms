@@ -17,6 +17,9 @@ export const getCourseById = async (id: string) => {
                         lessons: {
                             orderBy: {
                                 position: Prisma.SortOrder.asc  // Сортируем по полю position в порядке возрастания
+                            },
+                            include: {
+                                video: true
                             }
                         }
                     }
@@ -50,7 +53,7 @@ export const getSectionsByCourseId = async (courseId: string) => {
     try {
         return await db.section.findMany({
             where: { courseId: courseId },
-            include: { lessons: true },
+            include: { lessons: { include: { video: true } } },
             orderBy: {
                 position: Prisma.SortOrder.asc  // Сортируем по полю position в порядке возрастания
             }
@@ -78,3 +81,16 @@ export const getSectionById = async (id: string) => {
         return null;
     }
 }
+
+
+export const getLessonById = async (id: string) => {
+    try {
+        return await db.lesson.findUnique({
+            where: { id: id },
+            include: { section: true, video: true }
+        });
+    } catch {
+        return null;
+    }
+}
+

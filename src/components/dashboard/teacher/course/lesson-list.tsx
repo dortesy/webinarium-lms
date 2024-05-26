@@ -1,4 +1,4 @@
-import { Lesson } from "@prisma/client";
+import { Lesson, Media } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import { useState, useTransition } from "react";
 import LessonItem from "./lesson-item";
@@ -10,15 +10,16 @@ import { LessonSchemaType } from "@/schemas/courses/course.schema";
 import { ZodError } from "zod";
 import { EditLesson } from "@/actions/course/edit-lesson";
 import DeleteLesson from "@/actions/course/delete-lesson";
+import { LessonWithVideo } from "@/lib/types/course";
 
 interface LessonListProps {
-  initialLessons: Lesson[];
+  initialLessons: LessonWithVideo[];
   sectionId: string;
 }
 
 const LessonList = ({ initialLessons, sectionId }: LessonListProps) => {
   const t = useTranslations('CourseOutlinePage');
-  const [lessons, setLessons] = useState<Lesson[]>(initialLessons);
+  const [lessons, setLessons] = useState<LessonWithVideo[]>(initialLessons);
   const [isPending, startTransition] = useTransition()
 
 
@@ -38,7 +39,7 @@ const LessonList = ({ initialLessons, sectionId }: LessonListProps) => {
     });
   };
 
-  // Add a function to handle lesson updates
+  
     const handleUpdate = (values: LessonSchemaType) => {
         startTransition(() => {
             EditLesson(values).then((data) => {
@@ -66,12 +67,18 @@ const LessonList = ({ initialLessons, sectionId }: LessonListProps) => {
         });
     };
   
+
+    const handleVideoUpload = (updatedLesson: LessonWithVideo) => {
+      setLessons((prevLessons) => prevLessons.map(lesson => lesson.id === updatedLesson.id ? updatedLesson : lesson));
+  };
+
+
   return (
     <div className="flex flex-col gap-4 mt-4">
 
     { lessons.length > 0 && <div className="flex flex-col gap-4">
         {lessons.map((lesson, index) => (
-          <LessonItem key={lesson.slug} lesson={lesson} index={index} t={t}  handleUpdate={handleUpdate} handleDelete={handleDelete} />
+          <LessonItem key={lesson.slug} lesson={lesson} index={index} t={t}  handleUpdate={handleUpdate} handleDelete={handleDelete} handleVideoUpload={handleVideoUpload} />
         ))}
     </div>}
 

@@ -56,7 +56,10 @@ export const CreateLesson = async (values: LessonSchemaType) => {
                         id: sectionId
                     }
                 },
-                position: position
+                position: position,
+            },
+            include: {
+                video: true
             }
         });
 

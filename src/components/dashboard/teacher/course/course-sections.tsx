@@ -1,5 +1,5 @@
 'use client'
-import {Lesson, Section} from '@prisma/client';
+import {Lesson, Media, Section} from '@prisma/client';
 import {Button} from "@/components/ui/button";
 import {SectionSchemaType} from "@/schemas/courses/course.schema";
 import {useTranslations} from "next-intl";
@@ -16,17 +16,15 @@ import {
     restrictToVerticalAxis,
   } from '@dnd-kit/modifiers';
 
+import { SectionWithLessons } from "@/lib/types/course";
 
-interface SectionsWithLessons extends Section {
-    lessons: Lesson[];
-}
 interface CourseSectionsProps{
-    initialSections: SectionsWithLessons[];
+    initialSections: SectionWithLessons[];
     courseId: string;
 }
 
 const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
-    const [sections, setSections] = useState<SectionsWithLessons[]>(initialSections)
+    const [sections, setSections] = useState<SectionWithLessons[]>(initialSections)
     const [error, setError] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
     const t = useTranslations("CourseOutlinePage");
@@ -163,7 +161,7 @@ const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
     }
 
 
-    const updateSectionsOrder = (newSections: SectionsWithLessons[]) => {
+    const updateSectionsOrder = (newSections: SectionWithLessons[]) => {
         setSections((prevSections) => {
             // Создаем новый массив с текущими секциями
             let updatedSections = [...prevSections];

@@ -43,6 +43,9 @@ export const EditLesson = async (values: LessonSchemaType) => {
                 section: {
                     connect: { id: sectionId }
                 }
+            },
+            include: {
+                video: true, // Include video in the returned lesson
             }
         });
 

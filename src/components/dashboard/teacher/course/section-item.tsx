@@ -4,17 +4,15 @@ import SectionDialog from "@/components/dashboard/teacher/course/dialog/section-
 import {GripVertical, Pencil, Trash} from "lucide-react";
 import DeleteDialog from "@/components/dashboard/teacher/course/dialog/delete-dialog";
 import * as React from "react";
-import {Lesson, Section} from "@prisma/client";
+import {Lesson, Media, Section} from "@prisma/client";
 import {useTranslations} from "next-intl";
 import {SectionSchemaType} from "@/schemas/courses/course.schema";
 import {useDraggable} from "@dnd-kit/core";
 import {CSS} from '@dnd-kit/utilities';
 import {useSortable} from "@dnd-kit/sortable";
 import LessonList from "./lesson-list";
+import { SectionWithLessons } from "@/lib/types/course";
 
-interface SectionWithLessons extends Section {
-    lessons: Lesson[];
-}
 
 interface SectionItemProps {
     section: SectionWithLessons,

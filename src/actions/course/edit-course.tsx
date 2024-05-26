@@ -7,51 +7,9 @@ import {getTranslations} from "next-intl/server";
 import {CourseLanguage, CourseLevel} from "@/lib/enums/course";
 import DOMPurify from 'dompurify';
 import { JSDOM } from 'jsdom';
-import fs from "fs";
-import {COURSE_IMAGE_DIRECTORY} from "@/lib/media/storage";
-import path from "path";
-import { Course as PrismaCourse } from '@prisma/client';
-
-const UploadImage = async (course: PrismaCourse, file: File) => {
-    const fileExtension = path.extname(file.name);
+import { UploadImage } from "@/lib/media/upload-image";
 
 
-
-    const media = await db.media.create({
-        data: {
-            title: file.name,
-            url: '', // We'll update the URL later
-            type: 'IMAGE',
-            size: file.size,
-            course: {
-                connect: {
-                    id: course.id,
-                },
-            },
-            user: {
-                connect: {
-                    id: course.creatorId,
-                },
-            },
-
-        },
-    });
-
-    const fileName = `${media.id}${fileExtension}`;
-    const filePath = `/media/course/img/${fileName}`;
-    const fullFilePath = path.join(COURSE_IMAGE_DIRECTORY, filePath);
-
-    const imageData = await file.arrayBuffer();
-    fs.appendFileSync(fullFilePath, Buffer.from(imageData));
-
-    await db.media.update({
-        where: { id: media.id },
-        data: { url: filePath },
-    });
-
-
-
-}
 
 export const EditCourse = async (values: EditCourseSchemaType, formData: FormData) => {
     const t = await getTranslations("EditCourseForm")
@@ -113,18 +71,9 @@ export const EditCourse = async (values: EditCourseSchemaType, formData: FormDat
             },
         });
 
-
-        // if image size is 0 means user did not change the image
-        // if validatedImage is null means user removed the image
-        // if image size > 0 means user uploaded a new image
-
-        console.log(imageId)
-
-
         const validatedImage = formData.get('image') ? editCourseSchema.shape.file.parse(formData.get('image')) as File : null;
 
 
-        console.log(validatedImage)
         if (validatedImage && validatedImage.size > 0) {
             await UploadImage(course, validatedImage);
         }
@@ -136,17 +85,6 @@ export const EditCourse = async (values: EditCourseSchemaType, formData: FormDat
             });
         }
 
-        // if(!imageId && validatedImage) {
-        //     await UploadImage(course, validatedImage)
-        // }
-        //
-        // if(!imageId && !validatedImage && course.imageId) {
-        //     await db.media.delete({
-        //         where: {
-        //             id: course.imageId
-        //         }
-        //     })
-        // }
 
 
         const newCourse = await db.course.findFirst({

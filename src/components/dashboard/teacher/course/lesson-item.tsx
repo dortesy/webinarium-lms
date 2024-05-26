@@ -1,4 +1,4 @@
-import { Lesson } from "@prisma/client";
+import { Lesson, Media } from "@prisma/client";
 import LessonDialog from "./dialog/lesson-dialog";
 import { FilePenLine, Trash2, Video } from "lucide-react";
 import DeleteDialog from "./dialog/delete-dialog";
@@ -9,28 +9,31 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator"
 import VideoDropzone from "@/components/custom-ui/video-dropzone";
+import VideoData from "@/components/custom-ui/video-data";
+import { LessonWithVideo } from "@/lib/types/course";
 
 type TranslationsFunction = ReturnType<typeof useTranslations>;
 
 
 interface LessonItemProps {
-  lesson: Lesson;
+  lesson: LessonWithVideo;
   index: number;
   t: TranslationsFunction;
   handleUpdate: (values: LessonSchemaType) => void;
   handleDelete: (lessonId: string) => void;
+  handleVideoUpload: (updatedLesson: LessonWithVideo) => void;
 }
 
-const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete }: LessonItemProps) => {
+const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoUpload }: LessonItemProps) => {
 
 
-    const [isVideoUploadVisible, setIsVideoUploadVisible] = useState(false);
+    const [isVideoBlockVisible, setIsVideoBlockVisible] = useState(false);
 
     const handleVideoButtonClick = () => {
-        if(isVideoUploadVisible) {
-            setIsVideoUploadVisible(false);
+        if(isVideoBlockVisible) {
+            setIsVideoBlockVisible(false);
         } else {
-            setIsVideoUploadVisible(true);
+            setIsVideoBlockVisible(true);
         }
     };
     
@@ -57,7 +60,7 @@ const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete }: LessonItem
       </div>
       <div className="flex gap-3 items-center">
 
-        <Button size="icon" variant={isVideoUploadVisible ? "secondary" : "ghost"} onClick={handleVideoButtonClick} >
+        <Button size="icon" variant={isVideoBlockVisible ? "secondary" : "ghost"} onClick={handleVideoButtonClick} >
             <Video className="cursor-pointer" width={18} height={18} strokeWidth={1}  />
         </Button>
 
@@ -77,9 +80,14 @@ const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete }: LessonItem
       </div>
       </div>
 
-      {isVideoUploadVisible ? (
-                <VideoDropzone />
+      {isVideoBlockVisible ? (
+            lesson.video ? (
+               <VideoData video={lesson.video} />
+            ) : (
+              <VideoDropzone lessonId={lesson.id} sectionId={lesson.sectionId} onVideoUpload={handleVideoUpload}/>
+            )
             ): <Separator /> }
+      
 
 
           
