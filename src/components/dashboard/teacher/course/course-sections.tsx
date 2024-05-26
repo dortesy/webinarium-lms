@@ -9,9 +9,9 @@ import {useToast} from "@/components/ui/use-toast";
 import SectionDialog from "@/components/dashboard/teacher/course/dialog/section-dialog";
 import {EditSection, EditSectionPosition} from "@/actions/course/edit-section";
 import DeleteSection from "@/actions/course/delete-section";
-import {DndContext, DragEndEvent} from '@dnd-kit/core';
+import {DndContext, DragEndEvent, DragOverEvent, closestCenter} from '@dnd-kit/core';
 import SectionItem from "@/components/dashboard/teacher/course/section-item";
-import {SortableContext} from "@dnd-kit/sortable";
+import {SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
 import {
     restrictToVerticalAxis,
   } from '@dnd-kit/modifiers';
@@ -43,8 +43,8 @@ const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
                         setError(data.error)
                     } else {
                         toast({
-                            title: `Раздел изменен`,
-                            description: `Название раздела было успешно изменено на "${values.title}"`,
+                            title: `${t('sectionEdited')}`,
+                            description: `${t('sectionEditedSuccess', {title: values.title})}`,
                         })
                         if('section' in data) {
                             setSections((prev) => {
@@ -70,8 +70,8 @@ const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
                         setError(data.error)
                     } else {
                         toast({
-                            title: `Раздел добавлен`,
-                            description: `Раздел ${values.title} был успешно добавлен к курсу`,
+                            title: `${t('sectionAdded')}`,
+                            description: `${t('sectionAddedSuccess', {title: values.title})}`,
                         })
                         if('section' in data) {
                             setSections((prev) => {
@@ -104,8 +104,8 @@ const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
                     setError(data.error)
                 } else {
                     toast({
-                        title: `Раздел удален`,
-                        description: `Раздел был успешно удален`,
+                        title: `${t('sectionDeleted')}`,
+                        description: `${t('sectionDeletedSuccess')}`,
                     })
                     setSections((prev) => {
                         return prev.filter((section) => section.id !== sectionId)
@@ -119,7 +119,6 @@ const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
         const { active, over } = event;
         
         if (!active || !over || active.id === over.id) {
-            console.log('huy')
             return;
         }
 
@@ -144,10 +143,10 @@ const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
                     if ('error' in data) {
                         setError(data.error);
                     } else {
-                        toast({
-                            title: 'Раздел перемещен',
-                            description: 'Раздел был успешно перемещен',
-                        });
+                        // toast({
+                        //     title: 'Раздел перемещен',
+                        //     description: 'Раздел был успешно перемещен',
+                        // });
                         setTimeout(() => {updateSectionsOrder(data.sections);}, 500);
 
                     }
@@ -191,12 +190,21 @@ const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
         }
     };
 
+    const handleDragOver = (event: DragOverEvent) => {
+        
+        console.log('drag over', event)
+        if(!event.over) {
+            console.log('no over')
+            return
+        }
+        console.log('over', event.over)
+    }
 
     const id = useId()
 
     return (
             <div>
-                <DndContext onDragEnd={handleDragEnd} id={id} modifiers={[restrictToVerticalAxis]}>
+                <DndContext   onDragEnd={handleDragEnd} id={id} modifiers={[restrictToVerticalAxis]} onDragOver={handleDragOver} collisionDetection={closestCenter}>
 
                 {!sections.length && <div>Для добавление уроков пожалуйста добавьте необходимые разделы</div>}
                 <SectionDialog 
@@ -208,13 +216,15 @@ const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
 
 
                 {/*render sections*/}
-                    <div className="mt-5">
-                        <SortableContext items={sections.map(section => section.id)}>
+            
+                        <SortableContext items={sections.map(section => section.id)} strategy={verticalListSortingStrategy}>
+                        <div className="pt-8 pb-8 overflow-y-hidden">
                             {sections.map((section, index) => (
                                 <SectionItem key={section.id} section={section} onDelete={onDelete(section.id)} onSubmit={onSubmit} />
                             ))}
+                         </div>
+
                         </SortableContext>
-                    </div>
                  </DndContext>
             </div>
 

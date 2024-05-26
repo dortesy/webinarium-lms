@@ -38,14 +38,14 @@ export const EditCourseSchema = (t: ReturnType<typeof useTranslations<'EditCours
 export const SectionSchema =  (t: ReturnType<typeof useTranslations<'CourseOutlinePage'>>) => z.object({
         id: z.string().optional(),
         title: z.string().min(6, {message: t('errors.minSectionTitle')}).max(200, {  message: t('errors.maxSectionTitle'),}),
-        description: z.string().max(900, {message: t('errors.maxDescription')}).optional(),
+        description: z.string().max(300, {message: t('errors.maxDescription')}).optional(),
         courseId: z.string().optional(),
 });
 
 export const LessonSchema = (t: ReturnType<typeof useTranslations<'CourseOutlinePage'>>) => z.object({
         id: z.string().optional(),
         title: z.string().min(6, { message: t('errors.minSectionTitle') }).max(200, { message: t('errors.maxLessonTitle') }),
-        description: z.string().max(5000, { message: t('errors.maxDescription') }).optional(),
+        description: z.string().max(300, { message: t('errors.maxDescription') }).optional(),
         sectionId: z.string().optional(),
     });
 

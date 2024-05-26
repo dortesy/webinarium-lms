@@ -1,9 +1,7 @@
-import { Lesson, Media } from "@prisma/client";
 import { useTranslations } from "next-intl";
 import { useState, useTransition } from "react";
 import LessonItem from "./lesson-item";
 import LessonDialog from "./dialog/lesson-dialog";
-import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { CreateLesson } from "@/actions/course/create-lesson";
 import { LessonSchemaType } from "@/schemas/courses/course.schema";
@@ -74,7 +72,7 @@ const LessonList = ({ initialLessons, sectionId }: LessonListProps) => {
 
 
   return (
-    <div className="flex flex-col gap-4 mt-4">
+    <div className="flex flex-col gap-4 pt-4">
 
     { lessons.length > 0 && <div className="flex flex-col gap-4">
         {lessons.map((lesson, index) => (
@@ -88,7 +86,7 @@ const LessonList = ({ initialLessons, sectionId }: LessonListProps) => {
         dialogTitle={t('addForm.lesson.dialogTitle')}
         dialogTrigger={<div className="flex items-center gap-1 text-sm cursor-pointer"><Plus width={16} height={16}/> Добавить урок</div> } 
         dialogDescription={t.rich('addForm.lesson.formDescription', {br: () => <br/>})}
-        dialogFooterButton="Добавить урок" onSubmit={handleSubmit} />
+        dialogFooterButton={t('addForm.lesson.dialogFooterButton')} onSubmit={handleSubmit} />
       </div>
 
     </div>

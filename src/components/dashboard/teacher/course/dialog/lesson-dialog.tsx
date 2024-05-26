@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -42,6 +42,11 @@ const LessonDialog = ({ dialogTrigger, dialogTitle, dialogDescription, dialogFoo
         }
     });
 
+    useEffect(() => {
+        form.reset(defaultValues);
+    }, [defaultValues, form]);
+
+    
     const handleSubmit = form.handleSubmit((values) => {
         onSubmit(values);
         setOpen(false);

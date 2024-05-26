@@ -122,7 +122,7 @@ const VideoDropzone = ({ lessonId, sectionId, onVideoUpload }: VideoDropzoneProp
             {isDragActive ? (
               <div className="grid place-items-center min-h-[100px]">
                 <CloudDownload className="w-10 h-10 text-gray-500" />
-                <p>Перетащите ваше видео сюда...</p>
+                <p>{t('instructions.activeDrag')}</p>
               </div>
             ) : (
               <div className="flex flex-col gap-2 text-center">
@@ -138,14 +138,14 @@ const VideoDropzone = ({ lessonId, sectionId, onVideoUpload }: VideoDropzoneProp
         <div className="flex flex-col items-center gap-4 bg-white p-4 rounded-lg">
 
             <div className="flex flex-col gap-2 items-center">
-                <p className="text-sm font-light">Пожалуйста ждите, происходит загрузка вашего видео:</p>
+                <p className="text-sm font-light">{t('instructions.uploading')}</p>
                 <p className="text-lg font-semibold"> {file?.name}</p>
             </div>
             <div className="w-full flex flex-row items-center gap-2">
             <Progress value={progress} /> <p className="text-sm font-light">{progress}%</p>
           </div>
           <Button onClick={handleAbort} variant="destructive">
-            Отменить загрузку
+            {t('instructions.cancelUpload')}
           </Button>
           
         </div>

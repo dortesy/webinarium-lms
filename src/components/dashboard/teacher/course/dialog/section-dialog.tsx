@@ -1,6 +1,6 @@
 'use client'
 
-import React, {Dispatch, JSXElementConstructor, ReactElement, SetStateAction} from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -40,6 +40,15 @@ const SectionDialog = ({ dialogTitle, dialogTrigger, dialogDescription, dialogFo
             description: "",
         }
     });
+
+    // console.log('rendered section dialog')
+
+    // console.log(form.getValues())
+
+    useEffect(() => {
+        form.reset(defaultValues);
+    }, [defaultValues, form]);
+    
 
     const handleSubmit = form.handleSubmit((values) => {
         onSubmit(values);

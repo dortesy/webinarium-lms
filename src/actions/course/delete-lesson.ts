@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/db";
 import { currentUser } from "@/lib/auth";
+import { deleteFile } from "@/lib/media/delete-file";
 
 const DeleteLesson = async (lessonId: string) => {
     const existingLesson = await db.lesson.findUnique({
@@ -20,6 +21,13 @@ const DeleteLesson = async (lessonId: string) => {
     }
 
     try {
+        if (existingLesson.videoId) {
+            const video = await db.media.findUnique({ where: { id: existingLesson.videoId } });
+            if (video) {
+                deleteFile(video.url);
+                await db.media.delete({ where: { id: existingLesson.videoId } });
+            }
+        }
         await db.lesson.delete({
             where: { id: lessonId }
         });

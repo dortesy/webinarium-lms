@@ -4,10 +4,8 @@ import SectionDialog from "@/components/dashboard/teacher/course/dialog/section-
 import {GripVertical, Pencil, Trash} from "lucide-react";
 import DeleteDialog from "@/components/dashboard/teacher/course/dialog/delete-dialog";
 import * as React from "react";
-import {Lesson, Media, Section} from "@prisma/client";
 import {useTranslations} from "next-intl";
 import {SectionSchemaType} from "@/schemas/courses/course.schema";
-import {useDraggable} from "@dnd-kit/core";
 import {CSS} from '@dnd-kit/utilities';
 import {useSortable} from "@dnd-kit/sortable";
 import LessonList from "./lesson-list";
@@ -21,9 +19,10 @@ interface SectionItemProps {
 
 }
 const SectionItem = ({ section, onDelete, onSubmit }:SectionItemProps ) => {
+
     const t = useTranslations('CourseOutlinePage');
 
-    const {attributes, listeners, setNodeRef, transform, transition} = useSortable({id: section.id});
+    const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({id: section.id});
     const style = {
         transform: CSS.Translate.toString(transform),
         transition,
@@ -58,7 +57,7 @@ const SectionItem = ({ section, onDelete, onSubmit }:SectionItemProps ) => {
                 
                 
                     <DeleteDialog dialogTrigger={<Button size="icon" variant="ghost"><Trash width={16} height={16}/></Button>}
-                                  dialogDescription="Вы уверены что хотите удалить этот раздел?"
+                                  dialogDescription={t('addForm.section.dialogDelete')}
                                   removeData={handleOnDelete}/>
                 
 
@@ -68,7 +67,9 @@ const SectionItem = ({ section, onDelete, onSubmit }:SectionItemProps ) => {
             </div>
         </div>
 
+      {!isDragging && (
         <LessonList initialLessons={section.lessons} sectionId={section.id} />
+      )}
 
     </div>
     )

@@ -29,7 +29,7 @@ export const EditSection = async (values: SectionSchemaType) => {
     }
     const user = await currentUser()
 
-    if (!user || user.id !== existingCourse?.creatorId) {
+    if (!user || user.id !== existingCourse.creatorId) {
         return { error: "Вы не авторизованы" };
     }
 

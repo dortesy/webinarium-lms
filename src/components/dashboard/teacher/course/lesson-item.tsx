@@ -11,6 +11,7 @@ import { Separator } from "@/components/ui/separator"
 import VideoDropzone from "@/components/custom-ui/video-dropzone";
 import VideoData from "@/components/custom-ui/video-data";
 import { LessonWithVideo } from "@/lib/types/course";
+import deleteVideo from "@/actions/course/delete-video";
 
 type TranslationsFunction = ReturnType<typeof useTranslations>;
 
@@ -45,10 +46,22 @@ const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoU
         handleDelete(lesson.id);
     };
 
+    const handleVideoDelete = async () => {
+      if (!lesson.video) {
+        return;
+      }
+      const result = await deleteVideo(lesson.video.id);
+      if (result.success) {
+          handleVideoUpload(result.updatedLesson);
+      } else {
+          console.error(result.error);
+      }
+  };
+  
 
   return (
     <div>
-      <div className="flex justify-between items-center p-4 hover:bg-gray-50 transition duration-200">
+      <div className="flex justify-between items-center p-4">
 
       <div className="flex items-center gap-4">
         <div className="text-lg font-bold">{index + 1}</div>
@@ -82,7 +95,7 @@ const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoU
 
       {isVideoBlockVisible ? (
             lesson.video ? (
-               <VideoData video={lesson.video} />
+               <VideoData video={lesson.video} onDelete={handleVideoDelete}/>
             ) : (
               <VideoDropzone lessonId={lesson.id} sectionId={lesson.sectionId} onVideoUpload={handleVideoUpload}/>
             )
