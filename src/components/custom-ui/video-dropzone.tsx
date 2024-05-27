@@ -116,7 +116,7 @@ const VideoDropzone = ({ lessonId, sectionId, onVideoUpload }: VideoDropzoneProp
   return (
     <div>
       {!uploading ? (
-        <div {...getRootProps()} className="border border-dashed border-gray-300 rounded-lg p-4 cursor-pointer">
+        <div {...getRootProps()} className="border border-dashed border-gray-300 rounded-lg p-4 cursor-pointer hover:border-gray-700">
           <input {...getInputProps()} />
           <div className="min-h-[100px]">
             {isDragActive ? (

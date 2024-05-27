@@ -1,6 +1,8 @@
+'use client'
+
 import { Lesson, Media } from "@prisma/client";
 import LessonDialog from "./dialog/lesson-dialog";
-import { FilePenLine, Trash2, Video } from "lucide-react";
+import { FilePenLine, GripVertical, Trash2, Video } from "lucide-react";
 import DeleteDialog from "./dialog/delete-dialog";
 import { useTranslations } from "next-intl";
 import { LessonSchemaType } from "@/schemas/courses/course.schema";
@@ -12,6 +14,8 @@ import VideoDropzone from "@/components/custom-ui/video-dropzone";
 import VideoData from "@/components/custom-ui/video-data";
 import { LessonWithVideo } from "@/lib/types/course";
 import deleteVideo from "@/actions/course/delete-video";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from '@dnd-kit/utilities';
 
 type TranslationsFunction = ReturnType<typeof useTranslations>;
 
@@ -26,7 +30,11 @@ interface LessonItemProps {
 }
 
 const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoUpload }: LessonItemProps) => {
-
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: lesson.id });
+    const style = {
+        transform: CSS.Translate.toString(transform),
+        transition,
+    };
 
     const [isVideoBlockVisible, setIsVideoBlockVisible] = useState(false);
 
@@ -60,7 +68,7 @@ const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoU
   
 
   return (
-    <div>
+    <div ref={setNodeRef} style={style} >
       <div className="flex justify-between items-center p-4">
 
       <div className="flex items-center gap-4">
@@ -90,6 +98,9 @@ const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoU
           dialogDescription={t('addForm.lesson.deleteText')}
           removeData={onDelete}
         />
+         <div  {...listeners} {...attributes}>
+            <GripVertical width={16} height={16} strokeWidth={1}/>
+         </div>
       </div>
       </div>
 

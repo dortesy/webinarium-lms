@@ -24,8 +24,8 @@ app.use("*", initAuthConfig(getAuthConfig))
 
 app.post('/upload/video',  validator('form', async (value, c) => {
     const auth = await getAuthUser(c)
-    console.log(value)
-    console.log(auth)
+    // console.log(value)
+    // console.log(auth)
     if(!auth) {
         return c.json({
             error: 'Unauthorized',

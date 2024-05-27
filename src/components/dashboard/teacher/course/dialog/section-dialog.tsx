@@ -29,7 +29,7 @@ interface SectionDialogProps {
     defaultValues?: SectionSchemaType;
 }
 
-const SectionDialog = ({ dialogTitle, dialogTrigger, dialogDescription, dialogFooterButton, onSubmit, defaultValues }: SectionDialogProps) => {
+const SectionDialog = React.memo(({ dialogTitle, dialogTrigger, dialogDescription, dialogFooterButton, onSubmit, defaultValues }: SectionDialogProps) => {
     const [open, setOpen] = React.useState(false);
     const t = useTranslations('CourseOutlinePage');
     const formSchema = SectionSchema(t);
@@ -41,9 +41,9 @@ const SectionDialog = ({ dialogTitle, dialogTrigger, dialogDescription, dialogFo
         }
     });
 
-    // console.log('rendered section dialog')
+    console.log('rendered section dialog')
 
-    // console.log(form.getValues())
+    console.log(form.getValues())
 
     useEffect(() => {
         form.reset(defaultValues);
@@ -107,6 +107,8 @@ const SectionDialog = ({ dialogTitle, dialogTrigger, dialogDescription, dialogFo
             </DialogContent>
         </Dialog>
     );
-};
+});
 
-export default SectionDialog;
+SectionDialog.displayName = 'SectionDialog'
+
+export default  SectionDialog;

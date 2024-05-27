@@ -1,3 +1,5 @@
+'use client'
+
 import {SidebarRoutes} from "@/components/dashboard/sidebar/sidebar-routes";
 import {usePathname} from "@/navigation";
 

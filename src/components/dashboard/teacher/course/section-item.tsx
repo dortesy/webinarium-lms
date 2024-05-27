@@ -67,7 +67,7 @@ const SectionItem = ({ section, onDelete, onSubmit }:SectionItemProps ) => {
             </div>
         </div>
 
-      {!isDragging && (
+       {!isDragging && (
         <LessonList initialLessons={section.lessons} sectionId={section.id} />
       )}
 

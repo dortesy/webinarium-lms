@@ -3,7 +3,7 @@ import {Lesson, Media, Section} from '@prisma/client';
 import {Button} from "@/components/ui/button";
 import {SectionSchemaType} from "@/schemas/courses/course.schema";
 import {useTranslations} from "next-intl";
-import {useId, useTransition, useState} from "react";
+import {useId, useTransition, useState, useMemo, useCallback} from "react";
 import {CreateSection} from "@/actions/course/create-section";
 import {useToast} from "@/components/ui/use-toast";
 import SectionDialog from "@/components/dashboard/teacher/course/dialog/section-dialog";
@@ -23,7 +23,7 @@ interface CourseSectionsProps{
     courseId: string;
 }
 
-const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
+const CourseSections =  ({initialSections, courseId}: CourseSectionsProps) => {
     const [sections, setSections] = useState<SectionWithLessons[]>(initialSections)
     const [error, setError] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
@@ -31,92 +31,87 @@ const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
     const { toast } = useToast()
 
 
-    const onSubmit = (values: SectionSchemaType) => {
-        values.courseId = courseId
+    const onSubmit = useCallback((values: SectionSchemaType) => {
+        values.courseId = courseId;
 
-        setError('')
+        setError('');
         startTransition(() => {
-
-            if(values.id) {
+            if (values.id) {
                 EditSection(values).then((data) => {
-                    if('error' in data) {
-                        setError(data.error)
+                    if ('error' in data) {
+                        setError(data.error);
                     } else {
                         toast({
                             title: `${t('sectionEdited')}`,
-                            description: `${t('sectionEditedSuccess', {title: values.title})}`,
-                        })
-                        if('section' in data) {
+                            description: `${t('sectionEditedSuccess', { title: values.title })}`,
+                        });
+                        if ('section' in data) {
                             setSections((prev) => {
                                 return prev.map((section) => {
-                                    if(section.id === data.section.id) {
+                                    if (section.id === data.section.id) {
                                         return {
                                             ...section,
                                             title: data.section.title,
-                                            description: data.section.description
-                                        }
+                                            description: data.section.description,
+                                        };
                                     }
-                                    return section
-                                })
-                            })
+                                    return section;
+                                });
+                            });
                         }
                     }
-                })
-
-                //EditSection
+                });
             } else {
                 CreateSection(values).then((data) => {
                     if ('error' in data) {
-                        setError(data.error)
+                        setError(data.error);
                     } else {
                         toast({
                             title: `${t('sectionAdded')}`,
-                            description: `${t('sectionAddedSuccess', {title: values.title})}`,
-                        })
-                        if('section' in data) {
+                            description: `${t('sectionAddedSuccess', { title: values.title })}`,
+                        });
+                        if ('section' in data) {
                             setSections((prev) => {
                                 return [
                                     ...prev,
                                     {
                                         ...data.section,
                                         id: data.section.id,
-                                        lessons: []
-                                    }
-                                ]
-                            })
-
-
+                                        lessons: [],
+                                    },
+                                ];
+                            });
                         }
                     }
-                })
+                });
             }
+        });
+    }, [courseId, setError, startTransition, toast, t]);
 
-
-
-        })
-    }
-
-    const onDelete = (sectionId: string) => () =>  {
-        setError('')
-        startTransition(() => {
-            DeleteSection(sectionId).then((data) => {
-                if('error' in data) {
-                    setError(data.error)
-                } else {
-                    toast({
-                        title: `${t('sectionDeleted')}`,
-                        description: `${t('sectionDeletedSuccess')}`,
-                    })
-                    setSections((prev) => {
-                        return prev.filter((section) => section.id !== sectionId)
-                    })
-                }
-            })
-        })
-    }
+// Inside the CourseSections component
+const onDelete = useCallback((sectionId: string) => () => {
+    setError('');
+    startTransition(() => {
+        DeleteSection(sectionId).then((data) => {
+            if ('error' in data) {
+                setError(data.error);
+            } else {
+                toast({
+                    title: `${t('sectionDeleted')}`,
+                    description: `${t('sectionDeletedSuccess')}`,
+                });
+                setSections((prev) => {
+                    return prev.filter((section) => section.id !== sectionId);
+                });
+            }
+        });
+    });
+}, [setError, startTransition, toast, t]);
 
     const handleDragEnd = (event: DragEndEvent) => {
+        
         const { active, over } = event;
+        console.log('what')
         
         if (!active || !over || active.id === over.id) {
             return;
@@ -179,6 +174,7 @@ const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
 
 
     const calculateNewPosition = (sections: Section[], activeIndex: number, overIndex: number): number => {
+        console.log('calculate new position')
         if (overIndex > activeIndex) {
             const nextSection = sections[overIndex + 1];
             const targetSection = sections[overIndex];
@@ -200,6 +196,14 @@ const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
         console.log('over', event.over)
     }
 
+    const sectionsWithItems = useMemo(() => {
+        return sections.map((section) =>  <SectionItem key={section.id} section={section} onDelete={onDelete(section.id)} onSubmit={onSubmit} />)
+    }, [onDelete, onSubmit, sections])
+
+
+    const sectionIds = useMemo(() => {
+        return sections.map((section) => section.id)
+    }, [sections])
     const id = useId()
 
     return (
@@ -216,15 +220,12 @@ const CourseSections = ({initialSections, courseId}: CourseSectionsProps) => {
 
 
                 {/*render sections*/}
-            
-                        <SortableContext items={sections.map(section => section.id)} strategy={verticalListSortingStrategy}>
-                        <div className="pt-8 pb-8 overflow-y-hidden">
-                            {sections.map((section, index) => (
-                                <SectionItem key={section.id} section={section} onDelete={onDelete(section.id)} onSubmit={onSubmit} />
-                            ))}
-                         </div>
-
+                <div className="pt-8 pb-8 overflow-y-hidden">
+                        <SortableContext items={sectionIds}>
+                            {sectionsWithItems}
                         </SortableContext>
+                </div>
+                
                  </DndContext>
             </div>
 

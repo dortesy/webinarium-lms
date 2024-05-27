@@ -1,3 +1,4 @@
+'use client'
 import {
     Dialog,
     DialogContent,
@@ -16,6 +17,7 @@ interface DeleteDialogProps {
 }
 
 const DeleteDialog = ({dialogTrigger, dialogDescription, removeData}: DeleteDialogProps) => {
+    console.log('rendered delete dialog')
     return (
         <Dialog>
             <DialogTrigger asChild>{dialogTrigger}</DialogTrigger>
