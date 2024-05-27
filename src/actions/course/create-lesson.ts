@@ -4,7 +4,7 @@ import {getTranslations} from "next-intl/server";
 import {db} from "@/lib/db";
 import {currentUser} from "@/lib/auth";
 import {Prisma} from "@prisma/client";
-import {getSectionById} from "@/lib/course/course-helper";
+import {getLessonBySlug, getSectionById} from "@/lib/course/course-helper";
 import slugify from "slugify";
 
 export const CreateLesson = async (values: LessonSchemaType) => {
@@ -34,6 +34,14 @@ export const CreateLesson = async (values: LessonSchemaType) => {
         return { error: "Вы не авторизованы" };
     }
 
+    // Check if lesson with the same slug exists
+    const slug = slugify(title.trim(), { lower: true });
+    const existingLesson = await getLessonBySlug(slug, sectionId);
+
+    if (existingLesson) {
+        return { error: "Урок с таким названием уже существует" };
+    }
+
     const lastLesson = await db.lesson.findFirst({
         where: {
             sectionId: sectionId
@@ -49,7 +57,7 @@ export const CreateLesson = async (values: LessonSchemaType) => {
         const lesson = await db.lesson.create({
             data: {
                 title: title.trim(),
-                slug: slugify(title.trim(), { lower: true }),
+                slug: slug,
                 description: description,
                 section: {
                     connect: {

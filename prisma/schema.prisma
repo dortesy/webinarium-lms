@@ -196,7 +196,7 @@ model Lesson {
   section     Section        @relation(fields: [sectionId], references: [id], onDelete: Cascade)
   sectionId   String
   title       String
-  slug        String         @unique
+  slug        String         
   description String?
   video       Media?         @relation(fields: [videoId], references: [id])
   videoId     String?        @unique

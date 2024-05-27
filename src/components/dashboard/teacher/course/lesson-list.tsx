@@ -16,6 +16,7 @@ import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import EditLessonPosition from "@/actions/course/edit-lesson-position";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 interface LessonListProps {
   initialLessons: LessonWithVideo[];
@@ -27,7 +28,7 @@ const LessonList = ({ initialLessons, sectionId }: LessonListProps) => {
   const [lessons, setLessons] = useState<LessonWithVideo[]>(initialLessons);
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | undefined>("");
-
+  const { toast } = useToast()
 
   const handleSubmit = (values: LessonSchemaType) => {
     values.sectionId = sectionId
@@ -37,8 +38,14 @@ const LessonList = ({ initialLessons, sectionId }: LessonListProps) => {
           console.error("Validation errors:", data);
         } else if ('error' in data) {
           console.error(data.error);
+          toast({
+              title: "Ошибка",
+              description: data.error,
+              variant: "destructive",
+          })
         } else if ('lesson' in data) {
-          setLessons((prevLessons) => [...prevLessons, data.lesson]);
+          setLessons((prevLessons) => [...prevLessons, { ...data.lesson, isNew: true }]);
+          
         }
         
       });
@@ -53,6 +60,11 @@ const LessonList = ({ initialLessons, sectionId }: LessonListProps) => {
                     console.error("Validation errors:", data);
                 } else if ('error' in data) {
                     console.error(data.error);
+                    toast({
+                        title: "Ошибка",
+                        description: data.error,
+                        variant: "destructive",
+                    })
                 } else if ('lesson' in data) {
                     setLessons((prevLessons) => prevLessons.map(lesson => lesson.id === data.lesson.id ? data.lesson : lesson));
                 }
@@ -144,7 +156,7 @@ const LessonList = ({ initialLessons, sectionId }: LessonListProps) => {
             <SortableContext items={lessons.map(lesson => lesson.id)} strategy={verticalListSortingStrategy}>
                 {lessons.length > 0 && <div className="flex flex-col gap-4">
                     {lessons.map((lesson, index) => (
-                        <LessonItem key={lesson.slug} lesson={lesson} index={index} t={t} handleUpdate={handleUpdate} handleDelete={handleDelete} handleVideoUpload={handleVideoUpload} />
+                        <LessonItem key={lesson.slug} lesson={lesson} index={index} t={t} handleUpdate={handleUpdate} handleDelete={handleDelete} handleVideoUpload={handleVideoUpload} isNew={lesson.isNew} />
                     ))}
                 </div>}
             </SortableContext>

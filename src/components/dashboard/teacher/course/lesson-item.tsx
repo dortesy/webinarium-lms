@@ -27,16 +27,17 @@ interface LessonItemProps {
   handleUpdate: (values: LessonSchemaType) => void;
   handleDelete: (lessonId: string) => void;
   handleVideoUpload: (updatedLesson: LessonWithVideo) => void;
+  isNew?: boolean; // Add this line
 }
 
-const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoUpload }: LessonItemProps) => {
+const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoUpload, isNew }: LessonItemProps) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: lesson.id });
     const style = {
         transform: CSS.Translate.toString(transform),
         transition,
     };
 
-    const [isVideoBlockVisible, setIsVideoBlockVisible] = useState(false);
+    const [isVideoBlockVisible, setIsVideoBlockVisible] = useState(isNew || false);
 
     const handleVideoButtonClick = () => {
         if(isVideoBlockVisible) {
@@ -111,9 +112,6 @@ const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoU
               <VideoDropzone lessonId={lesson.id} sectionId={lesson.sectionId} onVideoUpload={handleVideoUpload}/>
             )
             ): <Separator /> }
-      
-
-
           
     </div>
   );

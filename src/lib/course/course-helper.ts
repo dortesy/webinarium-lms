@@ -94,3 +94,14 @@ export const getLessonById = async (id: string) => {
     }
 }
 
+export const getLessonBySlug = async (slug: string, sectionId: string) => {
+    try {
+        return await db.lesson.findUnique({
+            where: { slug: slug, sectionId: sectionId },
+            include: { section: true, video: true }
+        });
+    } catch {
+        return null;
+    }
+}
+

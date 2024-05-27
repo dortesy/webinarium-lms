@@ -3,7 +3,7 @@ import { LessonSchema, LessonSchemaType } from "@/schemas/courses/course.schema"
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { currentUser } from "@/lib/auth";
-import { getSectionById } from "@/lib/course/course-helper";
+import { getLessonById, getLessonBySlug, getSectionById } from "@/lib/course/course-helper";
 import slugify from "slugify";
 
 export const EditLesson = async (values: LessonSchemaType) => {
@@ -32,6 +32,15 @@ export const EditLesson = async (values: LessonSchemaType) => {
     if (!user || user.id !== existingSection.course.creatorId) {
         return { error: "Вы не авторизованы" };
     }
+
+
+    const slug = slugify(title.trim(), { lower: true });
+    const existingLesson = await getLessonBySlug(slug, sectionId);
+
+    if (existingLesson) {
+        return { error: "Урок с таким названием уже существует" };
+    }
+    
 
     try {
         const lesson = await db.lesson.update({
