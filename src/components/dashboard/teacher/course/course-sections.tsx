@@ -37,7 +37,7 @@ const CourseSections =  ({initialSections, courseId, title}: CourseSectionsProps
 
     useEffect(() => {
         setCourseTitle(title || "No Title");
-    }, [setCourseTitle]);
+    }, [setCourseTitle, title]);
     
 
     const onSubmit = useCallback((values: SectionSchemaType) => {
