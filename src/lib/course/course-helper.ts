@@ -3,7 +3,20 @@ import {db} from "@/lib/db";
 import {cache} from "react"
 import {Prisma} from "@prisma/client";
 
+
 export const getCourseById = async (id: string) => {
+    try {
+        return await db.course.findUnique({
+            where: { id: id },
+            include: { image: true, category: true }
+        });
+    } catch {
+        return null;
+    }
+}
+
+
+export const getCourseByIdWithSections = async (id: string) => {
     try {
         return await db.course.findUnique({
             where: { id: id },
@@ -96,7 +109,7 @@ export const getLessonById = async (id: string) => {
 
 export const getLessonBySlug = async (slug: string, sectionId: string) => {
     try {
-        return await db.lesson.findUnique({
+        return await db.lesson.findFirst({
             where: { slug: slug, sectionId: sectionId },
             include: { section: true, video: true }
         });

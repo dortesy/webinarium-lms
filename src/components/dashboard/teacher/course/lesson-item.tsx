@@ -70,9 +70,13 @@ const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoU
 
   return (
     <div ref={setNodeRef} style={style} >
-      <div className="flex justify-between items-center p-4">
+      <div className="flex justify-between items-center p-4 relative">
 
-      <div className="flex items-center gap-4">
+      <div className="absolute top-0 left-0 right-0 bottom-0 cursor-pointer " onClick={handleVideoButtonClick}>
+
+      </div>
+
+      <div className="flex items-center gap-4" >
         <div className="text-lg font-bold">{index + 1}</div>
         <div>
           <h3 className="text-sm">{lesson.title}</h3>
@@ -80,7 +84,7 @@ const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoU
         </div>
 
       </div>
-      <div className="flex gap-3 items-center">
+      <div className="flex gap-3 items-center relative z-10">
 
         <Button size="icon" variant={isVideoBlockVisible ? "secondary" : "ghost"} onClick={handleVideoButtonClick} >
             <Video className="cursor-pointer" width={18} height={18} strokeWidth={1}  />
@@ -89,7 +93,9 @@ const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoU
         <LessonDialog
           dialogTitle={t('addForm.lesson.dialogTitleEdit')}
           defaultValues={{ ...lesson, description: lesson.description ?? undefined }}
-          dialogTrigger={<FilePenLine className="cursor-pointer" width={16} height={16} strokeWidth={1} />}
+          dialogTrigger={
+          <FilePenLine className="cursor-pointer" width={16} height={16} strokeWidth={1} />
+        }
           dialogDescription={t('addForm.lesson.formDescriptionEdit')}
           dialogFooterButton={t('addForm.lesson.editText')}
           onSubmit={onSubmit}

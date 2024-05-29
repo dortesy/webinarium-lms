@@ -3,7 +3,7 @@ import {Lesson, Media, Section} from '@prisma/client';
 import {Button} from "@/components/ui/button";
 import {SectionSchemaType} from "@/schemas/courses/course.schema";
 import {useTranslations} from "next-intl";
-import {useId, useTransition, useState, useMemo, useCallback} from "react";
+import {useId, useTransition, useState, useMemo, useCallback, useEffect, useContext} from "react";
 import {CreateSection} from "@/actions/course/create-section";
 import {useToast} from "@/components/ui/use-toast";
 import SectionDialog from "@/components/dashboard/teacher/course/dialog/section-dialog";
@@ -17,19 +17,28 @@ import {
   } from '@dnd-kit/modifiers';
 
 import { SectionWithLessons } from "@/lib/types/course";
+import { CourseContext } from '@/context/course-context';
 
 interface CourseSectionsProps{
     initialSections: SectionWithLessons[];
     courseId: string;
+    title: string;
+
 }
 
-const CourseSections =  ({initialSections, courseId}: CourseSectionsProps) => {
+const CourseSections =  ({initialSections, courseId, title}: CourseSectionsProps) => {
     const [sections, setSections] = useState<SectionWithLessons[]>(initialSections)
     const [error, setError] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
     const t = useTranslations("CourseOutlinePage");
     const { toast } = useToast()
+    const { setCourseTitle } = useContext(CourseContext);
 
+
+    useEffect(() => {
+        setCourseTitle(title || "No Title");
+    }, [setCourseTitle]);
+    
 
     const onSubmit = useCallback((values: SectionSchemaType) => {
         values.courseId = courseId;
@@ -210,7 +219,8 @@ const onDelete = useCallback((sectionId: string) => () => {
             <div>
                 <DndContext   onDragEnd={handleDragEnd} id={id} modifiers={[restrictToVerticalAxis]} onDragOver={handleDragOver} collisionDetection={closestCenter}>
 
-                {!sections.length && <div>Для добавление уроков пожалуйста добавьте необходимые разделы</div>}
+                {!sections.length && <div className="text-sm text-gray-700 mb-4 font-semibold">{t('noSections')}</div>}
+
                 <SectionDialog 
                             dialogTitle={t('addForm.section.dialogTitle')}
                             dialogTrigger={<Button>{t('addSection')}</Button>}

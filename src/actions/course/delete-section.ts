@@ -2,6 +2,7 @@
 
 import {db} from "@/lib/db";
 import {currentUser} from "@/lib/auth";
+import { deleteFile } from "@/lib/media/delete-file";
 
 const DeleteSection = async (sectionId: string) => {
 
@@ -10,8 +11,14 @@ const DeleteSection = async (sectionId: string) => {
             id: sectionId
         },
         include: {
-            course: true
+            course: true,
+            lessons: {
+                include: {
+                    video: true
+                }
+            }
         }
+        
     });
 
     if (!existingSection) {
@@ -24,12 +31,25 @@ const DeleteSection = async (sectionId: string) => {
         return { error: "Вы не авторизованы" };
     }
 
+
+
+
     try {
+
+        const lessons = existingSection.lessons;
+        for (const lesson of lessons) {
+            if (lesson.video) {
+                 deleteFile(lesson.video.url);
+            }
+        }
+
         await db.section.delete({
             where: {
                 id: sectionId
             }
         });
+
+
         return { success: 'Раздел удален' };
     } catch (error) {
         console.error("Error deleting section:", error);

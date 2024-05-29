@@ -5,6 +5,7 @@ import { db } from '@/lib/db';
 import { PUBLIC_DIRECTORY } from '@/lib/media/storage';
 import { currentUser } from '@/lib/auth';
 import { deleteFile } from '@/lib/media/delete-file';
+import { getLessonById } from '@/lib/course/course-helper';
 
 const deleteVideo = async (videoId: string) => {
     const user = await currentUser();
@@ -15,26 +16,30 @@ const deleteVideo = async (videoId: string) => {
 
     const video = await db.media.findUnique({ where: { id: videoId } });
 
-    if (!video) {
+    if (!video || !video.lessonId) {
         return { error: 'Видео не найдено' };
     }
 
-    const lesson = await db.lesson.findFirst({ where: { videoId: videoId } });
 
-    if (!lesson || video.userId !== user.id) {
+    if (video.userId !== user.id) {
         return { error: "Вы не авторизованы" };
     }
 
-    deleteFile(video.url);
+    try {
+        await db.media.delete({ where: { id: video.id } });
+        deleteFile(video.url);
 
-    await db.media.delete({ where: { id: videoId } });
-    const updatedLesson = await db.lesson.update({
-        where: { id: lesson.id },
-        data: { videoId: null },
-        include: { video: true }
-    });
+        const updatedLesson = await getLessonById(video.lessonId);
 
-    return { success: 'Видео удалено', updatedLesson };
+        if(updatedLesson) {
+            return { success: 'Видео удалено', updatedLesson };
+        }
+
+        return { error: 'Урок не найден' };
+
+    } catch (error) {
+        return { error: "Ошибка удаления видео" };
+    }
 };
 
 export default deleteVideo;

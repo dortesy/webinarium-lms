@@ -63,7 +63,7 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
     useEffect(() => {
         setCourseTitle(defaultValues.title || "No Title");
 
-    }, [success]);
+    }, [defaultValues.title, setCourseTitle, success]);
 
 
     const onSubmit = (values: EditCourseSchemaType) => {

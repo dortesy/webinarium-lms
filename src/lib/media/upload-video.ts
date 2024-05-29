@@ -32,14 +32,14 @@ export const uploadVideo = async ({ lessonId, sectionId, video }: UploadVideoPro
     }
     
     // Check if the old video file exists before attempting to delete it
-    if (currentLesson.videoId) {
-        const oldMedia = await db.media.findUnique({ where: { id: currentLesson.videoId } });
+    if (currentLesson.video) {
+        const oldMedia = await db.media.findUnique({ where: { id: currentLesson.video.id } });
         if (oldMedia) {
             const oldFilePath = path.join(PUBLIC_DIRECTORY, oldMedia.url);
             if (fs.existsSync(oldFilePath)) {
                 fs.unlinkSync(oldFilePath);
             }
-            await db.media.delete({ where: { id: currentLesson.videoId } });
+            //await db.media.delete({ where: { id: currentLesson.videoId } });
         }
     }
 
@@ -52,7 +52,7 @@ export const uploadVideo = async ({ lessonId, sectionId, video }: UploadVideoPro
             type: 'VIDEO',
             size: video.size,
             lesson: { connect: { id: lessonId } },
-            userId: user.id
+            user: { connect: { id: user.id } },
         },
     });
 
@@ -71,7 +71,7 @@ export const uploadVideo = async ({ lessonId, sectionId, video }: UploadVideoPro
 
     const updatedLesson = await db.lesson.update({
         where: { id: lessonId },
-        data: { videoId: media.id },
+        data: { video: { connect: { id: media.id } } },
         include: { video: true }
     });
 

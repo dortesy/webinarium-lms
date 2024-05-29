@@ -164,7 +164,7 @@ model Course {
   duration    Int?
   level       CourseLevel?
   language    Language?
-  image       Media?         @relation(fields: [imageId], references: [id])
+  image       Media?         @relation(fields: [imageId], references: [id], onDelete: Cascade)
   imageId     String?        @unique
   status      CourseStatus? // DRAFT, PUBLISHED, ARCHIVED - TODO NOT ACTIVE RIGHT NOW
   published   Boolean        @default(false)
@@ -196,16 +196,17 @@ model Lesson {
   section     Section        @relation(fields: [sectionId], references: [id], onDelete: Cascade)
   sectionId   String
   title       String
-  slug        String         
+  slug        String
   description String?
-  video       Media?         @relation(fields: [videoId], references: [id])
-  videoId     String?        @unique
+  video       Media?
   duration    Int?
   position    Float
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
   progress    UserProgress[]
 }
+
+
 
 model Media {
   id          String    @id @default(uuid())
@@ -220,9 +221,12 @@ model Media {
   user        User?     @relation(fields: [userId], references: [id])
   userId      String?
   course      Course?
-  lesson      Lesson?
+  lessonId    String?   @unique
+  lesson      Lesson?   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   isPublic    Boolean   @default(false)
 }
+
+
 
 model Enrollment {
   id          Int               @id @default(autoincrement())

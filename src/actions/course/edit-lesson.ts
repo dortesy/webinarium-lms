@@ -32,14 +32,18 @@ export const EditLesson = async (values: LessonSchemaType) => {
     if (!user || user.id !== existingSection.course.creatorId) {
         return { error: "Вы не авторизованы" };
     }
-
-
     const slug = slugify(title.trim(), { lower: true });
-    const existingLesson = await getLessonBySlug(slug, sectionId);
+  
+    const lesson = await getLessonById(id);
+    if (lesson?.title !== title) {
+        const existingLesson = await getLessonBySlug(slug, sectionId);
 
-    if (existingLesson) {
-        return { error: "Урок с таким названием уже существует" };
+        if (existingLesson) {
+            return { error: "Урок с таким названием уже существует" };
+        }
     }
+  
+   
     
 
     try {

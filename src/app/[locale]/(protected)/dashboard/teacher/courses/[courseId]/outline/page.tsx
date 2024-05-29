@@ -1,7 +1,7 @@
 
 import {getTranslations} from 'next-intl/server';
 import { Metadata, ResolvingMetadata } from 'next'
-import {getCourseById} from "@/lib/course/course-helper";
+import {getCourseById, getCourseByIdWithSections} from "@/lib/course/course-helper";
 import {currentUser} from "@/lib/auth";
 import CourseSections from "@/components/dashboard/teacher/course/course-sections";
 type Props = {
@@ -37,7 +37,7 @@ export default async function CourseOutlinePage({ params }: { params: { courseId
         return <div>У вас нет доступка к редактированию этого курса</div>
     }
 
-    const course = await getCourseById(params.courseId);
+    const course = await getCourseByIdWithSections(params.courseId);
 
     if (!course) {
         return <div>Course not found</div>
@@ -54,7 +54,7 @@ export default async function CourseOutlinePage({ params }: { params: { courseId
 
             {/* Section component */}
 
-            <CourseSections initialSections={course.sections} courseId={course.id} />
+            <CourseSections initialSections={course.sections} courseId={course.id} title={course.title} />
 
       </div>
   );

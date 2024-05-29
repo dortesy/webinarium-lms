@@ -7,7 +7,7 @@ import { deleteFile } from "@/lib/media/delete-file";
 const DeleteLesson = async (lessonId: string) => {
     const existingLesson = await db.lesson.findUnique({
         where: { id: lessonId },
-        include: { section: { include: { course: true } } }
+        include: { section: { include: { course: true } }, video: true }
     });
 
     if (!existingLesson) {
@@ -21,11 +21,9 @@ const DeleteLesson = async (lessonId: string) => {
     }
 
     try {
-        if (existingLesson.videoId) {
-            const video = await db.media.findUnique({ where: { id: existingLesson.videoId } });
-            if (video) {
-                deleteFile(video.url);
-                await db.media.delete({ where: { id: existingLesson.videoId } });
+        if (existingLesson.video) {
+            if (existingLesson.video.url) {
+                deleteFile(existingLesson.video.url);
             }
         }
         await db.lesson.delete({
