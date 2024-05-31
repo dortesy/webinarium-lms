@@ -59,4 +59,3 @@ export const getPasswordResetToken = async (token: string) => {
 
 }
 
-

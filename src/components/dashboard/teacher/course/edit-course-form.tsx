@@ -21,8 +21,6 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import ImageDropzone from "@/components/custom-ui/image-dropzone";
 import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";
-import { FloatingInput } from '@/components/custom-ui/floating-input';
-import { cn } from '@/lib/utils';
 interface CourseWithMedia extends PrismaCourse {
     image?: Media | null; // Add the image property here
 }
@@ -36,7 +34,6 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
     const [error, setError] = useState<string | undefined>("");
 
     const t = useTranslations("EditCourseForm");
-    const { setCourseTitle } = useContext(CourseContext);
 
     const defaultValues = {
         id: course.id,
@@ -54,18 +51,12 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
     const formSchema = EditCourseSchema(t);
     const resetFileInput = React.useRef<() => void>(() => {});
 
-    const {control , watch, reset, register, handleSubmit, setValue, clearErrors, formState: { errors }} = useForm<z.infer<typeof formSchema>>({
+    const {control , reset, register, handleSubmit, setValue, clearErrors, formState: { errors }} = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues,
     });
-    //
-    // const { isDirty, dirtyFields } = useFormState({ control: control });
-    //
 
-    useEffect(() => {
-        setCourseTitle(defaultValues.title || "No Title");
 
-    }, [defaultValues.title, setCourseTitle, success]);
 
 
     const onSubmit = (values: EditCourseSchemaType) => {
@@ -97,21 +88,6 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
         })
     }
 
-    // useEffect(() => {
-    //
-    //     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-    //         if (isDirty) {
-    //             event.preventDefault();
-    //             event.stopPropagation();
-    //         }
-    //     };
-    //
-    //     window.addEventListener('beforeunload', handleBeforeUnload);
-    //
-    //     return () => {
-    //         window.removeEventListener('beforeunload', handleBeforeUnload);
-    //     };
-    // }, [isDirty]);
 
     const handleOnDrop = (acceptedFiles: FileList | null): boolean =>  {
             if (acceptedFiles && acceptedFiles.length > 0) {
@@ -233,6 +209,7 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
                                 resetFileInput={resetFileInput}
                                 file={field.value}
                                 id="file"
+                                t={t}
                             />
                     </div>
                 )}

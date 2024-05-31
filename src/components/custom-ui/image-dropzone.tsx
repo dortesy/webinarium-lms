@@ -4,12 +4,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import React, {ChangeEvent, useRef, memo, useState} from "react";
-import {CircleX, CloudUpload, ImageUp} from "lucide-react";
+import {CircleX, ImageUp} from "lucide-react";
 import {MAX_FILE_SIZE} from "@/schemas/courses/course.schema";
 import Image from "next/image";
 import {useTranslations} from "next-intl";
-import { getBase64 } from '@/lib/utils';
-import {useController} from "react-hook-form";
 
 
 interface DropzoneProps
@@ -22,12 +20,13 @@ interface DropzoneProps
     file: File | undefined;
     handleOnDrop: (acceptedFiles: FileList | null) => boolean;
     resetFileInput: React.MutableRefObject<() => void>;
+    t: ReturnType<typeof useTranslations>;
 }
 
 
 const ImageDropzone = React.forwardRef<HTMLDivElement, DropzoneProps>(
     (
-        { className, classNameWrapper, handleOnDrop, resetFileInput, file, ...props },
+        { className, classNameWrapper, handleOnDrop, resetFileInput, file, t, ...props },
         ref
     ) => {
 
@@ -36,19 +35,6 @@ const ImageDropzone = React.forwardRef<HTMLDivElement, DropzoneProps>(
         const [fileName, setFileName] = useState<string | ''>(file ? file.name : '');
 
         const inputRef = useRef<HTMLInputElement | null>(null);
-        //const [base64, setBase64] = useState(file.name);
-        const t = useTranslations("EditCourseForm");
-        // Function to handle drag over event
-
-
-
-        //if file exist show link to it, if does not exist show upload and then show the file
-        // how we can do it?
-        // 1. check if file exist
-        // 2. if exist show the file
-        // 3. if does not exist show upload button
-        // 4. if file is uploaded show the file
-        //But files are different,
 
         React.useEffect(() => {
             resetFileInput.current = () => {
@@ -93,9 +79,6 @@ const ImageDropzone = React.forwardRef<HTMLDivElement, DropzoneProps>(
             setFileName('');
             handleOnDrop(null)
             if (inputRef.current) {
-                // console.log(inputRef.current.files[0])
-                // inputRef.current.files[0] = null;
-                //inputRef.current.
                 inputRef.current.value = '';
             }
 

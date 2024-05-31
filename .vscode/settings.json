@@ -1,8 +1,15 @@
 {
     "WillLuke.nextjs.addTypesOnSave": true,
     "WillLuke.nextjs.hasPrompted": true,
+
     "i18n-ally.localesPaths": [
-        "src/messages"
+        "/src/messages"
     ],
-    "i18n-ally.keystyle": "nested"
+    "i18n-ally.keystyle": "nested",
+    "i18n-ally.enabledFrameworks": [
+        "next-intl"
+    ],
+    "i18n-ally.enabledParsers": [
+        "json"
+    ]
 }

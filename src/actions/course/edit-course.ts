@@ -87,9 +87,7 @@ export const EditCourse = async (values: EditCourseSchemaType, formData: FormDat
             });
 
             deleteFile(deletedMedia.url)
-
         }
-
 
 
         const newCourse = await db.course.findFirst({

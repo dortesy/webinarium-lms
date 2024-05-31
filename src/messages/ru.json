@@ -3,6 +3,43 @@
     "title": "Hello world!"
   },
 
+  "ENUM": {
+    "CourseStatus": {
+      "DRAFT": "Черновик",
+      "PUBLISHED": "Опубликовано",
+      "ARCHIVED": "Архивировано"
+    },
+    "CourseLevel": {
+      "BEGINNER": "Начинающий",
+      "INTERMEDIATE": "Средний",
+      "ADVANCED": "Продвинутый"
+    },
+    "Language": {
+      "RU": "Русский",
+      "UZ": "Узбекский"
+    },
+    "EnrollmentStatus": {
+      "ENROLLED": "Зачислен",
+      "COMPLETED": "Завершено",
+      "CANCELLED": "Отменено"
+    },
+    "PaymentStatus": {
+      "PENDING": "В ожидании",
+      "COMPLETED": "Завершено",
+      "FAILED": "Не удалось"
+    },
+    "MediaType": {
+      "IMAGE": "Изображение",
+      "VIDEO": "Видео",
+      "AUDIO": "Аудио",
+      "DOCUMENT": "Документ",
+      "OTHER": "Другое"
+    }
+  },
+
+
+  
+  
   "Registration": {
     "headerLabel": "Регистрация",
     "backButtonLabel": "Уже зарегистрированы? Войти",
@@ -18,6 +55,47 @@
    "login": "Вход",
    "register": "Регистрация"
   },
+
+  "ProfileForm": {
+    "title": "Редактирование профиля",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "bio": "О себе",
+    "imageLabel": "Изображение профиля",
+    "telegram": "Телеграм (@username)",
+    "phone": "Телефон (+998)",
+    "website": "Веб-сайт (WWW)",
+    "instagram": "Instagram (@username)",
+    "facebook": "Facebook (URL)",
+    "youtube": "Youtube (URL)",
+    "social": "Социальные сети",
+    "save": "Сохранить профиль",
+    "success": "Профиль успешно обновлен",
+    "errors": {
+      "maxFirstName": "Имя не должно быть более 100 символов",
+      "maxLastName": "Фамилия не должна быть более 100 символов",
+      "maxBio": "О себе не должно быть более 1000 символов",
+      "invalidUrl": "Неверный URL",
+      "maxTelegram": "Телеграм не должен быть более 50 символов",
+      "maxPhone": "Телефон не должен быть более 15 символов",
+      "maxInstagram": "Инстаграм не должен быть более 50 символов",
+      "maxFacebook": "Фейсбук не должен быть более 50 символов",
+      "maxYoutube": "Ютуб не должен быть более 50 символов",
+      "noAccess": "У вас нет доступа к странице профиля",
+      "errorUpdate": "Произошла ошибка при обновлении профиля"
+    },
+    "image": {
+      "size": "Максимальный размер файла: {size}MB",
+      "type": "Разрешены только изображения формата: .jpg, .png, .webp"
+    }
+  },
+
+  "CourseList": {
+    "title": "Список ваших курсов",
+    "description": "На этой странице вы найдете все ваши добавленные курсы",
+    "addNewCourse": "Добавить новый курс",
+    "noAccess": "У вас нет доступа к странице управления курсами"
+  }, 
 
   "CreateCourseForm": {
     "errors": {

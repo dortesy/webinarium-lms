@@ -1,5 +1,5 @@
 "use server"
-import { Course as PrismaCourse } from '@prisma/client';
+import { Course as PrismaCourse, User } from '@prisma/client';
 import fs from 'fs';
 import path from 'path';
 import { db } from '@/lib/db';
@@ -41,4 +41,17 @@ export const UploadImage = async (course: PrismaCourse, file: File) => {
         where: { id: media.id },
         data: { url: filePath },
     });
+}
+
+export const UploadImageToProfile = async (userId: string, file: File) => {
+    const fileExtension = path.extname(file.name);
+    const fileName = `${userId}${fileExtension}`;
+    const filePath = `/media/user/images/${fileName}`;
+    const fullFilePath = path.join(PUBLIC_DIRECTORY, filePath);
+
+    fs.mkdirSync(path.dirname(fullFilePath), { recursive: true });
+    const imageData = await file.arrayBuffer();
+    fs.appendFileSync(fullFilePath, Buffer.from(imageData));
+
+    return filePath; 
 }
