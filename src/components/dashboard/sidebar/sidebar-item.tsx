@@ -13,7 +13,6 @@ interface SidebarItemProps {
 export const SidebarItem = ({ icon: Icon, label, href }: SidebarItemProps) => {
 
     const pathName = usePathname()
-    const router = useRouter()
 
     const isActive = (pathName === "/" && href === "/") || pathName === href || pathName?.startsWith(`${href}/`)
 

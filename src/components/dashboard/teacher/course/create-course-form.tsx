@@ -20,8 +20,9 @@ import { useRouter } from '@/navigation'
 import { CreateCourse } from "@/actions/course/create-course";
 import {useTranslations} from "next-intl";
 import {ROUTES} from "@/config/routes";
+import { FloatingInput } from "@/components/custom-ui/floating-input";
 
-export const AddCourseForm = () => {
+export const CreateCourseForm = () => {
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
@@ -59,29 +60,32 @@ export const AddCourseForm = () => {
 
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="flex-col space-y-2">
                 <FormField
                     control={form.control}
                     name="title"
                     render={({field}) => (
                         <FormItem>
-                            <FormLabel>Название курса</FormLabel>
+                            <FormLabel htmlFor="title" className={error && 'text-red-500'}>Название курса</FormLabel>
                             <FormControl>
                                 <Input
                                     {...field}
                                     disabled={isPending}
-                                    placeholder="Пример: Как печь пирожки с капустой (5 секретов от деревенской бабушки)"
-                                    type="text"
+                                    placeholder="Пример: Основы программирования на Python"
                                 />
                             </FormControl>
                             <FormMessage/>
                         </FormItem>
                     )}
                 />
+            </div>
 
                 <FormError message={error}/>
                 <FormSuccess message={success}/>
 
                 <Button className="mt-4" type="submit" disabled={isPending}>Продолжить</Button>
+
+ 
             </form>
         </Form>
 

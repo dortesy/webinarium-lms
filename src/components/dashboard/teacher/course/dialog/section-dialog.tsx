@@ -41,9 +41,6 @@ const SectionDialog = React.memo(({ dialogTitle, dialogTrigger, dialogDescriptio
         }
     });
 
-    console.log('rendered section dialog')
-
-    console.log(form.getValues())
 
     useEffect(() => {
         form.reset(defaultValues);

@@ -164,7 +164,7 @@ model Course {
   duration    Int?
   level       CourseLevel?
   language    Language?
-  image       Media?         @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  image       Media?         @relation(fields: [imageId], references: [id])
   imageId     String?        @unique
   status      CourseStatus? // DRAFT, PUBLISHED, ARCHIVED - TODO NOT ACTIVE RIGHT NOW
   published   Boolean        @default(false)

@@ -1,6 +1,12 @@
+'use client';
+
 import { ROUTES } from "@/config/routes";
-import {useContext} from "react";
-import {CourseContext} from "@/context/course-context";
+import { useContext, useEffect, useRef, useState } from "react";
+import { CourseContext } from "@/context/course-context";
+import { usePathname, useRouter } from "@/navigation";
+import { useSearchParams } from "next/navigation";
+import { getCourseById } from "@/lib/course/course-helper";
+import { Course } from "@prisma/client";
 
 type BreadcrumbItem = {
     label: string;
@@ -13,9 +19,9 @@ const breadcrumbItemsMap: Record<string, BreadcrumbItem> = {
         label: "Главная",
         href: ROUTES.HOME,
         children: {
-            [ROUTES.TEACHER.MAIN]: {
+            [ROUTES.DASHBOARD]: {
                 label: "Панель управления",
-                href: ROUTES.TEACHER.MAIN,
+                href: ROUTES.DASHBOARD,
                 children: {
                     [ROUTES.TEACHER.COURSES]: {
                         label: "Мои курсы",
@@ -52,10 +58,28 @@ const breadcrumbItemsMap: Record<string, BreadcrumbItem> = {
 };
 
 export const GetBreadcrumbItems = (pathname: string): BreadcrumbItem[] => {
+    const [courseTitle, setCourseTitle] = useState<string>("");
+
+    useEffect(() => {
+        const courseRegex = /\/courses\/([a-zA-Z0-9-]+)/;
+        const match = pathname.match(courseRegex);
+
+        if (match) {
+            const courseId = match[1];
+            fetchCourse(courseId);
+        }
+
+        async function fetchCourse(courseId: string) {
+            const courseData = await getCourseById(courseId);
+            if (courseData) {
+                setCourseTitle(courseData.title);
+            }
+        }
+    }, [pathname]);
+
     const pathSegments = pathname.split("/").filter(Boolean);
     let currentItem = breadcrumbItemsMap[ROUTES.HOME];
     const items: BreadcrumbItem[] = [currentItem];
-    const courseData = useContext(CourseContext);
     let currentPath = "";
 
     for (const segment of pathSegments) {
@@ -72,7 +96,7 @@ export const GetBreadcrumbItems = (pathname: string): BreadcrumbItem[] => {
                 currentItem = currentItem.children![dynamicRoute];
                 items.push({
                     ...currentItem,
-                    label: courseData.courseTitle || currentItem.label,
+                    label: courseTitle || currentItem.label,
                     href: currentPath,
                 });
             }

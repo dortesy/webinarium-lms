@@ -24,7 +24,6 @@ const SearchableSelect = React.memo(({
                                value, disabled, onChange
                            }: SearchableSelectProps) => {
 
-    console.log('rendering searchable select')
 
 
     const [open, setOpen] = React.useState(false)

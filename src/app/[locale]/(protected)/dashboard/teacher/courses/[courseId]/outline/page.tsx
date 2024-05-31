@@ -50,8 +50,8 @@ export default async function CourseOutlinePage({ params }: { params: { courseId
   return (
       <div className="h-full">
           <h2 className="text-4xl font-extrabold dark:text-white">{t('pageTitle')}</h2>
-          <p className="my-4 text-sm text-gray-500">{t('pageDescription')}</p>
-
+          <p className="my-4 text-sm text-gray-500">{t.rich('pageDescription', { br: () => <br /> })}</p>
+         
             {/* Section component */}
 
             <CourseSections initialSections={course.sections} courseId={course.id} title={course.title} />

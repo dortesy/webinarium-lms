@@ -37,7 +37,7 @@ const SectionItem = ({ section, onDelete, onSubmit }:SectionItemProps ) => {
 
     return (
         <div  style={style} ref={setNodeRef} >
-         <div className="flex justify-between items-center py-3 px-6 rounded-lg mt-3 bg-white shadow-sm" >
+         <div className="flex justify-between items-center py-3 px-6 rounded-lg mt-3 bg-stone-50 shadow-sm" >
             <div>
                 <h3 className="text-lg font-semibold">{section.title}</h3>
                 <p className="text-sm">{section.description}</p>

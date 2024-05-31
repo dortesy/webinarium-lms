@@ -30,7 +30,6 @@ const ImageDropzone = React.forwardRef<HTMLDivElement, DropzoneProps>(
         { className, classNameWrapper, handleOnDrop, resetFileInput, file, ...props },
         ref
     ) => {
-        console.log('rendering image dropzone')
 
 
         const [fileUrl, setFileUrl] = useState<string | null>(file ? file.name : null)

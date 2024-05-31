@@ -7,13 +7,13 @@ import {
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
 import {ROUTES} from "@/config/routes";
-import {Link, usePathname} from "@/navigation";
+import {Link, usePathname, useRouter} from "@/navigation";
 import {GetBreadcrumbItems} from "@/components/dashboard/breadcrumbs/breadcrumbItems";
 import {Fragment} from "react";
 export const Breadcrumbs = () => {
     const pathname = usePathname();
     const items = GetBreadcrumbItems(pathname);
-
+    
     return (
         <Breadcrumb className="pl-8 pt-8 pb-4 ">
             <BreadcrumbList>

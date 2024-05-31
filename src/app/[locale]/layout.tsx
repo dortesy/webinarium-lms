@@ -39,8 +39,8 @@ const RootLayout: React.FC<Props> = async ({
                             <Header/>
                             <main className="lg:max-w-screen-lg  mx-auto flex-1 w-full box-content">
                                 {children}
+                                <Toaster />
                             </main>
-                            <Toaster />
                             <Footer/>
                         </div>
                     </SessionProvider>

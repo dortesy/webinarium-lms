@@ -2,14 +2,14 @@
 
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import {Field, useController, UseControllerProps} from "react-hook-form";
 import Underline from "@tiptap/extension-underline";
 import Toolbar from "@/components/rich-editor/toolbar";
 import {TextAlign} from "@tiptap/extension-text-align";
 
-import { useFormContext } from 'react-hook-form';
 import BaseHeading from '@tiptap/extension-heading'
 import { mergeAttributes } from '@tiptap/core'
+import { memo, useCallback, useMemo } from 'react';
+import { debounce } from '@/lib/utils';
 
 type Levels = 1 | 2 | 3 | 4 | 5 | 6
 
@@ -21,6 +21,9 @@ const classes: Record<Levels, string> = {
     5: 'text-lg',
     6: 'text-base',
 }
+
+
+
 
 export const Heading = BaseHeading.configure({ levels: [1, 2, 3, 4, 5, 6] }).extend({
     renderHTML({ node, HTMLAttributes }) {
@@ -47,11 +50,15 @@ interface RichEditorProps {
 
 const RichEditor = ({ value, name, disabled, onChange, }: RichEditorProps) => {
 
-    console.log('render rich editor')
+    console.log('render')
 
-    const editor = useEditor({
-        extensions: [
-            StarterKit.configure({
+    const debouncedUpdate = useCallback(debounce((content: string) => {
+        onChange(content);
+    }, 300), [])
+
+    
+    const extensions = useMemo(() => [
+            StarterKit.configure({  
                 heading: false,
                 bulletList: {
                     HTMLAttributes: {
@@ -91,19 +98,26 @@ const RichEditor = ({ value, name, disabled, onChange, }: RichEditorProps) => {
                 },
             )
 
-        ],
-        editorProps: {
+        ], []);
+
+
+        const editorProps = useMemo(() => ({
             attributes: {
                 class: 'rounded-md border min-h-[150px] border-input bg-white p-2',
             },
-        },
+        }), [])
 
-        content: value || '',
+        const editor = useEditor({
+            extensions,
+            editorProps,
+            content: value || '',
+            onUpdate: ({ editor }) => {
+                 debouncedUpdate(editor.getHTML());
+                //onChange(editor.getHTML())
+            },
+        })
 
-        onUpdate({ editor }) {
-            onChange(editor.getHTML())
-        },
-    })
+       
 
     if(!editor) {
         return null
@@ -117,4 +131,4 @@ const RichEditor = ({ value, name, disabled, onChange, }: RichEditorProps) => {
     )
 }
 
-export default RichEditor
+export default memo(RichEditor)

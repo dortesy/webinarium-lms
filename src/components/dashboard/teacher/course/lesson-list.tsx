@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from "next-intl";
-import { useState, useTransition } from "react";
+import { useId, useRef, useState, useTransition } from "react";
 import LessonItem from "./lesson-item";
 import LessonDialog from "./dialog/lesson-dialog";
 import { Plus } from "lucide-react";
@@ -16,7 +16,7 @@ import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import EditLessonPosition from "@/actions/course/edit-lesson-position";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "@/components/ui/use-toast";
 
 interface LessonListProps {
   initialLessons: LessonWithVideo[];
@@ -28,7 +28,6 @@ const LessonList = ({ initialLessons, sectionId }: LessonListProps) => {
   const [lessons, setLessons] = useState<LessonWithVideo[]>(initialLessons);
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | undefined>("");
-  const { toast } = useToast()
 
   const handleSubmit = (values: LessonSchemaType) => {
     values.sectionId = sectionId
@@ -149,10 +148,11 @@ const LessonList = ({ initialLessons, sectionId }: LessonListProps) => {
     });
   };
 
+  const id = useId()
 
   return (
     <div className="flex flex-col gap-4 pt-4">
-        <DndContext onDragEnd={handleDragEnd} modifiers={[restrictToVerticalAxis]} collisionDetection={closestCenter}>
+        <DndContext onDragEnd={handleDragEnd} id={id} modifiers={[restrictToVerticalAxis]} collisionDetection={closestCenter}>
             <SortableContext items={lessons.map(lesson => lesson.id)} strategy={verticalListSortingStrategy}>
                 {lessons.length > 0 && <div className="flex flex-col gap-4">
                     {lessons.map((lesson, index) => (

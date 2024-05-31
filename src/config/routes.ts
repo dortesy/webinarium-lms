@@ -1,7 +1,7 @@
 export const ROUTES = {
     HOME: '/',
+    DASHBOARD: '/dashboard',
     TEACHER: {
-        MAIN: '/dashboard/teacher',
         PROFILE: '/dashboard/teacher/profile',
         COURSES: '/dashboard/teacher/courses',
         ADD_COURSE: '/dashboard/teacher/courses/add',

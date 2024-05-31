@@ -8,6 +8,7 @@ import {CourseLanguage, CourseLevel} from "@/lib/enums/course";
 import DOMPurify from 'dompurify';
 import { JSDOM } from 'jsdom';
 import { UploadImage } from "@/lib/media/upload-image";
+import { deleteFile } from "@/lib/media/delete-file";
 
 
 
@@ -78,11 +79,15 @@ export const EditCourse = async (values: EditCourseSchemaType, formData: FormDat
             await UploadImage(course, validatedImage);
         }
         if (!validatedImage && imageId) {
-            await db.media.delete({
+
+            const deletedMedia = await db.media.delete({
                 where: {
                     id: imageId,
                 },
             });
+
+            deleteFile(deletedMedia.url)
+
         }
 
 

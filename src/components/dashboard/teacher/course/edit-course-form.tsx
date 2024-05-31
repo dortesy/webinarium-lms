@@ -21,6 +21,8 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import ImageDropzone from "@/components/custom-ui/image-dropzone";
 import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";
+import { FloatingInput } from '@/components/custom-ui/floating-input';
+import { cn } from '@/lib/utils';
 interface CourseWithMedia extends PrismaCourse {
     image?: Media | null; // Add the image property here
 }
@@ -151,6 +153,7 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
             </div>
 
             <Controller name="description" control={control} render={({field}) => (
+                
                 <div className="flex-col space-y-2">
                     <Label htmlFor="description" className={errors.description && 'text-red-500'}>{t("description")}</Label>
                     <RichEditor value={field.value} name={field.name} onChange={field.onChange} disabled={isPending}/>

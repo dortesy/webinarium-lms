@@ -13,8 +13,9 @@ import {
 } from "@/components/ui/dialog"
 import {useState, useTransition} from "react";
 import {CourseDeletion} from "@/actions/course/course-deletion";
-import {useToast} from "@/components/ui/use-toast";
 import DeleteDialog from "@/components/dashboard/teacher/course/dialog/delete-dialog";
+import { toast } from "@/components/ui/use-toast";
+import Image from "next/image";
 
 interface CourseWithImage extends Course {
     image?: Media | null;
@@ -25,7 +26,6 @@ interface CourseListProps {
 }
 const CourseList = ({initialCourses}: CourseListProps) => {
     const [courses, setCourses] = useState(initialCourses);
-    const { toast } = useToast()
     const [isPending, startTransition] = useTransition();
     const removeCourse = (id: string) => () => {
         startTransition(() => {
@@ -63,7 +63,7 @@ const CourseList = ({initialCourses}: CourseListProps) => {
                             <CardDescription>{course.category?.name}</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            {course.image && <img src={course.image.url} alt={course.title} className="w-full h-40 object-cover" />}
+                            {course.image && <Image src={course.image.url} alt={course.title} width={200} height={200} className="w-full h-40 object-cover" />}
                         </CardContent>
                         <CardFooter className="flex justify-between">
                           <a href={ROUTES.TEACHER.COURSE.DETAILS(course.id)}><Button variant="outline">Редактировать</Button></a>
