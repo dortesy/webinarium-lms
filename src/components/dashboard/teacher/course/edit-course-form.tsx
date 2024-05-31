@@ -201,7 +201,7 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps ) => {
                 control={control}
                 name="file"
                 render={({field}) => (
-                    <div className="w-full">
+                    <div className="w-full md:w-1/2">
                         <Label htmlFor="file" className={error && 'text-red-500'}>Изображение для курса</Label>
                             <ImageDropzone
                                 {...field}

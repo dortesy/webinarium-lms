@@ -99,7 +99,7 @@ const ImageDropzone = React.forwardRef<HTMLDivElement, DropzoneProps>(
             <Card
                 ref={ref}
                 className={cn(
-                    `border-2 border-dashed bg-muted hover:cursor-pointer hover:border-muted-foreground/50`,
+                    `border-2 w-full border-dashed bg-muted hover:cursor-pointer hover:border-muted-foreground/50`,
                     classNameWrapper
                 )}
             >
@@ -111,7 +111,7 @@ const ImageDropzone = React.forwardRef<HTMLDivElement, DropzoneProps>(
                 >
                     <div className="flex  text-muted-foreground">
                         <div className="flex flex-col gap-4 w-full">
-                            <div className="flex flex-col items-center justify-center p-5 space-y-4">
+                            <div className="flex flex-col items-center justify-center p-5 space-y-4 text-center">
                                 {!fileUrl && (
                                     <>
                                         <ImageUp className="w-8 h-8" />
@@ -121,25 +121,26 @@ const ImageDropzone = React.forwardRef<HTMLDivElement, DropzoneProps>(
                                     </>
                                 )}
                                 {fileUrl && (
-                                    <div className="relative max-w-40 items-center p-3 space-y-4 bg-white shadow-md rounded-lg transition-all duration-300 ease-in-out hover:shadow-lg">
+                                    <div className="relative  items-cen shadow-md rounded-lg transition-all duration-300 ease-in-out hover:shadow-lg">
                                         <button
                                             type="button"
                                             onClick={handleRemoveImage}
-                                            className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-md hover:bg-gray-100 focus:outline-none"
+                                            className="absolute top-[-10px] right-[-10px] p-1 bg-white rounded-full shadow-md hover:bg-gray-100 focus:outline-none"
                                         >
                                             <CircleX />
                                         </button>
-                                        <div className="w-32 max-h-48 rounded-t-lg overflow-hidden">
+
+                                        <div className="w-30 h-30 rounded-t-lg overflow-hidden">
                                             <Image
                                                 src={fileUrl}
                                                 alt={fileName}
                                                 placeholder={"empty"}
-                                                width={100}
-                                                height={100}
-                                                className="object-contain w-full"
+                                                width={130}
+                                                height={70}
+                                                className="object-contain w-full rounded-lg"
                                             />
                                         </div>
-                                        <p className="text-sm font-medium text-gray-800 truncate w-full px-2 border-t pt-3">{fileName}</p>
+                                        
                                     </div>
                                 )}
                             </div>
