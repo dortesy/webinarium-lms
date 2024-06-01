@@ -65,7 +65,7 @@ const SearchableSelect = React.memo(({
                 <Command>
                     <CommandInput placeholder="Поиск..." />
                     <CommandList>
-                        <CommandEmpty>No item found.</CommandEmpty>
+                        <CommandEmpty>Ничего не найдено</CommandEmpty>
                         {items.map((item) => (
                             <CommandGroup heading={item.label} key={item.value}>
 

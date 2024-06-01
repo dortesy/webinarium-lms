@@ -67,7 +67,7 @@ export const SidebarRoutes = () => {
                                 icon={route.icon}
                             />
                         ))}
-                        <PublishCourse />
+                        <PublishCourse courseId={courseId} />
                     </>
                 ) : (
                     mainRoutes.map((route) => (

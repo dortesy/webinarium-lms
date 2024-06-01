@@ -134,23 +134,7 @@ export const EditProfileForm = ({ user }: { user: User }) => {
             )} />
 
 
-            <FormField name="file" render={({ field }) => (
-                    <FormItem className="w-full md:w-1/2">
-                        <FormLabel>{t('imageLabel')}</FormLabel>
-                        <FormControl>
-                            <ImageDropzone
-                                    {...field}
-                                    handleOnDrop={handleOnDrop}
-                                    resetFileInput={resetFileInput}
-                                    file={field.value}
-                                    id="file"
-                                    t={t}
-                                />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />   
-
+            
 
             <h2 className="text-xl font-bold mb-2 mt-4">{t('social')}</h2>
 
@@ -220,6 +204,26 @@ export const EditProfileForm = ({ user }: { user: User }) => {
                     </FormItem>
                 )} />
             </div>
+
+            <FormField name="file" render={({ field }) => (
+                    <FormItem className="w-full md:w-1/2 mb-8">
+                        <FormLabel>{t('imageLabel')}</FormLabel>
+                        <FormControl>
+                            <ImageDropzone
+                                    {...field}
+                                    handleOnDrop={handleOnDrop}
+                                    resetFileInput={resetFileInput}
+                                    file={field.value}
+                                    id="file"
+                                    t={t}
+                                />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )} />   
+
+
+
 
             <FormError message={error || undefined}/>
             <FormSuccess message={success || undefined}/>

@@ -49,7 +49,6 @@ const CourseList = ({initialCourses}: CourseListProps) => {
                 if('success' in data){
                     setCourses(courses.filter(course => course.id !== id));
                     toast({
-                        variant: "success",
                         title: "Курс удален",
                         description: data.success,
                     })
@@ -76,7 +75,7 @@ const CourseList = ({initialCourses}: CourseListProps) => {
                 {courses.map(course => (
 
 
-                    <div key={course.id} className="shadow-sm rounded-xl relative transition-all duration-300 hover:shadow-md">
+                    <div key={course.id} className="shadow-md rounded-xl relative transition-all duration-300 hover:shadow-lg">
                          <Link href={ROUTES.TEACHER.COURSE.DETAILS(course.id)} className="absolute inset-0 w-full h-full z-10">
                          </Link>
                         <div className="rounded-t-xl overflow-hidden">

@@ -28,10 +28,7 @@ export const Header = () => {
         <header className="h-20 w-full border-b border-gray-200 px4">
             <div className="lg:max-w-screen-lg mx-auto flex items-center justify-between h-full">
                 <div className="pt-8 pl-4 pb-7 flex items-center gap-x-3">
-                    <Image src="/logo.svg" height={40} width={40} alt="Webinarium"/>
-                    <h1 className="text-2xl font-black">
-                        <a href="/"><span className="hidden md:block">Webinarium</span></a>
-                    </h1>
+                    <a href="/"><Image src="/logo.svg" height={120} width={200} alt="Webinarium"/></a>
                 </div>
                 <div className="flex items-center gap-x-3 pt-8 pr-4 pb-7">
                     <LangSwitcher locale={locale}/>
