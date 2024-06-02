@@ -4,15 +4,56 @@ import { TrashIcon } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from 'next-intl';
+import { useRef } from "react";
+import videojs from 'video.js';
+import 'videojs-http-source-selector';
+import VideoJS from '@/components/media/videoJS';
+import 'videojs-http-source-selector';
+
 
 const VideoData = ({ video, onDelete }: { video: Media, onDelete: () => void }) => {
+    const playerRef = useRef<any>(null);
+
+    const videoJsOptions: any = {
+        controls: true,
+        responsive: true,
+        fluid: true,
+        experimentalSvgIcons: true,
+        sources: [
+          {
+            src: video.url,
+            type: 'application/x-mpegURL',
+          },
+        ],
+        
+        plugins: {
+            httpSourceSelector:
+            {
+              default: 'auto'
+            }
+          },
+       
+      };
+
+
+  const handlePlayerReady = (player: any) => {
+    playerRef.current = player;
+
+
+    player.on('waiting', () => {
+      videojs.log('player is waiting');
+    });
+
+    player.on('dispose', () => {
+      videojs.log('player will dispose');
+    });
+
+  };
+
     const t = useTranslations('VideoData');
     return (
         <div className="flex flex-row p-4 gap-4 border border-gray-150 rounded-lg shadow-sm ">
-            <video controls className="w-72 rounded-lg ">
-                <source src={video.url} type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
+            <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
             <div className="flex flex-col justify-between w-full">
                 <div className="flex flex-col">
                     <h3 className="text-xl font-semibold mb-2">{video.title}</h3>
@@ -24,7 +65,7 @@ const VideoData = ({ video, onDelete }: { video: Media, onDelete: () => void }) 
                 <div className="text-right">
 
                 <AlertDialog>
-                    <AlertDialogTrigger>
+                    <AlertDialogTrigger asChild>
                         <Button  variant="ghost">
                             <TrashIcon size={16} className="mr-2" /> {t('deleteVideo')}
                         </Button>

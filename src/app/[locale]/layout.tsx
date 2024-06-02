@@ -8,6 +8,7 @@ import { SessionProvider } from "next-auth/react";
 import {NextIntlClientProvider} from "next-intl";
 import {getMessages} from "@/i18n";
 import {Toaster} from "@/components/ui/toaster";
+import { DotBackgroundDemo } from "@/components/custom-ui/dot-background";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -42,7 +43,9 @@ const RootLayout: React.FC<Props> = async ({
                                 <Toaster />
                             </main>
                             <Footer/>
+
                         </div>
+                        
                     </SessionProvider>
                 </NextIntlClientProvider>
                 </body>

@@ -5,6 +5,7 @@ import LangSwitcher from "@/components/lang-switcher";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {Sidebar} from "@/components/dashboard/sidebar/sidebar";
 import {Menu} from "lucide-react";
+import {Navbar} from "@/components/custom-ui/navbar";
 
 export const Header = () => {
 
@@ -35,7 +36,6 @@ export const Header = () => {
                     <LoginPanel/>
                     <MobileSidebar />
                 </div>
-
                 </div>
         </header>
 );

@@ -76,8 +76,8 @@ const CourseList = ({initialCourses}: CourseListProps) => {
 
 
                     <div key={course.id} className="shadow-md rounded-xl relative transition-all duration-300 hover:shadow-lg">
-                         <Link href={ROUTES.TEACHER.COURSE.DETAILS(course.id)} className="absolute inset-0 w-full h-full z-10">
-                         </Link>
+                         <a href={ROUTES.TEACHER.COURSE.DETAILS(course.id)} className="absolute inset-0 w-full h-full z-10">
+                         </a>
                         <div className="rounded-t-xl overflow-hidden">
                             {course.image && <Image src={course.image.url} alt={course.title} width={200} height={200} className="w-full h-40 object-cover" />}
                         </div>

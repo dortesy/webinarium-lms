@@ -1,3 +1,4 @@
+import { DotBackgroundDemo } from '@/components/custom-ui/dot-background';
 import TestDummy from '@/components/test-dummy';
 import TestToast from '@/components/test-toast';
 import {getTranslations} from 'next-intl/server';
