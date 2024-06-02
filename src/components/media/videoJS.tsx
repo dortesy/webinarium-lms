@@ -1,8 +1,8 @@
 import React from 'react';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
-import  'videojs-http-source-selector';
-
+import 'videojs-http-source-selector';
+import 'videojs-sprite-thumbnails'
 interface VideoJSProps {
   options: any;
   onReady?: (player: any) => void;

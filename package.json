@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "rm -rf node_modules/videojs-http-source-selector/node_modules"
+    "postinstall": "rm -rf node_modules/videojs-http-source-selector/node_modules",
+    "worker": "tsx src/jobs/worker.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -59,6 +60,7 @@
     "@uppy/progress-bar": "^3.1.1",
     "@uppy/react": "^3.3.0",
     "bcryptjs": "^2.4.3",
+    "bullmq": "^5.7.14",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^0.2.1",
@@ -70,6 +72,7 @@
     "framer-motion": "^11.2.10",
     "glob": "^10.4.1",
     "hono": "^4.3.11",
+    "ioredis": "^5.4.1",
     "isomorphic-dompurify": "^2.7.0",
     "jsdom": "^24.0.0",
     "lucide-react": "^0.363.0",
@@ -94,6 +97,7 @@
     "uuid": "^9.0.1",
     "vaul": "^0.9.1",
     "videojs-resolution-switcher-vjs7": "^1.0.0",
+    "videojs-sprite-thumbnails": "^2.2.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -101,7 +105,7 @@
     "@types/dompurify": "^3.0.5",
     "@types/fluent-ffmpeg": "^2.1.24",
     "@types/jsdom": "^21.1.6",
-    "@types/node": "^20",
+    "@types/node": "^20.13.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/uuid": "^9.0.8",

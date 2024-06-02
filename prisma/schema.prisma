@@ -98,15 +98,15 @@ model User {
   wishlist        Wishlist[]
   Media           Media[]
 
-  firstName       String?
-  lastName        String?
-  bio             String?
-  telegram        String?
-  phone           String?
-  website         String?
-  instagram       String?
-  facebook        String?
-  youtube         String?
+  firstName String?
+  lastName  String?
+  bio       String?
+  telegram  String?
+  phone     String?
+  website   String?
+  instagram String?
+  facebook  String?
+  youtube   String?
 }
 
 model VerificationToken {
@@ -201,8 +201,6 @@ model Lesson {
   progress    UserProgress[]
 }
 
-
-
 model Media {
   id          String    @id @default(uuid())
   url         String    @unique
@@ -219,9 +217,8 @@ model Media {
   lessonId    String?   @unique
   lesson      Lesson?   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   isPublic    Boolean   @default(false)
+  isReady     Boolean   @default(false)
 }
-
-
 
 model Enrollment {
   id          Int               @id @default(autoincrement())

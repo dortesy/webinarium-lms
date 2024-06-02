@@ -16,6 +16,7 @@ import { LessonWithVideo } from "@/lib/types/course";
 import deleteVideo from "@/actions/course/delete-video";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from '@dnd-kit/utilities';
+import VideoDataSkeleton from "@/components/custom-ui/video-data-skeleton";
 
 type TranslationsFunction = ReturnType<typeof useTranslations>;
 
@@ -111,13 +112,19 @@ const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoU
       </div>
       </div>
 
-      {isVideoBlockVisible ? (
+        {isVideoBlockVisible ? (
             lesson.video ? (
-               <VideoData video={lesson.video} onDelete={handleVideoDelete}/>
+                lesson.video.isReady ? (
+                    <VideoData video={lesson.video} onDelete={handleVideoDelete} />
+                ) : (
+                    <VideoDataSkeleton/>
+                )
             ) : (
-              <VideoDropzone lessonId={lesson.id} sectionId={lesson.sectionId} onVideoUpload={handleVideoUpload}/>
+                <VideoDropzone lessonId={lesson.id} sectionId={lesson.sectionId} onVideoUpload={handleVideoUpload} />
             )
-            ): <Separator /> }
+        ) : (
+            <Separator />
+        )}
           
     </div>
   );

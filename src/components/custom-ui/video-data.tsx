@@ -6,9 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useTranslations } from 'next-intl';
 import { useRef } from "react";
 import videojs from 'video.js';
-import 'videojs-http-source-selector';
 import VideoJS from '@/components/media/videoJS';
-import 'videojs-http-source-selector';
 
 
 const VideoData = ({ video, onDelete }: { video: Media, onDelete: () => void }) => {
@@ -30,9 +28,17 @@ const VideoData = ({ video, onDelete }: { video: Media, onDelete: () => void }) 
             httpSourceSelector:
             {
               default: 'auto'
+            },
+            spriteThumbnails: {
+                interval: 5,
+                url: `/media/lessons/videos/${video.id}/thumbnail-sprite-{index}.jpg`,
+                width: 160,
+                height: 90,
+                columns: 5,
+                rows: 5
             }
           },
-       
+
       };
 
 
