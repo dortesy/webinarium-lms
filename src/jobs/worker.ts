@@ -6,7 +6,7 @@ import { transcodeVideo } from '@/jobs/processors';
 const worker = new Worker('transcodingQueue', async job => {
     if (job) {
         const { filePath, mediaId } = job.data;
-        await transcodeVideo(filePath, mediaId);
+        return await transcodeVideo(filePath, mediaId);
     }
 }, { connection });
 
@@ -17,7 +17,8 @@ const emitEvent = (eventName: string, data: any) => {
 
 worker.on('completed', job => {
     console.log(`Job ${job.id} has completed!`);
-    emitEvent('jobCompleted', { jobId: job.id, status: 'completed' });
+    console.log(job)
+    emitEvent('jobCompleted', { jobId: job.id, status: 'completed', data: job.returnvalue });
 });
 
 worker.on('failed', (job, err) => {

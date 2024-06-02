@@ -18,6 +18,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from '@dnd-kit/utilities';
 import VideoDataSkeleton from "@/components/custom-ui/video-data-skeleton";
 import socket from "@/socket";
+import { getLessonById } from '@/lib/course/course-helper';
 
 type TranslationsFunction = ReturnType<typeof useTranslations>;
 
@@ -40,24 +41,31 @@ const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoU
         transition,
     };
 
-    console.log('vpp')
+    console.log('Render LessonItem', lesson, index);
 
-    useEffect(() => {
-        socket.on('jobCompleted', (data) => {
-            console.log('jobCompleted', data);
-            s(data);
-        });
+  useEffect(() => {
+    const handleJobCompleted = async (data:any) => {
+      console.log('jobCompleted', data);
+      setJobStatus(data);
+      const lessonId = data.data; // Assuming data.data contains the lesson ID
+      const result = await getLessonById(lessonId);
+      if (result) {
+        handleVideoUpload(result)
+      }
+    };
 
-        socket.on('jobFailed', (data) => {
-            console.log('jobFailed', data);
-            setJobStatus(data);
-        });
+    socket.on('jobCompleted', handleJobCompleted);
 
-        return () => {
-            socket.off('jobCompleted');
-            socket.off('jobFailed');
-        };
-    }, []);
+    socket.on('jobFailed', (data) => {
+      console.log('jobFailed', data);
+      setJobStatus(data);
+    });
+
+    return () => {
+      socket.off('jobCompleted', handleJobCompleted);
+      socket.off('jobFailed');
+    };
+  }, []);
 
     const [isVideoBlockVisible, setIsVideoBlockVisible] = useState(isNew || false);
 

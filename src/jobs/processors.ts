@@ -13,7 +13,7 @@ const generateThumbnailSprites = async (
     const totalDurationInSeconds = await new Promise<number>((resolve, reject) => {
         ffmpeg.ffprobe(filePath, (err, metadata) => {
             if (err) reject(err);
-            else resolve(metadata.format.duration);
+            else resolve(metadata.format.duration!);
         });
     });
 
@@ -116,8 +116,10 @@ export const transcodeVideo = async (filePath: string, mediaId: string) => {
     await generateThumbnailSprites(filePath, outputDir);
 
     const hlsUrl = `/media/lessons/videos/${mediaId}/master.m3u8`;
-    await db.media.update({
+    const updatedMedia = await db.media.update({
         where: { id: mediaId },
         data: { url: hlsUrl, isReady: true },
     });
+
+    return updatedMedia.lessonId;
 };

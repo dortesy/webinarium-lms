@@ -11,7 +11,6 @@ app.prepare().then(() => {
     const io = new SocketServer(httpServer);
     const subClient = connection.duplicate();
 
-    console.log(xxx)
 
     io.on('connection', (socket) => {
         console.log('a user connected');
