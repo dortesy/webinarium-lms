@@ -7,7 +7,7 @@ import DeleteDialog from "./dialog/delete-dialog";
 import { useTranslations } from "next-intl";
 import { LessonSchemaType } from "@/schemas/courses/course.schema";
 import DeleteLesson from "@/actions/course/delete-lesson";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator"
 import VideoDropzone from "@/components/custom-ui/video-dropzone";
@@ -17,6 +17,7 @@ import deleteVideo from "@/actions/course/delete-video";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from '@dnd-kit/utilities';
 import VideoDataSkeleton from "@/components/custom-ui/video-data-skeleton";
+import socket from "@/socket";
 
 type TranslationsFunction = ReturnType<typeof useTranslations>;
 
@@ -33,10 +34,30 @@ interface LessonItemProps {
 
 const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoUpload, isNew }: LessonItemProps) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: lesson.id });
+    const [jobStatus, setJobStatus] = useState(null);
     const style = {
         transform: CSS.Translate.toString(transform),
         transition,
     };
+
+    console.log('vpp')
+
+    useEffect(() => {
+        socket.on('jobCompleted', (data) => {
+            console.log('jobCompleted', data);
+            s(data);
+        });
+
+        socket.on('jobFailed', (data) => {
+            console.log('jobFailed', data);
+            setJobStatus(data);
+        });
+
+        return () => {
+            socket.off('jobCompleted');
+            socket.off('jobFailed');
+        };
+    }, []);
 
     const [isVideoBlockVisible, setIsVideoBlockVisible] = useState(isNew || false);
 

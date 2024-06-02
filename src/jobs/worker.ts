@@ -10,16 +10,19 @@ const worker = new Worker('transcodingQueue', async job => {
     }
 }, { connection });
 
+
+const emitEvent = (eventName: string, data: any) => {
+    connection.publish('job-events', JSON.stringify({ eventName, data }));
+};
+
 worker.on('completed', job => {
-    if (job) {
-        console.log(`Job ${job.id} has completed!`);
-    }
+    console.log(`Job ${job.id} has completed!`);
+    emitEvent('jobCompleted', { jobId: job.id, status: 'completed' });
 });
 
 worker.on('failed', (job, err) => {
-    if (job) {
-        console.log(`Job ${job.id} has failed with ${err.message}`);
-    }
+    console.log(`Job ${job?.id} has failed with ${err.message}`);
+    emitEvent('jobFailed', { jobId: job?.id, status: 'failed', error: err.message });
 });
 
 export { worker };
