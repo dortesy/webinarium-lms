@@ -5,14 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0671386-6180-44e4-bc97-0187818964e1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/lms.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/lms.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/img/hero-pattern.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/animations/comp.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/animations/studying.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/landing/hero-animation.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/landing/hero.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/lazy-lottie.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ui/flip-words.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/providers/query-client-provider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(landing)/header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(landing)/header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(landing)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(landing)/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/layout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/teacher/course/lesson-item.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/teacher/course/lesson-item.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jobs/processors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/jobs/processors.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jobs/worker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/jobs/worker.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/teacher/course/lesson-list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/teacher/course/lesson-list.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/test-dummy.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/test-dummy.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/media/delete-file.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/media/delete-file.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/media/upload-video.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/media/upload-video.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tailwind.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,20 +44,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "web-ide.project.structure",
-    "ts.external.directory.path": "/Users/sherzodsaidmaksumov/Documents/projects/lms/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/sherzodsaidmaksumov/Documents/projects/lms/public/img&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/sherzodsaidmaksumov/Documents/projects/lms/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/img" />
+      <recent name="$PROJECT_DIR$/src/animations" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -61,7 +81,8 @@
       <option name="presentableId" value="Default" />
       <updated>1717352877454</updated>
       <workItem from="1717352878698" duration="220000" />
-      <workItem from="1717353105647" duration="3407000" />
+      <workItem from="1717353105647" duration="19045000" />
+      <workItem from="1717457290053" duration="1319000" />
     </task>
     <servers />
   </component>

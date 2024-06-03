@@ -57,7 +57,7 @@ export const uploadVideo = async ({ lessonId, sectionId, video }: UploadVideoPro
     });
 
     const fileName = `${media.id}${fileExtension}`;
-    const newFilePath = `/media/lessons/videos/${fileName}`;
+    const newFilePath = `/media/lessons/videos/${media.id}/${fileName}`;
     const fullNewFilePath = path.join(PUBLIC_DIRECTORY, newFilePath);
 
     fs.mkdirSync(path.dirname(fullNewFilePath), { recursive: true });

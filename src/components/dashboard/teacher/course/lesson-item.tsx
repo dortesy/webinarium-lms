@@ -7,7 +7,7 @@ import DeleteDialog from "./dialog/delete-dialog";
 import { useTranslations } from "next-intl";
 import { LessonSchemaType } from "@/schemas/courses/course.schema";
 import DeleteLesson from "@/actions/course/delete-lesson";
-import {useEffect, useState} from "react";
+import { useEffect, useState, useTransition } from 'react';
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator"
 import VideoDropzone from "@/components/custom-ui/video-dropzone";
@@ -19,22 +19,26 @@ import { CSS } from '@dnd-kit/utilities';
 import VideoDataSkeleton from "@/components/custom-ui/video-data-skeleton";
 import socket from "@/socket";
 import { getLessonById } from '@/lib/course/course-helper';
+import { EditLesson } from '@/actions/course/edit-lesson';
+import { ZodError } from 'zod';
+import { toast } from '@/components/ui/use-toast';
 
 type TranslationsFunction = ReturnType<typeof useTranslations>;
 
 
 interface LessonItemProps {
-  lesson: LessonWithVideo;
+  initialLesson: LessonWithVideo;
   index: number;
   t: TranslationsFunction;
-  handleUpdate: (values: LessonSchemaType) => void;
   handleDelete: (lessonId: string) => void;
-  handleVideoUpload: (updatedLesson: LessonWithVideo) => void;
   isNew?: boolean; // Add this line
 }
 
-const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoUpload, isNew }: LessonItemProps) => {
+const LessonItem = ({ initialLesson, index, t,  handleDelete,  isNew }: LessonItemProps) => {
+    const [lesson, setLesson] = useState<LessonWithVideo>(initialLesson);
+
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: lesson.id });
+    const [isPending, startTransition] = useTransition();
     const [jobStatus, setJobStatus] = useState(null);
     const style = {
         transform: CSS.Translate.toString(transform),
@@ -44,28 +48,32 @@ const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoU
     console.log('Render LessonItem', lesson, index);
 
   useEffect(() => {
-    const handleJobCompleted = async (data:any) => {
-      console.log('jobCompleted', data);
+    const handleJobCompleted = async (data: any) => {
       setJobStatus(data);
       const lessonId = data.data; // Assuming data.data contains the lesson ID
-      const result = await getLessonById(lessonId);
-      if (result) {
-        handleVideoUpload(result)
+      const updatedLesson = await getLessonById(lessonId);
+      if (updatedLesson && lesson.id === updatedLesson.id) {
+        setLesson(updatedLesson);
+        toast({
+          title: 'Видео обработано',
+          description: 'Ваше видео было обработано и теперь доступно для просмотра',
+        })
       }
     };
 
-    socket.on('jobCompleted', handleJobCompleted);
-
-    socket.on('jobFailed', (data) => {
+    const handleJobFailed = (data: any) => {
       console.log('jobFailed', data);
       setJobStatus(data);
-    });
+    };
+
+    socket.on('jobCompleted', handleJobCompleted);
+    socket.on('jobFailed', handleJobFailed);
 
     return () => {
       socket.off('jobCompleted', handleJobCompleted);
-      socket.off('jobFailed');
+      socket.off('jobFailed', handleJobFailed);
     };
-  }, []);
+  }, [lesson.id]);
 
     const [isVideoBlockVisible, setIsVideoBlockVisible] = useState(isNew || false);
 
@@ -78,7 +86,24 @@ const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoU
     };
     
     const onSubmit = (values: LessonSchemaType) => {
-        handleUpdate(values);
+
+      startTransition(() => {
+        EditLesson(values).then((data) => {
+          if (Array.isArray(data) && data.every((item) => item instanceof ZodError)) {
+            console.error("Validation errors:", data);
+          } else if ('error' in data) {
+            console.error(data.error);
+            toast({
+              title: "Ошибка",
+              description: data.error,
+              variant: "destructive",
+            })
+          } else if ('lesson' in data) {
+            setLesson(data.lesson);
+          }
+        });
+      });
+
     };
 
     const onDelete = () => {
@@ -96,6 +121,12 @@ const LessonItem = ({ lesson, index, t, handleUpdate, handleDelete, handleVideoU
           console.error(result.error);
       }
   };
+
+
+    const handleVideoUpload = (updatedLesson: LessonWithVideo) => {
+
+        setLesson(updatedLesson);
+    };
   
 
   return (

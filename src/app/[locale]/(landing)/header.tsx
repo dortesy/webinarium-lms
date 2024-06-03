@@ -26,8 +26,8 @@ export const Header = () => {
     }
 
     return (
-        <header className="h-20 w-full border-b border-gray-200 px4">
-            <div className="lg:max-w-screen-lg mx-auto flex items-center justify-between h-full">
+        <header className="h-20 w-full px4">
+            <div className="lg:max-w-screen-2xl mx-auto flex items-center justify-between h-full">
                 <div className="pt-8 pl-4 pb-7 flex items-center gap-x-3">
                     <a href="/"><Image src="/logo.svg" height={120} width={200} alt="Webinarium"/></a>
                 </div>

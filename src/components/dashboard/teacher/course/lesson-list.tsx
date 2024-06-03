@@ -53,22 +53,7 @@ const LessonList = ({ initialLessons, sectionId }: LessonListProps) => {
 
   
     const handleUpdate = (values: LessonSchemaType) => {
-        startTransition(() => {
-            EditLesson(values).then((data) => {
-                if (Array.isArray(data) && data.every((item) => item instanceof ZodError)) {
-                    console.error("Validation errors:", data);
-                } else if ('error' in data) {
-                    console.error(data.error);
-                    toast({
-                        title: "Ошибка",
-                        description: data.error,
-                        variant: "destructive",
-                    })
-                } else if ('lesson' in data) {
-                    setLessons((prevLessons) => prevLessons.map(lesson => lesson.id === data.lesson.id ? data.lesson : lesson));
-                }
-            });
-        });
+
       };
 
 
@@ -156,7 +141,7 @@ const LessonList = ({ initialLessons, sectionId }: LessonListProps) => {
             <SortableContext items={lessons.map(lesson => lesson.id)} strategy={verticalListSortingStrategy}>
                 {lessons.length > 0 && <div className="flex flex-col gap-4">
                     {lessons.map((lesson, index) => (
-                        <LessonItem key={lesson.slug} lesson={lesson} index={index} t={t} handleUpdate={handleUpdate} handleDelete={handleDelete} handleVideoUpload={handleVideoUpload} isNew={lesson.isNew} />
+                        <LessonItem key={lesson.slug} initialLesson={lesson} index={index} t={t} handleDelete={handleDelete} isNew={lesson.isNew} />
                     ))}
                 </div>}
             </SortableContext>

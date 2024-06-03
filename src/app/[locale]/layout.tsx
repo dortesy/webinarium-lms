@@ -9,6 +9,7 @@ import {NextIntlClientProvider} from "next-intl";
 import {getMessages} from "@/i18n";
 import {Toaster} from "@/components/ui/toaster";
 import { DotBackgroundDemo } from "@/components/custom-ui/dot-background";
+import TanstackQueryClientProvider from '@/providers/query-client-provider';
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -38,12 +39,11 @@ const RootLayout: React.FC<Props> = async ({
                     <SessionProvider session={session}>
                         <div className="min-h-screen flex flex-col bg-stone-50">
                             <Header/>
-                            <main className="lg:max-w-screen-lg  mx-auto flex-1 w-full box-content">
+                            <main className="lg:max-w-screen-2xl  mx-auto flex-1 w-full box-content">
                                 {children}
                                 <Toaster />
                             </main>
                             <Footer/>
-
                         </div>
                         
                     </SessionProvider>

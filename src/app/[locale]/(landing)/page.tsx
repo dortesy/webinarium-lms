@@ -1,13 +1,13 @@
-import { DotBackgroundDemo } from '@/components/custom-ui/dot-background';
-import TestDummy from '@/components/test-dummy';
-import TestToast from '@/components/test-toast';
 import {getTranslations} from 'next-intl/server';
+import Hero from '@/components/landing/hero';
 export default async function Home() {
     const t = await getTranslations();
+
+    //const Lottie = dynamic(() => import('react-lottie'), { ssr: false });
+
     return (
         <div>
-            <h1>{t('Index.title')}</h1>
-            <TestDummy />
+             <Hero/>
         </div>
     );
 }
