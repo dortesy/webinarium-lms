@@ -37,6 +37,7 @@ const config = {
     },
     extend: {
       colors: {
+        'web-gray': '#151718',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -93,6 +94,7 @@ const config = {
       backgroundImage :{
         'hero-pattern': "url('/img/hero-pattern.svg')",
       },
+
     },
   },
   plugins: [require("tailwindcss-animate"), addVariablesForColors, function ({ matchUtilities, theme }: any) {

@@ -5,8 +5,8 @@ import LangSwitcher from "@/components/lang-switcher";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {Sidebar} from "@/components/dashboard/sidebar/sidebar";
 import {Menu} from "lucide-react";
-import {Navbar} from "@/components/custom-ui/navbar";
-
+import LogoSVG from '@/components/svg/logo';
+import { useEffect } from 'react';
 export const Header = () => {
 
     const locale = useLocale();
@@ -25,19 +25,20 @@ export const Header = () => {
         )
     }
 
+
     return (
-        <header className="h-20 w-full px4">
-            <div className="lg:max-w-screen-2xl mx-auto flex items-center justify-between h-full">
+
+
+            <div className="mx-full flex items-center justify-between h-20 dark:bg-web-gray z-200 w-full">
                 <div className="pt-8 pl-4 pb-7 flex items-center gap-x-3">
-                    <a href="/"><Image src="/logo.svg" height={120} width={200} alt="Webinarium"/></a>
+                    <a href="/" className="w-64"><LogoSVG className="fill-black dark:fill-white" /></a>
                 </div>
                 <div className="flex items-center gap-x-3 pt-8 pr-4 pb-7">
                     <LangSwitcher locale={locale}/>
                     <LoginPanel/>
                     <MobileSidebar />
                 </div>
-                </div>
-        </header>
+            </div>
 );
 };
 

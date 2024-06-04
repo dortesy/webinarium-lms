@@ -12,7 +12,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import {CircleUserRound, LibraryBig, LogOut, LucideIcon, Settings} from 'lucide-react';
-import {FC, ReactNode} from "react";
+import { FC, ReactNode, useEffect } from 'react';
 import {useTranslations} from "next-intl";
 
 
@@ -31,6 +31,8 @@ interface IconProps {
 
 const MenuItem: FC<MenuItemProps> = ({ href, onClick, icon: Icon, children }) => {
     const iconClassName = 'mr-2 h-4 w-4';
+
+
     if (href) {
         return (
             <DropdownMenuItem asChild>
@@ -53,6 +55,23 @@ const MenuItem: FC<MenuItemProps> = ({ href, onClick, icon: Icon, children }) =>
 export const LoginPanel: FC = () => {
     const user = useCurrentUser();
     const t = useTranslations('LoginPanel')
+    useEffect(() => {
+        const handleScroll = () => {
+            const header = document.getElementById('header');
+            if(header) {
+                if (window.scrollY > 80) {
+                    header.classList.add('bg-white', 'shadow-sm', 'dark:bg-web-gray');
+                } else {
+                    header.classList.remove('bg-white', 'shadow-sm', 'dark:bg-web-gray');
+                }
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
     const handleLogout = () => {
         signOut();

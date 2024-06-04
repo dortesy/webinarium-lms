@@ -39,7 +39,7 @@ export default auth((req) => {
     const isApiAuthRoute = apiAuthPrefix.some(prefix => nextUrl.pathname.startsWith(prefix));
     const isPublicRoute = createPagesRegex(publicRoutes).test(nextUrl.pathname);
     const isAuthRoute = createPagesRegex(authRoutes).test(nextUrl.pathname);
-
+    req.headers.set('x-next-pathname', req.nextUrl.pathname);
     if (isApiAuthRoute) {
         return
     }
@@ -57,6 +57,8 @@ export default auth((req) => {
 
     return intlMiddleware(req);
 })
+
+
 
 export const config = {
     matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],

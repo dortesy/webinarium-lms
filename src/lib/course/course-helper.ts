@@ -8,7 +8,7 @@ export const getCourseById = async (id: string) => {
     try {
         return await db.course.findUnique({
             where: { id: id },
-            include: { image: true, category: true }
+            include: { image: true, category: true, creator: true }
         });
     } catch {
         return null;
@@ -19,7 +19,7 @@ export const getCourseById = async (id: string) => {
 export const getAllCourses = async () => {
     try {
         return await db.course.findMany({
-            include: { image: true, category: true },
+            include: { image: true, category: true, creator: true},
             orderBy: { createdAt: Prisma.SortOrder.desc }
         });
     } catch {
@@ -33,6 +33,8 @@ export const getCourseByIdWithSections = async (id: string) => {
             where: { id: id },
             include: {
                 image: true,
+                category: true,
+                creator: true,
                 sections: {
                     orderBy: {
                         position: Prisma.SortOrder.asc  // Сортируем по полю position в порядке возрастания

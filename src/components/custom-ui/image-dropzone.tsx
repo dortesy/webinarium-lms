@@ -121,38 +121,39 @@ const ImageDropzone = React.forwardRef<HTMLDivElement, DropzoneProps>(
                                     </>
                                 )}
                                 {fileUrl && (
-                                    <div className="relative  items-cen shadow-md rounded-lg transition-all duration-300 ease-in-out hover:shadow-lg">
-                                        <button
-                                            type="button"
-                                            onClick={handleRemoveImage}
-                                            className="absolute top-[-10px] right-[-10px] p-1 bg-white rounded-full shadow-md hover:bg-gray-100 focus:outline-none"
-                                        >
-                                            <CircleX />
-                                        </button>
+                                  <div
+                                    className="relative  items-center shadow-md rounded-lg transition-all duration-300 ease-in-out hover:shadow-lg">
+                                      <button
+                                        type="button"
+                                        onClick={handleRemoveImage}
+                                        className="absolute top-[-10px] right-[-10px] p-1 bg-white rounded-full shadow-md hover:bg-gray-100 focus:outline-none z-10"
+                                      >
+                                          <CircleX />
+                                      </button>
 
-                                        <div className="w-30 h-30 rounded-t-lg overflow-hidden">
-                                            <Image
-                                                src={fileUrl}
-                                                alt={fileName}
-                                                placeholder={"empty"}
-                                                width={130}
-                                                height={70}
-                                                className="object-contain w-full rounded-lg"
-                                            />
-                                        </div>
-                                        
-                                    </div>
+                                      <div className="w-[200px] h-[130px] rounded-lg overflow-hidden relative">
+
+                                          <Image
+                                            src={fileUrl}
+                                            alt={fileName}
+                                            placeholder={'empty'}
+                                            fill
+                                            style={{objectFit:"cover"}}
+                                          />
+                                      </div>
+
+                                  </div>
                                 )}
                             </div>
                         </div>
                         <Input
-                            {...props}
-                            value={undefined}
-                            ref={inputRef}
-                            type="file"
-                            className={cn("hidden", className)}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                handleOnChange(e)
+                          {...props}
+                          value={undefined}
+                          ref={inputRef}
+                          type="file"
+                          className={cn('hidden', className)}
+                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            handleOnChange(e)
                             }
                         />
                     </div>

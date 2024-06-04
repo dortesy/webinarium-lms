@@ -1,8 +1,9 @@
 
-import { Course, Lesson, Media, Section } from '@prisma/client';
+import { Course, Lesson, Media, Section, User } from '@prisma/client';
 
 export interface CourseWithImage extends Course {
     image: Media | null;
+    creator: User
 }
 
 export interface LessonWithVideo extends Lesson {

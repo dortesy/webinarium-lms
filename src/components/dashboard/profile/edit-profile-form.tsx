@@ -206,7 +206,7 @@ export const EditProfileForm = ({ user }: { user: User }) => {
             </div>
 
             <FormField name="file" render={({ field }) => (
-                    <FormItem className="w-full md:w-1/2 mb-8">
+                    <FormItem className="w-full md:w-1/3 mb-8">
                         <FormLabel>{t('imageLabel')}</FormLabel>
                         <FormControl>
                             <ImageDropzone

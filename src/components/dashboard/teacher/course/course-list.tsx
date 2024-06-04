@@ -71,15 +71,15 @@ const CourseList = ({initialCourses}: CourseListProps) => {
 
     return (
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
                 {courses.map(course => (
 
 
-                    <div key={course.id} className="shadow-md rounded-xl relative transition-all duration-300 hover:shadow-lg">
+                    <div key={course.id} className="shadow-md bg-stone-50 rounded-xl relative transition-all duration-300 hover:shadow-lg hover:bg-white">
                          <a href={ROUTES.TEACHER.COURSE.DETAILS(course.id)} className="absolute inset-0 w-full h-full z-10">
                          </a>
-                        <div className="rounded-t-xl overflow-hidden">
-                            {course.image && <Image src={course.image.url} alt={course.title} width={200} height={200} className="w-full h-40 object-cover" />}
+                        <div className="rounded-t-xl overflow-hidden relative h-[200px]">
+                            {course.image && <Image src={course.image.url} alt={course.title} fill style={{objectFit:"cover"}} className="w-full h-40 object-cover" />}
                         </div>
 
                        

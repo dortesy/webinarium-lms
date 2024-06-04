@@ -36,12 +36,12 @@ export default function LangSwitcher ({locale}: props) {
 
     return (
         <Select defaultValue={locale} onValueChange={onSelectChange}>
-            <SelectTrigger className="w-[110px]">
-                <SelectValue placeholder="Select a fruit" />
+            <SelectTrigger className="w-[110px] dark:text-white dark:bg-gray-950 ">
+                <SelectValue placeholder="Выбрать язык" className="dark:border-white dark:text-white dark:hidden" />
             </SelectTrigger>
-            <SelectContent>
-                <SelectGroup>
-                    <SelectItem value="ru">
+            <SelectContent className="dark:text-white dark:hidden">
+                <SelectGroup className="dark:hidden">
+                    <SelectItem value="ru" >
                         <div className="flex items-center">
                             <RU width={22} height={22}/>
                             <SelectLabel className="pl-2">RU</SelectLabel>

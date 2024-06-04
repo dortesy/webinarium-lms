@@ -1,0 +1,30 @@
+.description p {
+    @apply mb-4 text-base;
+}
+
+.description h2 {
+    @apply text-2xl text-black;
+
+}
+
+.description h3 {
+    @apply text-xl  text-black;
+}
+
+.description strong {
+    @apply font-semibold text-black;
+}
+
+.description h4,
+.description h5,
+.description h6 {
+    @apply text-black;
+}
+
+.description ul {
+    @apply list-disc pl-5 mt-2;
+}
+
+.description li {
+    @apply mb-2;
+}

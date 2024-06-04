@@ -7,9 +7,8 @@ import {auth} from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import {NextIntlClientProvider} from "next-intl";
 import {getMessages} from "@/i18n";
+import { headers } from 'next/headers';
 import {Toaster} from "@/components/ui/toaster";
-import { DotBackgroundDemo } from "@/components/custom-ui/dot-background";
-import TanstackQueryClientProvider from '@/providers/query-client-provider';
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -30,6 +29,10 @@ const RootLayout: React.FC<Props> = async ({
 
     const session = await auth();
     const messages = await getMessages(locale);
+    const pathname = headers().get('x-next-pathname') as string;
+    const coursesRegex = /courses\/[0-9a-fA-F-]+/;
+    const headerStyle = "lg:max-w-screen-2xl mx-auto w-full dark"
+    const headerContains = coursesRegex.test(pathname);
 
     return (
 
@@ -37,15 +40,19 @@ const RootLayout: React.FC<Props> = async ({
                 <body className={inter.className}>
                 <NextIntlClientProvider messages={messages}>
                     <SessionProvider session={session}>
-                        <div className="min-h-screen flex flex-col bg-stone-50">
-                            <Header/>
-                            <main className="lg:max-w-screen-2xl  mx-auto flex-1 w-full box-content">
-                                {children}
-                                <Toaster />
-                            </main>
-                            <Footer/>
-                        </div>
-                        
+                      <div className="min-h-screen flex flex-col bg-stone-50">
+                        <header id="header" className="sticky top-0 z-[10000] transition-all">
+                          <div className={`mx-auto w-full ${!headerContains ? 'lg:max-w-screen-2xl' : 'dark'}`}>
+                            <Header />
+                          </div>
+                        </header>
+
+                        <main className={`${!headerContains ? 'lg:max-w-screen-2xl' : ''}  mx-auto flex-1 w-full box-content`}>
+                          {children}
+                          <Toaster />
+                        </main>
+                      </div>
+
                     </SessionProvider>
                 </NextIntlClientProvider>
                 </body>
