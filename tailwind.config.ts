@@ -92,7 +92,7 @@ const config = {
       },
       backgroundImage :{
         'hero-pattern': "url('/img/hero-pattern.svg')",
-      }
+      },
     },
   },
   plugins: [require("tailwindcss-animate"), addVariablesForColors, function ({ matchUtilities, theme }: any) {

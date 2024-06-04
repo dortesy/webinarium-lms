@@ -16,6 +16,17 @@ export const getCourseById = async (id: string) => {
 }
 
 
+export const getAllCourses = async () => {
+    try {
+        return await db.course.findMany({
+            include: { image: true, category: true },
+            orderBy: { createdAt: Prisma.SortOrder.desc }
+        });
+    } catch {
+        return [];
+    }
+}
+
 export const getCourseByIdWithSections = async (id: string) => {
     try {
         return await db.course.findUnique({
