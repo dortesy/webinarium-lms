@@ -5,34 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0671386-6180-44e4-bc97-0187818964e1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/app/[locale]/(landing)/courses/[courseId]/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/courses/course-sections.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/courses/course-sidebar.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/custom-ui/rating.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/svg/logo.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/course-description.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/courses/course-content.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/courses/course-information.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/courses/lesson-content.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/logo.svg" beforeDir="false" afterPath="$PROJECT_DIR$/public/logo.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(landing)/footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(landing)/footer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(landing)/header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(landing)/header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/auth/login-panel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/auth/login-panel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/courses/course-catalog-item.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/courses/course-catalog-item.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/courses/course-catalog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/courses/course-catalog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/custom-ui/image-dropzone.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/custom-ui/image-dropzone.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/profile/edit-profile-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/profile/edit-profile-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/teacher/course/course-list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/teacher/course/course-list.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/teacher/course/edit-course-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/teacher/course/edit-course-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/lang-switcher.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/lang-switcher.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ui/badge.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ui/badge.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ui/select.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ui/select.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/course/course-helper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/course/course-helper.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(landing)/courses/[courseId]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(landing)/courses/[courseId]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/courses/course-sections.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/courses/course-sections.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/courses/course-sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/courses/course-sidebar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/lib/types/course.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/types/course.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/messages/ru.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/messages/ru.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middleware.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/middleware.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +78,7 @@
       <workItem from="1717352878698" duration="220000" />
       <workItem from="1717353105647" duration="19045000" />
       <workItem from="1717457290053" duration="9416000" />
-      <workItem from="1717475336992" duration="26372000" />
+      <workItem from="1717475336992" duration="31339000" />
     </task>
     <servers />
   </component>
