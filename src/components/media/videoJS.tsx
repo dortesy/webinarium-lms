@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
@@ -21,15 +22,11 @@ const VideoJS: React.FC<VideoJSProps> = ({ options, onReady }) => {
 
 
       const player = playerRef.current = videojs(videoElement, options, () => {
+        console.log(player.isDisposed())
+        if (onReady) {
+          onReady(player);
+        }
       });
-
-      if (onReady) {
-        onReady(player);
-      }
-
-      const controlBar = player.getChild('controlBar')
-      console.log('controlBar', controlBar);
-      console.log(controlBar?.getChild('SourceMenuButton'))
     } else {
       const player = playerRef.current;
       player.autoplay(options.autoplay || false);
@@ -41,6 +38,7 @@ const VideoJS: React.FC<VideoJSProps> = ({ options, onReady }) => {
     const player = playerRef.current;
 
     return () => {
+
       if (player && !player.isDisposed()) {
         player.dispose();
         playerRef.current = null;
@@ -50,7 +48,7 @@ const VideoJS: React.FC<VideoJSProps> = ({ options, onReady }) => {
 
   return (
     <div data-vjs-player className="w-full h-full">
-      <div ref={videoRef} />
+      <div ref={videoRef} className="h-[100%]" />
     </div>
   );
 };

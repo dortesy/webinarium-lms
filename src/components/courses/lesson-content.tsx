@@ -1,11 +1,8 @@
 'use client'
-import Image from 'next/image';
-import { Rating } from '@/components/custom-ui/rating';
-import { Badge } from '@/components/ui/badge';
 import { LessonWithVideo } from '@/lib/types/course';
 import VideoJS from '@/components/media/videoJS';
 import videojs from 'video.js';
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 
 interface LessonContentProps {
     lesson: LessonWithVideo;
@@ -17,7 +14,7 @@ const LessonContent = ({lesson}: LessonContentProps) => {
   const videoJsOptions: any = {
     controls: true,
     responsive: true,
-    fluid: true,
+    fill: true,
     experimentalSvgIcons: true,
     playbackRates: [0.5, 1, 1.5, 2],
     sources: [
@@ -47,8 +44,9 @@ const LessonContent = ({lesson}: LessonContentProps) => {
 
   const handlePlayerReady = (player: any) => {
     playerRef.current = player;
-
-
+    player.on('play', () => {
+      videojs.log('player is playing');
+    });
     player.on('waiting', () => {
       videojs.log('player is waiting');
     });
@@ -57,13 +55,20 @@ const LessonContent = ({lesson}: LessonContentProps) => {
       videojs.log('player will dispose');
     });
 
+
   };
 
 
     return (
         <div className="w-full">
-          <div className="max-w-full relative h-[500px] rounded-xl">
+          <div className="relative rounded-xl p-10 bg-white shadow-md mb-5 w-full h-[80%]">
             <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+          </div>
+
+          <h3 className="text-xl font-semibold mb-2">{lesson.title}</h3>
+
+          <div className="text-sm text-gray-600">
+            <p>{lesson.description}</p>
           </div>
         </div>
     )

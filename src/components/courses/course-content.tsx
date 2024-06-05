@@ -10,7 +10,11 @@ interface CourseContentProps {
 }
 
 const CourseContent = ({course, lesson}: CourseContentProps) => {
-  console.log(lesson)
+
+
+  //loading state?
+  //what if no course or lesson?
+
   return (
     lesson ? <LessonContent lesson={lesson}/>:  <CourseInformation course={course}  />
   )

@@ -7,7 +7,7 @@ export interface CourseWithImage extends Course {
 }
 
 export interface CourseWithCategory extends CourseWithImage {
-    category: Category;
+    category: Category | null;
 }
 
 export interface LessonWithVideo extends Lesson {

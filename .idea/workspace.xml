@@ -5,13 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0671386-6180-44e4-bc97-0187818964e1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/courses/course-content.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/courses/course-information.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/courses/lesson-content.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/[locale]/(landing)/courses/[courseId]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(landing)/courses/[courseId]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/courses/course-content.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/courses/course-content.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/courses/course-sections.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/courses/course-sections.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/courses/course-sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/courses/course-sidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/courses/lesson-content.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/courses/lesson-content.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/media/videoJS.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/media/videoJS.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/lib/types/course.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/types/course.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,6 +57,7 @@
       <recent name="$PROJECT_DIR$/src/animations" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/app/[locale]" />
       <recent name="$PROJECT_DIR$/src/app/[locale]/(landing)/courses" />
     </key>
   </component>
@@ -78,7 +79,7 @@
       <workItem from="1717352878698" duration="220000" />
       <workItem from="1717353105647" duration="19045000" />
       <workItem from="1717457290053" duration="9416000" />
-      <workItem from="1717475336992" duration="31339000" />
+      <workItem from="1717475336992" duration="38726000" />
     </task>
     <servers />
   </component>
