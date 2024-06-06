@@ -10,13 +10,54 @@ interface LessonContentProps {
 
 const LessonContent = ({lesson}: LessonContentProps) => {
   const playerRef = useRef<any>(null);
-
+  console.log('render lesson content')
   const videoJsOptions: any = {
     controls: true,
     responsive: true,
     fill: true,
     experimentalSvgIcons: true,
     playbackRates: [0.5, 1, 1.5, 2],
+    controlBar: {
+      skipButtons: {
+        forward: 5,
+        backward: 5
+      }
+    },
+    userActions: {
+      hotkeys: function(event: any) {
+        // `this` is the player in this context
+
+        // `x` key = pause
+        if (event.which === 39) {
+          playerRef.current.currentTime(playerRef.current.currentTime() + 5)
+        }
+        // `y` key = play
+        if (event.which === 37) {
+          playerRef.current.currentTime(playerRef.current.currentTime() - 5)
+        }
+      },
+
+      doubleClick: function(event: any) {
+        // const clickedY = event.clientY;
+        const maxWidth = playerRef.current.currentWidth();
+
+        // Proportional edges
+        const rightEdgeProportion = 0.9;
+        const leftEdgeProportion = 0.1;
+
+        const clickedX = event.offsetX / maxWidth;
+
+        if (clickedX > rightEdgeProportion) {
+          playerRef.current.currentTime(playerRef.current.currentTime() + 5);
+        } else if (clickedX < leftEdgeProportion) {
+          playerRef.current.currentTime(playerRef.current.currentTime() - 5);
+        } else {
+          playerRef.current.requestFullscreen()
+        }
+
+
+      }
+    },
     sources: [
       {
         src: lesson.video!.url,
@@ -61,7 +102,7 @@ const LessonContent = ({lesson}: LessonContentProps) => {
 
     return (
         <div className="w-full">
-          <div className="relative rounded-xl p-10 bg-white shadow-md mb-5 w-full h-[80%]">
+          <div className="relative rounded-xl p-10 bg-white shadow-sm mb-5 w-full h-[80%]">
             <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
           </div>
 

@@ -1,12 +1,14 @@
 import Image from "next/image";
-import {LoginPanel} from "@/components/auth/login-panel";
+import {LoginPanel} from "@/components/header/login-panel";
 import {useLocale} from "next-intl";
-import LangSwitcher from "@/components/lang-switcher";
+import LangSwitcher from "@/components/header/lang-switcher";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {Sidebar} from "@/components/dashboard/sidebar/sidebar";
-import {Menu} from "lucide-react";
+import { Bell, Bookmark, Menu, ShoppingCart } from 'lucide-react';
 import LogoSVG from '@/components/svg/logo';
 import { useEffect } from 'react';
+import { SearchInput } from '@/components/header/search-input';
+import Categories from '@/components/header/categories';
 export const Header = () => {
 
     const locale = useLocale();
@@ -30,14 +32,29 @@ export const Header = () => {
 
 
             <div className="mx-full flex items-center justify-between h-20 dark:bg-web-gray z-200 w-full">
-                <div className="pt-8 pl-4 pb-7 flex items-center gap-x-3">
+
+                <div className="flex items-center gap-x-3 pl-4">
                     <a href="/" className="w-64"><LogoSVG className="fill-black dark:fill-white" /></a>
                 </div>
-                <div className="flex items-center gap-x-3 pt-8 pr-4 pb-7">
+
+                <div className="flex items-center gap-x-3 w-full pl-5 pr-5">
+                  <SearchInput/>
+
+                  <div className="flex items-center gap-x-6">
+                    <Categories/>
+
+                    <ShoppingCart strokeWidth={1} className="cursor-pointer dark:text-white hover:text-blue-600 dark:hover:text-blue-300 transition-all" />
+                    <Bookmark strokeWidth={1} className="cursor-pointer dark:text-white hover:text-blue-600 dark:hover:text-blue-300  transition-all"/>
+                    <Bell strokeWidth={1} className="cursor-pointer dark:text-white hover:text-blue-600 dark:hover:text-blue-300 transition-all"/>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-x-3">
                     <LangSwitcher locale={locale}/>
                     <LoginPanel/>
                     <MobileSidebar />
                 </div>
+
             </div>
 );
 };

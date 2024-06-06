@@ -62,15 +62,15 @@ export const EditProfileForm = ({ user }: { user: User }) => {
         values.file = undefined;
         startTransition(() => {
             EditProfile(values, formData)
-                .then((data) => {
-                    if('error' in data){
-                        setError(data.error)
-                    }
-                    if('success' in data){
-                        setSuccess(data.success)
-                      
-                    }
-                })
+              .then((data) => {
+                if (Array.isArray(data.error)) {
+                  // Handle the case where data.error is a ZodIssue[]
+                  const errorMessages = data.error.map(issue => issue.message).join(", ");
+                  setError(errorMessages);
+                } else {
+                  setSuccess(data.success || null);
+                }
+              });
         })
     }
 

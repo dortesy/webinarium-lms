@@ -1,4 +1,3 @@
-'use client'
 
 import { CourseWithCategory, LessonWithVideo } from '@/lib/types/course';
 import CourseInformation from '@/components/courses/course-information';

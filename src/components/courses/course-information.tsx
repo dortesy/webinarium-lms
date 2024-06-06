@@ -2,7 +2,17 @@
 import Image from 'next/image';
 import { Rating } from '@/components/custom-ui/rating';
 import { Badge } from '@/components/ui/badge';
-import { Captions, ListTodo, Newspaper, Presentation, ShieldCheck, Timer, UsersRound } from 'lucide-react';
+import {
+  BarChart, BookmarkIcon,
+  CalendarFold,
+  Captions, Clock, Eye,
+  ListTodo,
+  Newspaper,
+  Presentation,
+  ShieldCheck, ShoppingBag, ShoppingBagIcon, ShoppingBasket, ShoppingCartIcon,
+  Timer,
+  UsersRound,
+} from 'lucide-react';
 import styles from '@/styles/course-description.module.css';
 import { Button } from '@/components/ui/button';
 import { CourseWithCategory } from '@/lib/types/course';
@@ -11,6 +21,15 @@ import { useTranslations } from 'next-intl';
 interface CourseInformationProps {
   course: CourseWithCategory;
 }
+
+// utils/formatDate.ts
+// utils/formatDate.ts
+export function formatDate(date: string | number | Date): string {
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long' };
+  return new Intl.DateTimeFormat('ru-RU', options).format(new Date(date));
+}
+
+
 
 const CourseInformation = ({course}: CourseInformationProps ) => {
 
@@ -100,6 +119,53 @@ const CourseInformation = ({course}: CourseInformationProps ) => {
         </div>
 
 
+        <div className="flex mb-4 gap-7">
+
+          <div className="flex flex-col w-1/4 bg-white shadow-sm rounded-xl py-6 px-4">
+            <div className="text-gray-400 mb-2">
+              Дата загрузки
+            </div>
+
+            <div className="flex space-x-2 items-center">
+              <CalendarFold size={16} strokeWidth={1} /> <span>{formatDate(course.createdAt)}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col w-1/4 bg-white shadow-sm rounded-xl py-6 px-6">
+            <div className="text-gray-400 mb-2">
+              Уровень сложности
+            </div>
+
+            <div className="flex space-x-2 items-center">
+              <BarChart size={16} /> <span>{levelText}</span>
+            </div>
+          </div>
+
+
+          <div className="flex flex-col w-1/4 bg-white shadow-sm rounded-xl py-6 px-6">
+            <div className="text-gray-400 mb-2">
+              Продолжительность
+            </div>
+
+            <div className="flex space-x-2 items-center">
+              <Clock size={16} /> <span>22 часа 13 минут</span>
+            </div>
+          </div>
+
+
+          <div className="flex flex-col w-1/4 bg-white shadow-sm rounded-xl py-6 px-6">
+            <div className="text-gray-400 mb-2">
+              Просмотров
+            </div>
+
+            <div className="flex space-x-2 items-center">
+              <Eye size={16}/> <span>9 700</span>
+            </div>
+          </div>
+
+        </div>
+
+
       </div>
 
 
@@ -109,41 +175,47 @@ const CourseInformation = ({course}: CourseInformationProps ) => {
             900 тыс. сум
           </div>
 
-          <div className="font-light text-gray-600">
-            Курс включает в себя
+          <div className="font-light text-gray-600 mt-4 mb-2">
+            Курс включает в себя:
           </div>
 
-          <div>
-            <div className="flex items-center text-gray-900 mt-4">
+          <div className="text-indigo-950 font-light">
+            <div className="flex items-center mb-3">
               <div className="mr-2"><Presentation width={18} height={18} /></div>
               <div>33 Урока</div>
             </div>
-            <div className="flex items-center text-gray-900 mt-4">
+            <div className="flex items-center mb-3">
               <div className="mr-2"><Timer width={18} height={18} /></div>
               <div>9 Часов 48 минут материала</div>
             </div>
 
-            <div className="flex items-center text-gray-900 mt-4">
+            <div className="flex items-center mb-3">
               <div className="mr-2"><ShieldCheck width={18} height={18} /></div>
               <div>Подтверждающий сертификат</div>
             </div>
 
-            <div className="flex items-center text-gray-900 mt-4">
+            <div className="flex items-center  mb-3">
               <div className="mr-2"><Captions width={18} height={18} /></div>
               <div>Субтитры</div>
             </div>
 
-            <div className="flex items-center text-gray-900 mt-4">
+            <div className="flex items-center mb-3">
               <div className="mr-2"><Newspaper width={18} height={18} /></div>
               <div>10 статей</div>
             </div>
 
-            <div className="flex items-center text-gray-900 mt-4">
+            <div className="flex items-center mb-3">
               <div className="mr-2"><ListTodo width={18} height={18} /></div>
               <div>2 теста</div>
             </div>
 
 
+          </div>
+
+
+          <div className="flex gap-4 mt-12">
+            <Button variant="secondary" className="grow">Добавить в корзину <ShoppingBagIcon size={16} className="ml-2"/></Button>
+            <Button variant="outline" size="icon"><BookmarkIcon/></Button>
           </div>
 
           <Button className="mt-4 w-full">

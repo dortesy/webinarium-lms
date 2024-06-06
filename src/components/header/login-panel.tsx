@@ -56,8 +56,13 @@ export const LoginPanel: FC = () => {
     const user = useCurrentUser();
     const t = useTranslations('LoginPanel')
     useEffect(() => {
+        const header = document.getElementById('header');
+
+        if (window.scrollY > 80) {
+            header?.classList.add('bg-white', 'shadow-sm', 'dark:bg-web-gray');
+        }
+
         const handleScroll = () => {
-            const header = document.getElementById('header');
             if(header) {
                 if (window.scrollY > 80) {
                     header.classList.add('bg-white', 'shadow-sm', 'dark:bg-web-gray');
@@ -66,6 +71,7 @@ export const LoginPanel: FC = () => {
                 }
             }
         };
+
 
         window.addEventListener('scroll', handleScroll);
         return () => {

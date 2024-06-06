@@ -36,21 +36,21 @@ export default function LangSwitcher ({locale}: props) {
 
     return (
         <Select defaultValue={locale} onValueChange={onSelectChange}>
-            <SelectTrigger className="w-[110px] dark:text-white dark:bg-gray-950 ">
+            <SelectTrigger className="w-[110px] bg-white rounded-xl dark:text-white dark:bg-gray-950 h-10 focus:ring-blue-200">
                 <SelectValue placeholder="Выбрать язык" className="dark:border-white dark:text-white dark:hidden" />
             </SelectTrigger>
             <SelectContent className="dark:text-white dark:hidden">
                 <SelectGroup className="dark:hidden">
                     <SelectItem value="ru" >
                         <div className="flex items-center">
-                            <RU width={22} height={22}/>
-                            <SelectLabel className="pl-2">RU</SelectLabel>
+                            {/*<RU width={22} height={22}/>*/}
+                            <SelectLabel className="pl-2">Русский</SelectLabel>
                         </div>
                     </SelectItem>
                     <SelectItem value="uz">
                         <div className="flex items-center">
-                            <UZ width={22} height={22}/>
-                            <SelectLabel className="pl-2">UZ</SelectLabel>
+                            {/*<UZ width={22} height={22}/>*/}
+                            <SelectLabel className="pl-2">Oʻzbek</SelectLabel>
                         </div>
                     </SelectItem>
                 </SelectGroup>

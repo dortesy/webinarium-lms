@@ -1,6 +1,6 @@
 'use client'
 import Lottie from 'react-lottie';
-import * as animationData from '@/animations/studying.json'
+import * as animationData from '@/animations/learning.json'
 
 const HeroAnimation = () => {
   const defaultOptions = {

@@ -14,24 +14,45 @@ const VideoJS: React.FC<VideoJSProps> = ({ options, onReady }) => {
   const playerRef = React.useRef<any | null>(null);
 
   React.useEffect(() => {
-    if (!playerRef.current) {
-      const videoElement = document.createElement('video-js');
-      videoElement.classList.add('vjs-big-play-centered');
-      videoRef.current?.appendChild(videoElement);
 
-
-
-      const player = playerRef.current = videojs(videoElement, options, () => {
-        console.log(player.isDisposed())
-        if (onReady) {
-          onReady(player);
-        }
-      });
-    } else {
-      const player = playerRef.current;
-      player.autoplay(options.autoplay || false);
-      player.src(options.sources || []);
+    if (playerRef.current && !playerRef.current.isDisposed()) {
+      playerRef.current.dispose();
+      playerRef.current = null;
     }
+
+    const videoElement = document.createElement('video-js');
+    videoElement.classList.add('vjs-big-play-centered');
+    videoRef.current?.appendChild(videoElement);
+    const player = playerRef.current = videojs(videoElement, options, () => {
+      console.log(player.isDisposed())
+      if (onReady) {
+        onReady(player);
+        console.log(player)
+      }
+    });
+
+
+    // if (!playerRef.current) {
+    //   const videoElement = document.createElement('video-js');
+    //   videoElement.classList.add('vjs-big-play-centered');
+    //   videoRef.current?.appendChild(videoElement);
+    //   const player = playerRef.current = videojs(videoElement, options, () => {
+    //     console.log(player.isDisposed())
+    //     if (onReady) {
+    //       onReady(player);
+    //       console.log(player)
+    //     }
+    //   });
+    // } else {
+    //   const player = playerRef.current;
+    //   player.autoplay(options.autoplay || false);
+    //   player.src(options.sources || []);
+    //   if (player.spriteThumbnails) {
+    //     player.spriteThumbnails(options.plugins.spriteThumbnails);
+    //     // Force reinitialization of the plugin
+    //     player.trigger('loadstart');
+    //   }
+    // }
   }, [options, videoRef]);
 
   React.useEffect(() => {

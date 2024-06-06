@@ -17,6 +17,7 @@ export const getCourseById = async (id: string) => {
 
 
 export const getAllCourses = async () => {
+    //await new Promise(resolve => setTimeout(resolve, 5000)); // Задержка в 5 секунд
     try {
         return await db.course.findMany({
             include: { image: true, category: true, creator: true},
