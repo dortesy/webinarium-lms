@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/app/[locale]/(landing)/header";
-import { Footer } from "@/app/[locale]/(landing)/footer";
+import { Header } from "@/app/[locale]/(public)/header";
+import { Footer } from "@/app/[locale]/(public)/footer";
 import {auth} from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import {NextIntlClientProvider} from "next-intl";
@@ -86,6 +85,10 @@ const RootLayout: React.FC<Props> = async ({
                 <NextIntlClientProvider messages={messages}>
                     <SessionProvider session={session}>
                       <div className="min-h-screen flex flex-col bg-stone-50">
+
+
+
+
                         <header id="header" className="sticky top-0 z-20 transition-all">
                           <div className={`mx-auto w-full ${!headerContains ? 'lg:max-w-screen-2xl' : 'dark'}`}>
                             <Header />
@@ -96,6 +99,9 @@ const RootLayout: React.FC<Props> = async ({
                           {children}
                           <Toaster />
                         </main>
+
+
+
                       </div>
 
                     </SessionProvider>
