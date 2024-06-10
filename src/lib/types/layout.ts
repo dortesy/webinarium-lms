@@ -4,3 +4,6 @@ type LayoutProps = {
     locale: "ru" | "uz";
   }
 };
+
+
+export type { LayoutProps };

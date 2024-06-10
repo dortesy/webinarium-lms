@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { getCourseById } from "@/lib/course/course-helper";
 import { useEffect, useState } from "react";
+import { SquareArrowUpRight } from 'lucide-react';
 
 interface PublishCourseProps {
     courseId: string;
@@ -33,8 +34,8 @@ const PublishCourse = ({courseId}: PublishCourseProps) => {
     }
 
     return ( 
-    <Button variant={CourseStatus ? "published" : "disabled"} className="cursor-pointer" asChild><div className="flex items-center mx-2 gap-2 w-[95%]">
-        <Switch id="publish-course" onCheckedChange={onChangeSwitch} className="data-[state=checked]:bg-emerald-900 data-[state=unchecked]:bg-input" />
+    <Button variant={CourseStatus ? "default" : "disabled"} className="cursor-pointer" asChild><div className="flex items-center mx-2 gap-2 w-[95%]">
+            <SquareArrowUpRight size={18} strokeWidth={1} />
             <Label htmlFor="publish-course"  className="cursor-pointer" >{CourseStatus ? "Курс опубликован" : "Курс не опубликован"}</Label>
     </div>
   </Button>
