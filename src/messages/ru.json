@@ -242,10 +242,19 @@
     "mainHeader": "Панель управления",
     "sidebarHeader": "Меню",
     "courseHeader": "Редактирование курса",
+    "backToMainPanel": "Назад в панель управления",
+    "backToCourse": "Назад к курсу",
     "courses": "Курсы",
     "profile": "Профиль",
+    "profileRoleInstructor": "Инструктор",
     "courseDetails": "Детали",
+    "courseGoals": "Цели обучения",
     "coursePricing": "Настройка цены",
-    "courseContent": "Содержание"
+    "courseContent": "Содержание",
+    "courseSettings": "Настройки",
+    "courseMedia": "Медиа",
+    "profileSettings": "Настройки",
+    "profileNotifications": "Уведомления",
+    "profileGetHelp": "Помощь"
   }
 }

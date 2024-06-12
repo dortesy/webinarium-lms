@@ -10,7 +10,6 @@ import { Header } from '@/components/auth/header';
 import { BackButton } from '@/components/auth/back-button';
 import { Social } from '@/components/auth/social';
 import { ReactNode } from 'react';
-import SignUpAnimation from './signup-animation';
 
 interface CardWrapperProps {
   children: ReactNode;

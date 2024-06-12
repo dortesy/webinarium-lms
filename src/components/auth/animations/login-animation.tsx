@@ -11,7 +11,14 @@ const LoginAnimation = () => {
       preserveAspectRatio: 'xMidYMid slice',
     },
   };
-  return <Lottie options={defaultOptions} height={500} width={500} />;
+  return (
+    <Lottie
+      options={defaultOptions}
+      height={500}
+      width={500}
+      isClickToPauseDisabled={true}
+    />
+  );
 };
 
 export default LoginAnimation;

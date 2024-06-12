@@ -5,41 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0671386-6180-44e4-bc97-0187818964e1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/dashboard/sidebar/mobile-sidebar.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/config/fonts.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/types/layout.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/actions/course/delete-lesson.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/actions/course/delete-lesson.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/actions/course/delete-section.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/actions/course/delete-section.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/actions/course/delete-video.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/actions/course/delete-video.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/actions/course/edit-course.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/actions/course/edit-course.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/actions/course/edit-profile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/actions/course/edit-profile.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(landing)/courses/[courseId]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(public)/courses/[courseId]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(landing)/footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(public)/footer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(landing)/header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(public)/header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(landing)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(public)/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(protected)/dashboard/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(protected)/dashboard/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(protected)/dashboard/teacher/profile/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(protected)/dashboard/teacher/profile/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/auth/error/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/auth/login/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/auth/new-password/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/auth/new-verification/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/auth/register/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/auth/reset-password/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/[locale]/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(public)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/animations/sign-up.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/animations/sign-up.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/auth/animations/forgot-password-animation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/auth/animations/forgot-password-animation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/auth/animations/login-animation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/auth/animations/login-animation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/auth/animations/new-password-animation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/auth/animations/new-password-animation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/auth/animations/signup-animation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/auth/animations/signup-animation.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/auth/card-wrapper.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/auth/card-wrapper.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/breadcrumbs/breadcrumbs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/breadcrumbs/breadcrumbs.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/profile/edit-profile-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/profile/edit-profile-form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/auth/new-verification-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/auth/new-verification-form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/sidebar/sidebar-bottom.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/sidebar/sidebar-bottom.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/sidebar/sidebar-item.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/sidebar/sidebar-item.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/sidebar/sidebar-routes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/sidebar/sidebar-routes.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/sidebar/sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/sidebar/sidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/teacher/course/publish-course.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/teacher/course/publish-course.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/login-panel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/login-panel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/use-current-user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/use-current-user.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/media/delete-file.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/media/delete-file.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/media/storage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/media/storage.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/media/upload-image.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/media/upload-image.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/types/layout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/types/layout.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/messages/ru.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/messages/ru.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +90,7 @@
       <workItem from="1717353105647" duration="19045000" />
       <workItem from="1717457290053" duration="9416000" />
       <workItem from="1717475336992" duration="88866000" />
-      <workItem from="1717979955859" duration="1287000" />
+      <workItem from="1717979955859" duration="6068000" />
     </task>
     <servers />
   </component>

@@ -97,7 +97,11 @@ export const LoginPanel: FC = () => {
           <DropdownMenuTrigger className="focus-visible: outline-none">
             <Avatar className="border-2">
               {user.image ? (
-                <AvatarImage src={user.image} alt={user.email} />
+                <AvatarImage
+                  src={user.image}
+                  alt={user.email}
+                  className="object-cover"
+                />
               ) : null}
               <AvatarFallback>
                 {user.email.slice(0, 1).toUpperCase()}
@@ -128,4 +132,3 @@ export const LoginPanel: FC = () => {
     </div>
   );
 };
-

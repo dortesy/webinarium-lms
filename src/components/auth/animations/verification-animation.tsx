@@ -1,8 +1,8 @@
 'use client';
 import Lottie from 'react-lottie';
-import * as animationData from '@/animations/sign-up.json';
+import * as animationData from '@/animations/verification.json';
 
-const SignUpAnimation = () => {
+const VerificationAnimation = () => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -14,11 +14,11 @@ const SignUpAnimation = () => {
   return (
     <Lottie
       options={defaultOptions}
-      height={400}
+      height={500}
       width={500}
       isClickToPauseDisabled={true}
     />
   );
 };
 
-export default SignUpAnimation;
+export default VerificationAnimation;

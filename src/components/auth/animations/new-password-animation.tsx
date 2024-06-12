@@ -11,7 +11,14 @@ const NewPasswordAnimation = () => {
       preserveAspectRatio: 'xMidYMid slice',
     },
   };
-  return <Lottie options={defaultOptions} height={450} width={450} />;
+  return (
+    <Lottie
+      options={defaultOptions}
+      height={450}
+      width={450}
+      isClickToPauseDisabled={true}
+    />
+  );
 };
 
 export default NewPasswordAnimation;
