@@ -1,6 +1,7 @@
 import { useSession } from 'next-auth/react';
 
 interface User {
+  id: string;
   email: string;
   image?: string;
   // Add other properties if needed
@@ -14,6 +15,7 @@ export const useCurrentUser = () => {
   }
 
   const user: User = {
+    id: session.user.id ?? '',
     email: session.user.email ?? '',
     image: session.user.image ?? undefined,
     // Add other properties if needed
@@ -21,4 +23,3 @@ export const useCurrentUser = () => {
 
   return user;
 };
-

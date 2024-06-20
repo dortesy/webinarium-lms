@@ -6,24 +6,22 @@
   <component name="ChangeListManager">
     <list default="true" id="a0671386-6180-44e4-bc97-0187818964e1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/animations/sign-up.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/animations/sign-up.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/auth/animations/forgot-password-animation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/auth/animations/forgot-password-animation.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/auth/animations/login-animation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/auth/animations/login-animation.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/auth/animations/new-password-animation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/auth/animations/new-password-animation.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/auth/animations/signup-animation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/auth/animations/signup-animation.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/auth/card-wrapper.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/auth/card-wrapper.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/auth/new-verification-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/auth/new-verification-form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/sidebar/sidebar-bottom.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/sidebar/sidebar-bottom.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/sidebar/sidebar-item.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/sidebar/sidebar-item.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/[locale]/(public)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/[locale]/(public)/layout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/sidebar/sidebar-routes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/sidebar/sidebar-routes.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/sidebar/sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/sidebar/sidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/types/layout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/types/layout.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/messages/ru.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/messages/ru.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/teacher/course/course-list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/teacher/course/course-list.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/teacher/course/edit-course-form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/teacher/course/edit-course-form.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FormatOnSaveOptions">
+    <option name="myAllFileTypesSelected" value="true" />
+    <option name="mySelectedFileTypes">
+      <set />
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -31,6 +29,9 @@
   <component name="JsBowerSettings">
     <bower-package value="" />
     <bower.json value="" />
+  </component>
+  <component name="OptimizeOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -45,13 +46,17 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/sherzodsaidmaksumov/Documents/projects/lms/src/app/[locale]/(public)&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/sherzodsaidmaksumov/Documents/projects/lms&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.TypeScript&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/sherzodsaidmaksumov/.nvm/versions/node/v20.13.1/lib/node_modules/prettier&quot;,
+    &quot;rearrange.code.on.save&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/Users/sherzodsaidmaksumov/Documents/projects/lms/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -74,7 +79,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-WS-241.17011.90" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-WS-241.17890.13" />
       </set>
     </attachedChunks>
   </component>
@@ -91,6 +96,11 @@
       <workItem from="1717457290053" duration="9416000" />
       <workItem from="1717475336992" duration="88866000" />
       <workItem from="1717979955859" duration="6068000" />
+      <workItem from="1718286371063" duration="106000" />
+      <workItem from="1718286483847" duration="55000" />
+      <workItem from="1718286544740" duration="323000" />
+      <workItem from="1718286884767" duration="3563000" />
+      <workItem from="1718581167178" duration="231000" />
     </task>
     <servers />
   </component>

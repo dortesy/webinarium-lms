@@ -147,31 +147,34 @@ model Category {
 }
 
 model Course {
-  id          String         @id @default(uuid())
-  title       String
-  slug        String         @unique
-  description String?
-  creator     User           @relation("CreatedCourses", fields: [creatorId], references: [id])
-  creatorId   String
-  category    Category?      @relation(fields: [categoryId], references: [id])
-  categoryId  String?
-  price       Decimal?
-  duration    Int?
-  level       CourseLevel?
-  language    Language?
-  image       Media?         @relation(fields: [imageId], references: [id])
-  imageId     String?        @unique
-  status      CourseStatus? // DRAFT, PUBLISHED, ARCHIVED - TODO NOT ACTIVE RIGHT NOW
-  published   Boolean        @default(false)
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  sections    Section[]
-  enrollments Enrollment[]
-  progress    UserProgress[]
-  ratings     Rating[]
-  payments    Payment[]
-  wishlist    Wishlist[]
-  tags        CourseTag[]
+  id             String         @id @default(uuid())
+  title          String
+  slug           String         @unique
+  description    String?
+  creator        User           @relation("CreatedCourses", fields: [creatorId], references: [id])
+  creatorId      String
+  category       Category?      @relation(fields: [categoryId], references: [id])
+  categoryId     String?
+  price          Decimal?
+  duration       Int?
+  level          CourseLevel?
+  language       Language?
+  image          Media?         @relation(fields: [imageId], references: [id])
+  imageId        String?        @unique
+  status         CourseStatus? // DRAFT, PUBLISHED, ARCHIVED - TODO NOT ACTIVE RIGHT NOW
+  published      Boolean        @default(false)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  sections       Section[]
+  enrollments    Enrollment[]
+  progress       UserProgress[]
+  ratings        Rating[]
+  payments       Payment[]
+  wishlist       Wishlist[]
+  tags           CourseTag[]
+  learnings      Json?          @default("[]") // New field for what students will learn
+  requirements   Json?          @default("[]") // New field for course requirements
+  targetAudience Json?          @default("[]") // New field for who this course is for
 }
 
 model Section {

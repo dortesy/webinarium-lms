@@ -15,7 +15,7 @@ import { ROUTES } from '@/config/routes';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { SidebarItems } from './sidebar-items';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const SidebarRoutes = () => {
@@ -23,7 +23,16 @@ export const SidebarRoutes = () => {
   const courseId = params.courseId ? (params.courseId as string) : undefined;
   const [activeMenu, setActiveMenu] = useState<string | undefined>(courseId);
   const t = useTranslations('SidebarLabels');
+  console.log(activeMenu);
   console.log(courseId);
+  console.log(useParams());
+  console.log(params);
+
+  useEffect(() => {
+    if (courseId) {
+      setActiveMenu(courseId);
+    }
+  }, [courseId]);
 
   const handleBackToMainPanel = () => {
     setActiveMenu(undefined);

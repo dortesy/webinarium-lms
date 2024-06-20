@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,29 +12,33 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu';
 import { getAllCategories } from '@/lib/category/category-helper';
 import { ChevronDown } from 'lucide-react';
 
 const Categories = async () => {
-  const categories = await getAllCategories()
-  console.log(categories)
+  const categories = await getAllCategories();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="dark:text-white">Категории <ChevronDown /></Button>
+        <Button variant="ghost" className="dark:text-white">
+          Категории <ChevronDown />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="start">
-
         <DropdownMenuGroup>
           <DropdownMenuSub>
             {categories.map((category) => (
-              <DropdownMenuSub>
-                <DropdownMenuSubTrigger>{category.label}</DropdownMenuSubTrigger>
+              <DropdownMenuSub key={category.value}>
+                <DropdownMenuSubTrigger>
+                  {category.label}
+                </DropdownMenuSubTrigger>
                 <DropdownMenuPortal>
                   <DropdownMenuSubContent>
                     {category.children.map((child) => (
-                      <DropdownMenuItem>{child.label}</DropdownMenuItem>
+                      <DropdownMenuItem key={child.value}>
+                        {child.label}
+                      </DropdownMenuItem>
                     ))}
                   </DropdownMenuSubContent>
                 </DropdownMenuPortal>
@@ -44,8 +48,8 @@ const Categories = async () => {
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
-}
+  );
+};
 
+export default Categories;
 
-export default Categories

@@ -1,7 +1,7 @@
 'use server';
 import {
-  EditCourseSchemaType,
   EditCourseSchema,
+  EditCourseSchemaType,
 } from '@/schemas/courses/course.schema';
 import { db } from '@/lib/db';
 import slugify from 'slugify';
@@ -11,7 +11,7 @@ import { CourseLanguage, CourseLevel } from '@/lib/enums/course';
 import DOMPurify from 'dompurify';
 import { JSDOM } from 'jsdom';
 import { UploadImage } from '@/lib/media/upload-image';
-import { deleteFolder } from '@/lib/media/delete-file';
+import { deleteFile } from '@/lib/media/delete-file';
 
 export const EditCourse = async (
   values: EditCourseSchemaType,
@@ -101,7 +101,7 @@ export const EditCourse = async (
         },
       });
 
-      deleteFolder(deletedMedia.url);
+      deleteFile(deletedMedia.url);
     }
 
     const newCourse = await db.course.findFirst({
@@ -120,4 +120,3 @@ export const EditCourse = async (
     return { error: 'Произошла ошибка при обновлении курса' };
   }
 };
-
