@@ -79,25 +79,63 @@ export const LessonSchema = (
     sectionId: z.string().optional(),
   });
 
-export const LearningsSchema = (
-  t: ReturnType<typeof useTranslations<'CourseGoalsForm'>>,
-) =>
+const baseSchema = (t: ReturnType<typeof useTranslations<'CourseGoalsForm'>>) =>
   z.object({
-    learnings: z
-      .array(
-        z.object({
-          text: z
-            .string()
-            .min(1, t('errors.minGoalTitle'))
-            .max(160, t('errors.maxGoalTitle')),
-          placeholder: z.string().optional(),
-        }),
-      )
-      .min(3, t('errors.minGoals'))
-      .max(10, t('errors.maxGoalTitle')),
+    text: z
+      .string()
+      .min(1, t('errors.minTitle'))
+      .max(160, t('errors.maxTitle')),
+    placeholder: z.string().optional(),
   });
 
-export type LearningSchemaType = z.infer<ReturnType<typeof LearningsSchema>>;
+export const DynamicGoalsSchema = (
+  t: ReturnType<typeof useTranslations<'CourseGoalsForm'>>,
+) => {
+  const baseArraySchema = z
+    .array(baseSchema(t))
+    .min(3, t('errors.minGoals'))
+    .max(10, t('errors.maxGoals'));
+
+  return z
+    .object({
+      learnings: baseArraySchema.optional(),
+      requirements: baseArraySchema.optional(),
+      targetAudience: baseArraySchema.optional(),
+    })
+    .refine(
+      (data) => {
+        const keys = ['learnings', 'requirements', 'targetAudience'];
+        const presentKeys = keys.filter(
+          (key) => key in data && data[key as keyof typeof data]?.length,
+        );
+        return presentKeys.length === 1;
+      },
+      {
+        message: 'errors',
+        path: ['_'],
+      },
+    );
+};
+
+// export const DynamicGoalsSchema = (
+//   t: ReturnType<typeof useTranslations<'CourseGoalsForm'>>,
+// ) =>
+//   z.object({
+//     learnings: z
+//       .array(
+//         z.object({
+//           text: z
+//             .string()
+//             .min(1, t('errors.minGoalTitle'))
+//             .max(160, t('errors.maxGoalTitle')),
+//           placeholder: z.string().optional(),
+//         }),
+//       )
+//       .min(3, t('errors.minGoals'))
+//       .max(10, t('errors.maxGoalTitle')),
+//   });
+
+export type DynamicGoalsType = z.infer<ReturnType<typeof DynamicGoalsSchema>>;
 export type SectionSchemaType = z.infer<ReturnType<typeof SectionSchema>>;
 export type CreateCourseSchemaType = z.infer<
   ReturnType<typeof CreateCourseSchema>

@@ -1,6 +1,7 @@
 'use client';
-import Link from 'next/link';
-import { usePathname, useRouter } from '@/navigation';
+
+//import Link from '@/components/Link';
+import { Link, usePathname } from '@/navigation';
 import { cn } from '@/lib/utils';
 import { SidebarItemProps } from '@/lib/types/layout';
 

@@ -18,7 +18,6 @@ import VideoDataSkeleton from '@/components/custom-ui/video-data-skeleton';
 import socket from '@/socket';
 import { getLessonById } from '@/lib/course/course-helper';
 import { EditLesson } from '@/actions/course/edit-lesson';
-import { ZodError } from 'zod';
 import { toast } from '@/components/ui/use-toast';
 
 type TranslationsFunction = ReturnType<typeof useTranslations>;
@@ -93,20 +92,16 @@ const LessonItem = ({
   const onSubmit = (values: LessonSchemaType) => {
     startTransition(() => {
       EditLesson(values).then((data) => {
-        if (
-          Array.isArray(data) &&
-          data.every((item) => item instanceof ZodError)
-        ) {
-          console.error('Validation errors:', data);
-        } else if ('error' in data) {
+        if ('success' in data) {
+          setLesson(data.lesson!);
+        }
+        if ('error' in data) {
           console.error(data.error);
           toast({
             title: 'Ошибка',
             description: data.error,
             variant: 'destructive',
           });
-        } else if ('lesson' in data) {
-          setLesson(data.lesson);
         }
       });
     });

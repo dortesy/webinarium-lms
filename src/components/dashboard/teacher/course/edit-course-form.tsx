@@ -28,17 +28,24 @@ import {
 import ImageDropzone from '@/components/custom-ui/image-dropzone';
 import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
+import EditCourseFormSkeleton from '@/components/dashboard/teacher/course/skeletons/edit-course-form-skeleton';
 
 interface CourseWithMedia extends PrismaCourse {
   image?: Media | null; // Add the image property here
 }
 
 interface EditCourseFormProps {
-  course: CourseWithMedia;
+  initialCourse: CourseWithMedia;
   categories: CategoryData[];
 }
 
-const EditCourseForm = ({ course, categories }: EditCourseFormProps) => {
+const EditCourseForm = ({ initialCourse, categories }: EditCourseFormProps) => {
+  const [course, setCourse] = useState<CourseWithMedia>(initialCourse);
+
+  if (!course) {
+    return <EditCourseFormSkeleton />;
+  }
+
   const [isPending, startTransition] = useTransition();
   const [success, setSuccess] = useState<string | undefined>('');
   const [error, setError] = useState<string | undefined>('');
@@ -79,32 +86,57 @@ const EditCourseForm = ({ course, categories }: EditCourseFormProps) => {
   });
 
   const onSubmit = (values: EditCourseSchemaType) => {
-    const formData = new FormData();
+    const formData = createFormData(values);
 
-    if (values.file) {
-      formData.append('image', values.file);
+    startTransition(() => {
+      try {
+        EditCourse(values, formData).then((data) => {
+          handleResponse(data, values);
+        });
+      } catch (error) {
+        console.error('Error submitting the form: ', error);
+      }
+    });
+  };
+
+  const handleResponse = (data: any, values: EditCourseSchemaType) => {
+    if ('error' in data) {
+      setError(data.error);
     }
 
-    values.file = undefined;
-    startTransition(() => {
-      EditCourse(values, formData).then((data) => {
-        if ('error' in data) {
-          setError(data.error);
-        }
-        if ('success' in data) {
-          setSuccess(data.success);
-          if (data.course) {
-            reset({
-              ...values,
-              title: data.course.title,
-              imageId: data.course.imageId ? data.course.imageId : undefined,
-              file: data.course.image
-                ? new File([], data.course.image.url, { type: 'image/png' })
-                : undefined,
-            });
-          }
-        }
-      });
+    if ('success' in data) {
+      setSuccess(data.success);
+      if (data.course) {
+        updateFormValues(data.course, values);
+        console.log('huy sosi');
+        setCourse((prevCourse) => ({
+          ...prevCourse,
+          ...data.course,
+        }));
+      }
+    }
+  };
+
+  const createFormData = (values: EditCourseSchemaType): FormData => {
+    const formData = new FormData();
+    if (values.file) {
+      formData.append('image', values.file);
+      values.file = undefined;
+    }
+    return formData;
+  };
+
+  const updateFormValues = (
+    course: CourseWithMedia,
+    values: EditCourseSchemaType,
+  ) => {
+    reset({
+      ...values,
+      title: course.title,
+      imageId: course.imageId ? course.imageId : undefined,
+      file: course.image
+        ? new File([], course.image.url, { type: 'image/png' })
+        : undefined,
     });
   };
 

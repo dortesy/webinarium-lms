@@ -1,8 +1,8 @@
 'use server';
 
 import {
-  LearningSchemaType,
-  LearningsSchema,
+  DynamicGoalsSchema,
+  DynamicGoalsType,
 } from '@/schemas/courses/course.schema';
 import { getTranslations } from 'next-intl/server';
 import { currentUser } from '@/lib/auth';
@@ -10,12 +10,13 @@ import { getOnlyCourseById } from '@/lib/course/course-helper';
 import { db } from '@/lib/db';
 import { Prisma } from '@prisma/client';
 
-export const CreateLearnings = async (
+export const updateDynamicGoals = async (
   courseId: string,
-  values: LearningSchemaType,
+  values: DynamicGoalsType,
+  fieldName: keyof DynamicGoalsType,
 ) => {
   const t = await getTranslations('CourseGoalsForm');
-  const formSchema = LearningsSchema(t);
+  const formSchema = DynamicGoalsSchema(t);
   const validatedFields = formSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -33,18 +34,25 @@ export const CreateLearnings = async (
     return { error: 'Вы не авторизованы' };
   }
 
-  const transformedData = values.learnings.map((learning) => ({
-    text: learning.text,
+  if (!values[fieldName]) {
+    return { error: `Поле ${fieldName} не найдено` };
+  }
+
+  const transformedData = values[fieldName]!.map((item) => ({
+    text: item.text,
   }));
 
   try {
-    await db.course.update({
+    const updatedCourse = await db.course.update({
       where: { id: courseId },
       data: {
-        learnings: transformedData as Prisma.JsonArray,
+        [fieldName]: transformedData as Prisma.JsonArray,
       },
     });
-  } catch {
-    return { error: 'Ошибка при создании целей курса' };
+
+    return { success: true, updatedCourse };
+  } catch (error) {
+    console.error('Ошибка при обновлении курса:', error);
+    return { error: 'Ошибка при обновлении курса' };
   }
 };

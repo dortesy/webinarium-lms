@@ -1,4 +1,4 @@
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata } from 'next';
 import {
   getCourseById,
   getCourseByIdWithSections,
@@ -55,7 +55,7 @@ export default async function Page({
 
     const categories = await getAllCategories();
 
-    return <EditCourseForm course={course} categories={categories} />;
+    return <EditCourseForm initialCourse={course} categories={categories} />;
   };
 
   return (
