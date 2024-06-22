@@ -1,11 +1,11 @@
-"use client";
-import React from "react";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import Image from "next/image";
+'use client';
+import React from 'react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const transition = {
-  type: "spring",
+  type: 'spring',
   mass: 0.5,
   damping: 11.5,
   stiffness: 100,
@@ -39,7 +39,7 @@ export const MenuItem = ({
           transition={transition}
         >
           {active === item && (
-            <div className="absolute top-[calc(100%_+_1.2rem)] left-1/2 transform -translate-x-1/2 pt-4">
+            <div className="transform -translate-x-1/2 pt-4">
               <motion.div
                 transition={transition}
                 layoutId="active" // layoutId ensures smooth animation

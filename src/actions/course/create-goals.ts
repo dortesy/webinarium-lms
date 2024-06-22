@@ -9,13 +9,15 @@ import { currentUser } from '@/lib/auth';
 import { getOnlyCourseById } from '@/lib/course/course-helper';
 import { db } from '@/lib/db';
 import { Prisma } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 
 export const updateDynamicGoals = async (
   courseId: string,
   values: DynamicGoalsType,
   fieldName: keyof DynamicGoalsType,
+  pathname: string,
 ) => {
-  const t = await getTranslations('CourseGoalsForm');
+  const t = await getTranslations(`CourseGoalsForm`);
   const formSchema = DynamicGoalsSchema(t);
   const validatedFields = formSchema.safeParse(values);
 
@@ -27,15 +29,15 @@ export const updateDynamicGoals = async (
   const course = await getOnlyCourseById(courseId);
 
   if (!course) {
-    return { error: 'Курс не найден' };
+    return { error: t('courseNotFound') };
   }
 
   if (!user || user.id !== course.creatorId) {
-    return { error: 'Вы не авторизованы' };
+    return { error: t('notAuthorized') };
   }
 
   if (!values[fieldName]) {
-    return { error: `Поле ${fieldName} не найдено` };
+    return { error: t('fieldNotFound', { field: fieldName }) };
   }
 
   const transformedData = values[fieldName]!.map((item) => ({
@@ -50,9 +52,10 @@ export const updateDynamicGoals = async (
       },
     });
 
+    revalidatePath(pathname);
     return { success: true, updatedCourse };
   } catch (error) {
-    console.error('Ошибка при обновлении курса:', error);
-    return { error: 'Ошибка при обновлении курса' };
+    console.error(`Error while adding field ${fieldName} to course`, error);
+    return { error: t('genericError') };
   }
 };

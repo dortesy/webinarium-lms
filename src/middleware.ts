@@ -1,65 +1,63 @@
-import NextAuth from "next-auth";
-import authConfig from "@/auth.config";
+import NextAuth from 'next-auth';
+import authConfig from '@/auth.config';
 import createMiddleware from 'next-intl/middleware';
-import {localePrefix, locales} from "@/i18n";
-
+import { localePrefix, locales } from '@/i18n';
 
 import {
-    DEFAULT_LOGIN_REDIRECT,
-    apiAuthPrefix,
-    publicRoutes,
-    authRoutes
-} from "@/routes";
+  apiAuthPrefix,
+  authRoutes,
+  DEFAULT_LOGIN_REDIRECT,
+  publicRoutes,
+} from '@/routes';
 
-const { auth } = NextAuth(authConfig)
-
+const { auth } = NextAuth(authConfig);
 
 const intlMiddleware = createMiddleware({
-    defaultLocale: 'ru',
-    localePrefix,
-    locales
+  defaultLocale: 'ru',
+  localePrefix,
+  locales,
 });
 
-
 const createPagesRegex = (pages: string[]) =>
-    RegExp(
-        `^(/(${['ru', 'uz'].join("|")}))?(${pages
-            .flatMap((p) => (p === "/" ? ["", "/"] : p))
-            .join("|")})/?$`,
-        "i"
-    );
-
-
+  RegExp(
+    `^(/(${['ru', 'uz'].join('|')}))?(${pages
+      .flatMap((p) => {
+        if (p === '/') return ['', '/'];
+        if (p.endsWith('/**')) return p.slice(0, -3) + '(/.*)?';
+        return p + '(/.*)?';
+      })
+      .join('|')})/?$`,
+    'i',
+  );
 
 export default auth((req) => {
+  const { nextUrl } = req;
+  const isLoggedIn = !!req.auth;
 
-    const  {nextUrl} = req;
-    const isLoggedIn = !!req.auth
+  const isApiAuthRoute = apiAuthPrefix.some((prefix) =>
+    nextUrl.pathname.startsWith(prefix),
+  );
+  const isPublicRoute = createPagesRegex(publicRoutes).test(nextUrl.pathname);
+  const isAuthRoute = createPagesRegex(authRoutes).test(nextUrl.pathname);
+  req.headers.set('x-next-pathname', req.nextUrl.pathname);
+  if (isApiAuthRoute) {
+    return;
+  }
 
-    const isApiAuthRoute = apiAuthPrefix.some(prefix => nextUrl.pathname.startsWith(prefix));
-    const isPublicRoute = createPagesRegex(publicRoutes).test(nextUrl.pathname);
-    const isAuthRoute = createPagesRegex(authRoutes).test(nextUrl.pathname);
-    req.headers.set('x-next-pathname', req.nextUrl.pathname);
-    if (isApiAuthRoute) {
-        return
+  if (isAuthRoute) {
+    if (isLoggedIn) {
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
-
-    if (isAuthRoute) {
-        if (isLoggedIn) {
-            return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
-        }
-        return intlMiddleware(req);
-    }
-
-    if (!isLoggedIn && !isPublicRoute) {
-        return Response.redirect(new URL('/auth/login', nextUrl));
-    }
-
     return intlMiddleware(req);
-})
+  }
 
+  if (!isLoggedIn && !isPublicRoute) {
+    return Response.redirect(new URL('/auth/login', nextUrl));
+  }
 
+  return intlMiddleware(req);
+});
 
 export const config = {
-    matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
 };

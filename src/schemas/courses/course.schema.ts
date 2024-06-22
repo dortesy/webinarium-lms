@@ -54,7 +54,7 @@ export const SectionSchema = (
     id: z.string().optional(),
     title: z
       .string()
-      .min(6, { message: t('errors.minSectionTitle') })
+      .min(2, { message: t('errors.minSectionTitle') })
       .max(200, { message: t('errors.maxSectionTitle') }),
     description: z
       .string()
@@ -70,7 +70,7 @@ export const LessonSchema = (
     id: z.string().optional(),
     title: z
       .string()
-      .min(6, { message: t('errors.minSectionTitle') })
+      .min(2, { message: t('errors.minLessonTitle') })
       .max(200, { message: t('errors.maxLessonTitle') }),
     description: z
       .string()
@@ -116,24 +116,6 @@ export const DynamicGoalsSchema = (
       },
     );
 };
-
-// export const DynamicGoalsSchema = (
-//   t: ReturnType<typeof useTranslations<'CourseGoalsForm'>>,
-// ) =>
-//   z.object({
-//     learnings: z
-//       .array(
-//         z.object({
-//           text: z
-//             .string()
-//             .min(1, t('errors.minGoalTitle'))
-//             .max(160, t('errors.maxGoalTitle')),
-//           placeholder: z.string().optional(),
-//         }),
-//       )
-//       .min(3, t('errors.minGoals'))
-//       .max(10, t('errors.maxGoalTitle')),
-//   });
 
 export type DynamicGoalsType = z.infer<ReturnType<typeof DynamicGoalsSchema>>;
 export type SectionSchemaType = z.infer<ReturnType<typeof SectionSchema>>;

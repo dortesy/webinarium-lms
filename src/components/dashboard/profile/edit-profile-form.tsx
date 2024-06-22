@@ -13,7 +13,6 @@ import { z } from 'zod';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,9 +24,11 @@ import ImageDropzone from '@/components/custom-ui/image-dropzone';
 import { useRef, useState, useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import { EditProfile } from '@/actions/course/edit-profile';
-import { FormError } from '@/components/form-error';
-import { FormSuccess } from '@/components/form-success';
+import { FormError } from '@/components/auth/form-error';
+import { FormSuccess } from '@/components/auth/form-success';
 import { useSession } from 'next-auth/react';
+import { usePathname } from '@/navigation';
+
 export const EditProfileForm = ({ user }: { user: User }) => {
   const t = useTranslations('ProfileForm');
   const formSchema = UserProfileSchema(t);
@@ -35,7 +36,7 @@ export const EditProfileForm = ({ user }: { user: User }) => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const session = useSession();
-  console.log(session);
+  const pathname = usePathname();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -67,7 +68,7 @@ export const EditProfileForm = ({ user }: { user: User }) => {
 
     values.file = undefined;
     startTransition(() => {
-      EditProfile(values, formData).then((data) => {
+      EditProfile(values, formData, pathname).then((data) => {
         if (Array.isArray(data.error)) {
           // Handle the case where data.error is a ZodIssue[]
           const errorMessages = data.error
@@ -76,7 +77,6 @@ export const EditProfileForm = ({ user }: { user: User }) => {
           setError(errorMessages);
         } else {
           setSuccess(data.success || null);
-          console.log(data);
           session.update(data.user);
         }
       });
@@ -146,7 +146,12 @@ export const EditProfileForm = ({ user }: { user: User }) => {
             <FormItem>
               <FormLabel>{t('bio')}</FormLabel>
               <FormControl>
-                <RichEditor {...field} />
+                <RichEditor
+                  value={field.value}
+                  name={field.name}
+                  onChange={field.onChange}
+                  disabled={isPending}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

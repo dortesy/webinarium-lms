@@ -1,17 +1,13 @@
-import {CreateCourseForm} from "@/components/dashboard/teacher/course/create-course-form";
+import { CreateCourseForm } from '@/components/dashboard/teacher/course/create-course-form';
+import { getTranslations } from 'next-intl/server';
 
-const MyCoursesPage = () => {
-
-
-    return (
-        <div>
-            <h2 className="text-4xl font-extrabold dark:text-white">Добавить курс</h2>
-            <p className="my-4 text-sm text-gray-500">Начните с указания названия вашего будущего курса. Оно должно быть лаконичным, привлекательным и информативным, чтобы потенциальные студенты сразу поняли, чему они смогут научиться.</p>
-
-            <CreateCourseForm />
-        </div>
-    );
+export async function generateMetadata() {
+  const t = await getTranslations('CreateCourseForm');
+  return { title: t('title') };
 }
 
+const MyCoursesPage = () => {
+  return <CreateCourseForm />;
+};
 
 export default MyCoursesPage;

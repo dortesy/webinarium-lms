@@ -1,32 +1,27 @@
 'use client';
-import { SidebarItem } from '@/components/dashboard/sidebar/sidebar-item';
 import {
-  GraduationCap,
-  UserCircle,
   BookOpenText,
-  Receipt,
-  ListVideo,
+  Goal,
+  GraduationCap,
   LayoutDashboard,
+  ListVideo,
   MoveLeft,
   MoveRight,
-  Goal,
+  Receipt,
+  UserCircle,
 } from 'lucide-react';
 import { ROUTES } from '@/config/routes';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { SidebarItems } from './sidebar-items';
 import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export const SidebarRoutes = () => {
   const params = useParams();
   const courseId = params.courseId ? (params.courseId as string) : undefined;
   const [activeMenu, setActiveMenu] = useState<string | undefined>(courseId);
   const t = useTranslations('SidebarLabels');
-  console.log(activeMenu);
-  console.log(courseId);
-  console.log(useParams());
-  console.log(params);
 
   useEffect(() => {
     if (courseId) {
@@ -100,7 +95,7 @@ export const SidebarRoutes = () => {
               exit="exit"
               variants={variants}
               transition={{ duration: 0.1 }}
-              className="absolute top-0 left-0 w-full h-full"
+              className="w-full h-full"
             >
               <div
                 className="pb-3 mb-3 space-x-2 flex items-center text-xs text-gray-700 cursor-pointer"
@@ -121,7 +116,7 @@ export const SidebarRoutes = () => {
               exit="exit"
               variants={variants}
               transition={{ duration: 0.1 }}
-              className="absolute top-0 left-0 w-full h-full"
+              className="w-full h-full"
             >
               <div
                 className="pb-3 mb-3 space-x-2 flex items-center text-xs text-gray-700 cursor-pointer"
@@ -143,7 +138,7 @@ export const SidebarRoutes = () => {
             exit="exit"
             variants={variants}
             transition={{ duration: 0.3 }}
-            className="absolute top-0 left-0 w-full h-full"
+            className="w-full h-full"
           >
             <SidebarItems
               items={mainRoutes}

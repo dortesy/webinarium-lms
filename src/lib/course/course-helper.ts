@@ -1,6 +1,5 @@
 'use server';
 import { db } from '@/lib/db';
-import { cache } from 'react';
 import { Prisma } from '@prisma/client';
 
 export const getOnlyCourseById = async (id: string) => {
@@ -18,6 +17,17 @@ export const getCourseById = async (id: string) => {
     return await db.course.findUnique({
       where: { id: id },
       include: { image: true, category: true, creator: true },
+    });
+  } catch {
+    return null;
+  }
+};
+
+export const getCourseTitleById = async (id: string) => {
+  try {
+    return await db.course.findUnique({
+      where: { id: id },
+      select: { title: true },
     });
   } catch {
     return null;

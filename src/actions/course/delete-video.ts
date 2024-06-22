@@ -1,27 +1,26 @@
 'use server';
-import fs from 'fs';
-import path from 'path';
 import { db } from '@/lib/db';
-import { PUBLIC_DIRECTORY } from '@/lib/media/storage';
 import { currentUser } from '@/lib/auth';
 import { deleteFolder } from '@/lib/media/delete-file';
 import { getLessonById } from '@/lib/course/course-helper';
+import { getTranslations } from 'next-intl/server';
 
 const deleteVideo = async (videoId: string) => {
   const user = await currentUser();
+  const t = await getTranslations('VideoData.deletion');
 
   if (!user) {
-    return { error: 'Вы не авторизованы' };
+    return { error: t('notAuthorized') };
   }
 
   const video = await db.media.findUnique({ where: { id: videoId } });
 
   if (!video || !video.lessonId) {
-    return { error: 'Видео не найдено' };
+    return { error: t('videoNotFound') };
   }
 
   if (video.userId !== user.id) {
-    return { error: 'Вы не авторизованы' };
+    return { error: t('notAuthorized') };
   }
 
   try {
@@ -30,15 +29,10 @@ const deleteVideo = async (videoId: string) => {
 
     const updatedLesson = await getLessonById(video.lessonId);
 
-    if (updatedLesson) {
-      return { success: 'Видео удалено', updatedLesson };
-    }
-
-    return { error: 'Урок не найден' };
+    return { success: t('success'), updatedLesson };
   } catch (error) {
-    return { error: 'Ошибка удаления видео' };
+    return { error: t('genericError') };
   }
 };
 
 export default deleteVideo;
-

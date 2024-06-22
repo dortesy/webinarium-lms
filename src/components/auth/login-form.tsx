@@ -16,17 +16,20 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useState, useTransition } from 'react';
 import { login } from '@/actions/auth/login';
-import { FormError } from '@/components/form-error';
-import { FormSuccess } from '@/components/form-success';
+import { FormError } from '@/components/auth/form-error';
+import { FormSuccess } from '@/components/auth/form-success';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import LoginAnimation from './animations/login-animation';
+import { useTranslations } from 'next-intl';
+import { ROUTES } from '@/config/routes';
 
-const Login = () => {
+const LoginForm = () => {
   const searchParams = useSearchParams();
+  const t = useTranslations('LoginForm');
   const urlError =
     searchParams.get('error') === 'OAuthAccountNotLinked'
-      ? 'E-mail уже используются в других источниках входа'
+      ? t('messages.oauthError')
       : '';
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>('');
@@ -56,11 +59,11 @@ const Login = () => {
 
   return (
     <CardWrapper
-      headerLabel="Вход"
-      backButtonHref="/auth/register"
-      backButtonLabel="Нет аккаунта? Зарегистрироваться"
+      headerLabel={t('headerLabel')}
+      backButtonHref={ROUTES.AUTH.REGISTRATION}
+      backButtonLabel={t('backButtonLabel')}
       showSocial
-      animation=<LoginAnimation />
+      animation={<LoginAnimation />}
     >
       <Form {...form}>
         <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
@@ -69,12 +72,12 @@ const Login = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t('email.label')}</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     disabled={isPending}
-                    placeholder="john.doe@example.com"
+                    placeholder={t('email.placeholder')}
                     type="email"
                   />
                 </FormControl>
@@ -88,12 +91,12 @@ const Login = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Пароль</FormLabel>
+                <FormLabel>{t('password.label')}</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     disabled={isPending}
-                    placeholder="******"
+                    placeholder={t('password.placeholder')}
                     type="password"
                   />
                 </FormControl>
@@ -103,7 +106,9 @@ const Login = () => {
                   size="sm"
                   asChild
                 >
-                  <Link href="/auth/reset-password">Забыли пароль?</Link>
+                  <Link href={ROUTES.AUTH.RESET}>
+                    {t('forgotPasswordLink')}
+                  </Link>
                 </Button>
                 <FormMessage />
               </FormItem>
@@ -114,7 +119,7 @@ const Login = () => {
           <FormSuccess message={success} />
 
           <Button disabled={isPending} type="submit" className="w-full">
-            Вход
+            {t('submitButton')}
           </Button>
         </form>
       </Form>
@@ -122,5 +127,4 @@ const Login = () => {
   );
 };
 
-export default Login;
-
+export default LoginForm;

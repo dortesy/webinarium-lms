@@ -16,8 +16,8 @@ import { CardWrapper } from '@/components/auth/card-wrapper';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useState, useTransition } from 'react';
-import { FormError } from '@/components/form-error';
-import { FormSuccess } from '@/components/form-success';
+import { FormError } from '@/components/auth/form-error';
+import { FormSuccess } from '@/components/auth/form-success';
 import { Registration } from '@/actions/auth/registration';
 import { useTranslations } from 'next-intl';
 import SignUpAnimation from '@/components/auth/animations/signup-animation';
@@ -58,7 +58,7 @@ export const RegisterForm = () => {
       backButtonLabel={t('backButtonLabel')}
       backButtonHref={'/auth/login'}
       showSocial
-      animation=<SignUpAnimation />
+      animation={<SignUpAnimation />}
     >
       <Form {...form}>
         <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
@@ -111,4 +111,3 @@ export const RegisterForm = () => {
     </CardWrapper>
   );
 };
-

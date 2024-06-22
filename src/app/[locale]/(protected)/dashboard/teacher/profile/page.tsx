@@ -3,6 +3,8 @@ import { currentUser } from '@/lib/auth';
 import { getUserById } from '@/lib/auth/auth-helper';
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import { Suspense } from 'react';
+import { EditProfileFormSkeleton } from '@/components/dashboard/teacher/course/skeletons/edit-profile-form-skeleton';
 
 export const metadata: Metadata = {
   title: 'Редактирование профиля',
@@ -30,5 +32,12 @@ const TeacherProfilePage = async () => {
   );
 };
 
-export default TeacherProfilePage;
+const Page = () => {
+  return (
+    <Suspense fallback={<EditProfileFormSkeleton />}>
+      <TeacherProfilePage />
+    </Suspense>
+  );
+};
 
+export default Page;

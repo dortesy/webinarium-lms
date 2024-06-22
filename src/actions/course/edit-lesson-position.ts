@@ -1,45 +1,52 @@
-"use server"
+'use server';
 
-import { db } from "@/lib/db";
-import { currentUser } from "@/lib/auth";
-import { getLessonById, getSectionById } from "@/lib/course/course-helper";
+import { db } from '@/lib/db';
+import { currentUser } from '@/lib/auth';
+import { getLessonById, getSectionById } from '@/lib/course/course-helper';
+import { revalidatePath } from 'next/cache';
+import { getTranslations } from 'next-intl/server';
 
-const EditLessonPosition = async (lessonId: string, position: number) => {
-    const existingLesson = await getLessonById(lessonId);
+const EditLessonPosition = async (
+  lessonId: string,
+  position: number,
+  pathname: string,
+) => {
+  const existingLesson = await getLessonById(lessonId);
+  const t = await getTranslations('CourseOutlinePage');
+  if (!existingLesson) {
+    return { error: t('errors.lessonNotFound') };
+  }
 
-    if (!existingLesson) {
-        return { error: 'Урок не найден' };
-    }
+  const section = await getSectionById(existingLesson.sectionId);
 
-    const section = await getSectionById(existingLesson.sectionId);
+  if (!section) {
+    return { error: t('errors.sectionNotFound') };
+  }
 
-    if (!section) {
-        return { error: 'Раздел не найден' };
-    }
+  const user = await currentUser();
 
-    const user = await currentUser();
+  if (!user || user.id !== section.course.creatorId) {
+    return { error: t('errors.notAuthorized') };
+  }
 
-    if (!user || user.id !== section.course.creatorId) {
-        return { error: "Вы не авторизованы" };
-    }
+  try {
+    await db.lesson.update({
+      where: { id: lessonId },
+      data: { position: position },
+    });
 
-    try {
-        await db.lesson.update({
-            where: { id: lessonId },
-            data: { position: position }
-        });
+    const lessons = await db.lesson.findMany({
+      where: { sectionId: section.id },
+      orderBy: { position: 'asc' },
+      include: { video: true },
+    });
 
-        const lessons = await db.lesson.findMany({
-            where: { sectionId: section.id },
-            orderBy: { position: 'asc' },
-            include: { video: true }
-        });
-
-        return { success: 'Позиция урока изменена', lessons: lessons };
-    } catch (error) {
-        console.error("Error updating lesson position:", error);
-        return { error: 'Произошла ошибка при изменении позиции урока' };
-    }
+    revalidatePath(pathname);
+    return { success: t('lessonMoved'), lessons: lessons };
+  } catch (error) {
+    console.error('Error updating lesson position:', error);
+    return { error: t('errors.lessonMovingError') };
+  }
 };
 
 export default EditLessonPosition;

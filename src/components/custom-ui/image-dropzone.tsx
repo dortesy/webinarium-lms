@@ -121,7 +121,7 @@ const ImageDropzone = React.forwardRef<HTMLDivElement, DropzoneProps>(
                   <>
                     <ImageUp className="w-8 h-8" />
                     <p className="text-base font-medium text-gray-600">
-                      Перетащите изображение сюда или нажмите для загрузки
+                      {t('image.title')}
                     </p>
                     <p className="text-sm text-gray-500">{t('image.type')}</p>
                     <p className="text-sm text-gray-500">

@@ -8,12 +8,14 @@ import { currentUser } from '@/lib/auth';
 import { getTranslations } from 'next-intl/server';
 import DOMPurify from 'dompurify';
 import { JSDOM } from 'jsdom';
-import { UploadImage, UploadImageToProfile } from '@/lib/media/upload-image';
-import { deleteFile, deleteFolder } from '@/lib/media/delete-file';
+import { UploadImageToProfile } from '@/lib/media/upload-image';
+import { deleteFile } from '@/lib/media/delete-file';
+import { revalidatePath } from 'next/cache';
 
 export const EditProfile = async (
   values: UserProfileSchemaType,
   formData: FormData,
+  pathname: string,
 ) => {
   const t = await getTranslations('ProfileForm');
   const userProfileSchema = UserProfileSchema(t);
@@ -74,10 +76,11 @@ export const EditProfile = async (
         youtube,
       },
     });
+
+    revalidatePath(pathname);
     return { success: t('success'), user: updatedUser };
   } catch (error) {
     console.error('Error updating profile:', error);
     return { error: t('errors.errorUpdate') };
   }
 };
-

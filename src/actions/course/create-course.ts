@@ -1,61 +1,65 @@
-'use server'
-import {CreateCourseSchema, CreateCourseSchemaType} from "@/schemas/courses/course.schema";
-import { db } from "@/lib/db";
-import slugify from "slugify";
-import * as z from "zod";
-import {currentUser} from "@/lib/auth";
-import {getTranslations} from "next-intl/server";
+'use server';
+import {
+  CreateCourseSchema,
+  CreateCourseSchemaType,
+} from '@/schemas/courses/course.schema';
+import { db } from '@/lib/db';
+import slugify from 'slugify';
+import { currentUser } from '@/lib/auth';
+import { getTranslations } from 'next-intl/server';
+import { revalidatePath } from 'next/cache';
 
+export const CreateCourse = async (
+  values: CreateCourseSchemaType,
+  pathname: string,
+) => {
+  const t = await getTranslations('CreateCourseForm');
+  const paramSchema = CreateCourseSchema(t);
+  const validatedFields = paramSchema.safeParse(values);
 
-export const CreateCourse = async (values: CreateCourseSchemaType) => {
-    const t = await getTranslations("CreateCourseForm");
-    const paramSchema = CreateCourseSchema(t);
-    const validatedFields = paramSchema.safeParse(values);
+  if (!validatedFields.success) {
+    console.log(validatedFields.error.errors);
+    return validatedFields.error.errors;
+  }
 
-    if (!validatedFields.success) {
-        console.log(validatedFields.error.errors);
-        return validatedFields.error.errors;
-    }
+  const { title } = values;
+  const user = await currentUser();
 
-    const { title } = values;
-    const user = await currentUser()
+  if (!user) {
+    return { error: t('errors.notAuthorized') };
+  }
 
-    if (!user) {
-        return { error: "Вы не авторизованы" };
-    }
+  if (!title) {
+    return { error: t('errors.titleRequired') };
+  }
 
-    if (!title) {
-        return { error: "Course title is required" };
-    }
+  const slug = slugify(title, { lower: true });
 
-    const slug = slugify(title, { lower: true });
+  const existingCourse = await db.course.findFirst({
+    where: {
+      slug: slug,
+      creatorId: user.id,
+    },
+  });
 
-    const existingCourse = await db.course.findFirst({
-        where: {
-            slug: slug,
-            creatorId: user.id,
-        },
+  if (existingCourse) {
+    return { error: t('errors.courseExists') };
+  }
+
+  try {
+    const course = await db.course.create({
+      data: {
+        title: title.trim(),
+        slug: slug,
+        creator: { connect: { id: user.id! } },
+        status: 'DRAFT',
+      },
     });
 
-    if (existingCourse) {
-        return { error: 'Курс с таким названием уже существует' };
-    }
-
-
-
-    try {
-        const course = await db.course.create({
-            data: {
-                title: title.trim(),
-                slug: slug,
-                creator: { connect: { id: user.id! } },
-                status: 'DRAFT',
-            },
-        });
-
-        return { success: 'Курс создан', courseId: course.id };
-    } catch (error) {
-        console.error("Error creating course:", error);
-        return { error: 'Произошла ошибка при создании курса' };
-    }
-}
+    revalidatePath(pathname);
+    return { success: t('success'), courseId: course.id };
+  } catch (error) {
+    console.error('Error creating course:', error);
+    return { error: t('errors.creationError') };
+  }
+};

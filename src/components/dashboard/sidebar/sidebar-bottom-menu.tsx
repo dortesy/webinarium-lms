@@ -1,17 +1,10 @@
 'use client';
-import {
-  GraduationCap,
-  UserCircle,
-  LayoutDashboard,
-  Bell,
-  CircleHelp,
-  Settings,
-} from 'lucide-react';
+import { Bell, CircleHelp, Settings } from 'lucide-react';
 import { ROUTES } from '@/config/routes';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { SidebarItems } from './sidebar-items';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export const SidebarBottomMenu = () => {
   const params = useParams();
@@ -51,7 +44,7 @@ export const SidebarBottomMenu = () => {
           exit="exit"
           variants={variants}
           transition={{ duration: 0.3 }}
-          className="absolute top-[-160px] left-0 w-full h-full"
+          className="w-full h-full"
         >
           <SidebarItems items={mainRoutes} sidebarHeader={''} />
         </motion.div>

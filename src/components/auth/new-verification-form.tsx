@@ -4,19 +4,23 @@ import { BeatLoader } from 'react-spinners';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { newVerification } from '@/actions/auth/new-verification';
-import { FormError } from '@/components/form-error';
-import { FormSuccess } from '@/components/form-success';
+import { FormError } from '@/components/auth/form-error';
+import { FormSuccess } from '@/components/auth/form-success';
 import VerificationAnimation from './animations/verification-animation';
+import { ROUTES } from '@/config/routes';
+import { useTranslations } from 'next-intl';
+
 export const NewVerificationForm = () => {
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
 
+  const t = useTranslations('VerificationForm');
+
   const onSubmit = useCallback(() => {
-    console.log(token);
     if (!token) {
-      setError('Токен не найден');
+      setError(t('messages.tokenNotFound'));
       return;
     }
     newVerification(token)
@@ -26,23 +30,24 @@ export const NewVerificationForm = () => {
           return;
         }
         if (data.success) {
-          setError(data.success);
+          setSuccess(data.success);
         }
       })
-      .catch((error) => {
-        setError('Что-то пошло не так');
+      .catch(() => {
+        setError(t('messages.genericError'));
       });
-  }, [token]);
+  }, [token, t]);
 
   useEffect(() => {
     onSubmit();
   }, [onSubmit]);
+
   return (
     <CardWrapper
-      headerLabel="Верификация E-mail адреса"
-      backButtonLabel="Назад к форме входа"
-      backButtonHref="/auth/login"
-      animation=<VerificationAnimation />
+      headerLabel={t('headerLabel')}
+      backButtonLabel={t('backButtonLabel')}
+      backButtonHref={ROUTES.AUTH.LOGIN}
+      animation={<VerificationAnimation />}
     >
       <div className="flex items-center w-full justify-center">
         {!error && !success && <BeatLoader />}
@@ -53,3 +58,4 @@ export const NewVerificationForm = () => {
   );
 };
 
+export default NewVerificationForm;

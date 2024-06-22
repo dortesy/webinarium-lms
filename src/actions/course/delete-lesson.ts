@@ -3,21 +3,24 @@
 import { db } from '@/lib/db';
 import { currentUser } from '@/lib/auth';
 import { deleteFolder } from '@/lib/media/delete-file';
+import { revalidatePath } from 'next/cache';
+import { getTranslations } from 'next-intl/server';
 
-const DeleteLesson = async (lessonId: string) => {
+const DeleteLesson = async (lessonId: string, pathname: string) => {
+  const t = await getTranslations('CourseOutlinePage');
   const existingLesson = await db.lesson.findUnique({
     where: { id: lessonId },
     include: { section: { include: { course: true } }, video: true },
   });
 
   if (!existingLesson) {
-    return { error: 'Урок не найден' };
+    return { error: t('errors.lessonNotFound') };
   }
 
   const user = await currentUser();
 
   if (!user || user.id !== existingLesson.section.course.creatorId) {
-    return { error: 'Вы не авторизованы' };
+    return { error: t('errors.notAuthorized') };
   }
 
   try {
@@ -29,12 +32,12 @@ const DeleteLesson = async (lessonId: string) => {
     await db.lesson.delete({
       where: { id: lessonId },
     });
-    return { success: 'Урок удален' };
+    revalidatePath(pathname);
+    return { success: t('lessonDeleted') };
   } catch (error) {
     console.error('Error deleting lesson:', error);
-    return { error: 'Произошла ошибка при удалении урока' };
+    return { error: t('errors.lessonDeletionError') };
   }
 };
 
 export default DeleteLesson;
-

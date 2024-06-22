@@ -12,8 +12,12 @@ import {
   getSectionById,
 } from '@/lib/course/course-helper';
 import slugify from 'slugify';
+import { revalidatePath } from 'next/cache';
 
-export const EditLesson = async (values: LessonSchemaType) => {
+export const EditLesson = async (
+  values: LessonSchemaType,
+  pathname: string,
+) => {
   const t = await getTranslations('CourseOutlinePage');
   const lessonSchema = LessonSchema(t);
   const validatedFields = lessonSchema.safeParse(values);
@@ -25,19 +29,19 @@ export const EditLesson = async (values: LessonSchemaType) => {
   const { id, title, description, sectionId } = values;
 
   if (!id || !title || !sectionId) {
-    return { error: 'Lesson ID, title, and section ID are required' };
+    return { error: t('errors.lessonMissingFieldsError') };
   }
 
   const existingSection = await getSectionById(sectionId);
 
   if (!existingSection) {
-    return { error: 'Раздел не найден' };
+    return { error: t('errors.sectionNotFound') };
   }
 
   const user = await currentUser();
 
   if (!user || user.id !== existingSection.course.creatorId) {
-    return { error: 'Вы не авторизованы' };
+    return { error: t('errors.notAuthorized') };
   }
   const slug = slugify(title.trim(), { lower: true });
 
@@ -46,7 +50,7 @@ export const EditLesson = async (values: LessonSchemaType) => {
     const existingLesson = await getLessonBySlug(slug, sectionId);
 
     if (existingLesson) {
-      return { error: 'Урок с таким названием уже существует' };
+      return { error: t('errors.lessonAlreadyExists') };
     }
   }
 
@@ -66,9 +70,10 @@ export const EditLesson = async (values: LessonSchemaType) => {
       },
     });
 
+    revalidatePath(pathname);
     return { success: true, lesson: lesson };
   } catch (error) {
     console.error('Error updating lesson:', error);
-    return { error: 'Произошла ошибка при обновлении урока' };
+    return { error: t('errors.lessonUpdateError') };
   }
 };

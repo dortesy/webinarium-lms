@@ -3,8 +3,11 @@
 import { db } from '@/lib/db';
 import { currentUser } from '@/lib/auth';
 import { deleteFolder } from '@/lib/media/delete-file';
+import { revalidatePath } from 'next/cache';
+import { getTranslations } from 'next-intl/server';
 
-const DeleteSection = async (sectionId: string) => {
+const DeleteSection = async (sectionId: string, pathname: string) => {
+  const t = await getTranslations('CourseOutlinePage');
   const existingSection = await db.section.findUnique({
     where: {
       id: sectionId,
@@ -20,13 +23,13 @@ const DeleteSection = async (sectionId: string) => {
   });
 
   if (!existingSection) {
-    return { error: 'Раздел не найден' };
+    return { error: t('errors.sectionNotFound') };
   }
 
   const user = await currentUser();
 
   if (!user || user.id !== existingSection.course.creatorId) {
-    return { error: 'Вы не авторизованы' };
+    return { error: t('errors.notAuthorized') };
   }
 
   try {
@@ -43,12 +46,12 @@ const DeleteSection = async (sectionId: string) => {
       },
     });
 
-    return { success: 'Раздел удален' };
+    revalidatePath(pathname);
+    return { success: t('sectionDeleted') };
   } catch (error) {
     console.error('Error deleting section:', error);
-    return { error: 'Произошла ошибка при удалении раздела' };
+    return { error: t('errors.sectionDeletionError') };
   }
 };
 
 export default DeleteSection;
-

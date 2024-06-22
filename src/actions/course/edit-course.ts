@@ -12,6 +12,7 @@ import DOMPurify from 'dompurify';
 import { JSDOM } from 'jsdom';
 import { UploadImage } from '@/lib/media/upload-image';
 import { deleteFile } from '@/lib/media/delete-file';
+import { revalidatePath } from 'next/cache';
 
 export const EditCourse = async (
   values: EditCourseSchemaType,
@@ -24,6 +25,15 @@ export const EditCourse = async (
   if (!validatedFields.success) {
     return validatedFields.error.errors;
   }
+
+  /*
+   * TODO:
+   * Published, price and duration are not being used
+   * Find cases where we can use duration/published or should we remove them
+   * We can retrieve full length of courses by lessons
+   * We also have status field - ARCHIVED/DRAFT/PUBLISHED
+   * Need to decide which one is better boolean published or enum status field
+   * */
 
   const {
     id,
@@ -41,11 +51,11 @@ export const EditCourse = async (
   const user = await currentUser();
 
   if (!user || user.id !== creatorId) {
-    return { error: 'Вы не авторизованы' };
+    return { error: t('errors.noAccess') };
   }
 
   if (!title) {
-    return { error: 'Course title is required' };
+    return { error: t('errors.minTitle') };
   }
 
   const slug = slugify(title, { lower: true });
@@ -58,7 +68,7 @@ export const EditCourse = async (
   });
 
   if (existingCourse && existingCourse.id !== id) {
-    return { error: 'Курс с таким названием уже существует' };
+    return { error: t('errors.courseExists') };
   }
 
   const window = new JSDOM('').window;
@@ -114,9 +124,12 @@ export const EditCourse = async (
       },
     });
 
-    return { success: 'Изменения сохранены', course: newCourse };
+    const pathname = formData.get('pathname') as string;
+    if (pathname) revalidatePath(pathname);
+
+    return { success: t('success'), course: newCourse };
   } catch (error) {
     console.error('Error updating course:', error);
-    return { error: 'Произошла ошибка при обновлении курса' };
+    return { error: t('errors.genericError') };
   }
 };

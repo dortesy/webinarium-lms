@@ -15,17 +15,19 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useState, useTransition } from 'react';
-import { FormError } from '@/components/form-error';
-import { FormSuccess } from '@/components/form-success';
+import { FormError } from '@/components/auth/form-error';
+import { FormSuccess } from '@/components/auth/form-success';
 import { newPassword } from '@/actions/auth/new-password';
 import { useSearchParams } from 'next/navigation';
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 import NewPasswordAnimation from './animations/new-password-animation';
+import { ROUTES } from '@/config/routes';
+import { useTranslations } from 'next-intl';
 
 export const NewPasswordForm = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
-
+  const t = useTranslations('NewPasswordForm');
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
@@ -58,10 +60,10 @@ export const NewPasswordForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Введите новый пароль"
-      backButtonHref="/auth/login"
-      backButtonLabel="Вернуться на страницу входа"
-      animation=<NewPasswordAnimation />
+      headerLabel={t('headerLabel')}
+      backButtonHref={ROUTES.AUTH.LOGIN}
+      backButtonLabel={t('backButtonLabel')}
+      animation={<NewPasswordAnimation />}
     >
       <Form {...form}>
         <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
@@ -70,12 +72,12 @@ export const NewPasswordForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Пароль</FormLabel>
+                <FormLabel>{t('password.label')}</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     disabled={isPending}
-                    placeholder="******"
+                    placeholder={t('password.placeholder')}
                     type="password"
                   />
                 </FormControl>
@@ -88,7 +90,7 @@ export const NewPasswordForm = () => {
           <FormSuccess message={success} />
 
           <Button disabled={isPending} type="submit" className="w-full">
-            Изменить пароль
+            {t('submitButton')}
           </Button>
         </form>
       </Form>

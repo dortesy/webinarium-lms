@@ -19,6 +19,7 @@ import socket from '@/socket';
 import { getLessonById } from '@/lib/course/course-helper';
 import { EditLesson } from '@/actions/course/edit-lesson';
 import { toast } from '@/components/ui/use-toast';
+import { usePathname } from '@/navigation';
 
 type TranslationsFunction = ReturnType<typeof useTranslations>;
 
@@ -43,6 +44,7 @@ const LessonItem = ({
     useSortable({ id: lesson.id });
   const [isPending, startTransition] = useTransition();
   const [jobStatus, setJobStatus] = useState(null);
+  const pathname = usePathname();
   const style = {
     transform: CSS.Translate.toString(transform),
     transition,
@@ -56,9 +58,8 @@ const LessonItem = ({
       if (updatedLesson && lesson.id === updatedLesson.id) {
         setLesson(updatedLesson);
         toast({
-          title: 'Видео обработано',
-          description:
-            'Ваше видео было обработано и теперь доступно для просмотра',
+          title: t('addForm.lesson.videoProcessed'),
+          description: t('addForm.lesson.videoProcessed'),
         });
       }
     };
@@ -91,14 +92,14 @@ const LessonItem = ({
 
   const onSubmit = (values: LessonSchemaType) => {
     startTransition(() => {
-      EditLesson(values).then((data) => {
+      EditLesson(values, pathname).then((data) => {
         if ('success' in data) {
           setLesson(data.lesson!);
         }
         if ('error' in data) {
           console.error(data.error);
           toast({
-            title: 'Ошибка',
+            title: t('errors.genericError'),
             description: data.error,
             variant: 'destructive',
           });
@@ -116,7 +117,7 @@ const LessonItem = ({
       return;
     }
     const result = await deleteVideo(lesson.video.id);
-    if (result.success) {
+    if (result.success && result.updatedLesson) {
       handleVideoUpload(result.updatedLesson);
     } else {
       console.error(result.error);

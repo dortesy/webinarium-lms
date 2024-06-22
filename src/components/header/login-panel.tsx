@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { FC, ReactNode, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { ROUTES } from '@/config/routes';
 
 interface MenuItemProps {
   href?: string;
@@ -109,7 +110,7 @@ export const LoginPanel: FC = () => {
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
-            <MenuItem href="/dashboard" icon={CircleUserRound}>
+            <MenuItem href={ROUTES.DASHBOARD} icon={CircleUserRound}>
               {t('profile')}
             </MenuItem>
             <MenuItem icon={LibraryBig}>{t('myCourses')}</MenuItem>
@@ -121,10 +122,10 @@ export const LoginPanel: FC = () => {
         </DropdownMenu>
       ) : (
         <div className="space-x-3">
-          <Link href="/auth/login" passHref>
+          <Link href={ROUTES.AUTH.LOGIN} passHref>
             <Button variant="ghost">{t('login')}</Button>
           </Link>
-          <Link href="/auth/register" passHref>
+          <Link href={ROUTES.AUTH.REGISTRATION} passHref>
             <Button variant="outline">{t('register')}</Button>
           </Link>
         </div>

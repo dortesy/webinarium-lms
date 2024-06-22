@@ -8,22 +8,25 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { ForgotPasswordSchema, LoginSchema } from '@/schemas/auth.schema';
+import { ForgotPasswordSchema } from '@/schemas/auth.schema';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useState, useTransition } from 'react';
-import { FormError } from '@/components/form-error';
-import { FormSuccess } from '@/components/form-success';
+import { FormError } from '@/components/auth/form-error';
+import { FormSuccess } from '@/components/auth/form-success';
 import { resetPassword } from '@/actions/auth/reset-password';
 import ForgotPasswordAnimation from './animations/forgot-password-animation';
+import { useTranslations } from 'next-intl';
+import { ROUTES } from '@/config/routes';
 
 export const ResetPasswordForm = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
+  const t = useTranslations('ForgotPassword');
 
   const form = useForm<z.infer<typeof ForgotPasswordSchema>>({
     resolver: zodResolver(ForgotPasswordSchema),
@@ -35,8 +38,6 @@ export const ResetPasswordForm = () => {
   const onSubmit = (values: z.infer<typeof ForgotPasswordSchema>) => {
     setError('');
     setSuccess('');
-
-    console.log(values);
 
     startTransition(() => {
       resetPassword(values).then((data: any) => {
@@ -50,10 +51,10 @@ export const ResetPasswordForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Восстановление пароля"
-      backButtonHref="/auth/login"
-      backButtonLabel="Вернуться на страницу входа"
-      animation=<ForgotPasswordAnimation />
+      headerLabel={t('headerLabel')}
+      backButtonHref={ROUTES.AUTH.LOGIN}
+      backButtonLabel={t('backButtonLabel')}
+      animation={<ForgotPasswordAnimation />}
     >
       <Form {...form}>
         <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
@@ -62,12 +63,12 @@ export const ResetPasswordForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t('email.label')}</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     disabled={isPending}
-                    placeholder="john.doe@example.com"
+                    placeholder={t('email.placeholder')}
                     type="email"
                   />
                 </FormControl>
@@ -80,7 +81,7 @@ export const ResetPasswordForm = () => {
           <FormSuccess message={success} />
 
           <Button disabled={isPending} type="submit" className="w-full">
-            Отправить
+            {t('submitButton')}
           </Button>
         </form>
       </Form>

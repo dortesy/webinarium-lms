@@ -50,7 +50,7 @@ const UnsavedChangesModal: React.FC<IUnsavedChangesContext> = ({
 
           <Button asChild>
             <Link
-              href={modalContent ? modalContent.proceedLinkHref! : '/'}
+              href={modalContent.proceedLinkHref || '/'}
               onClick={() => {
                 setShowModal(false);
                 setModalContent(undefined);

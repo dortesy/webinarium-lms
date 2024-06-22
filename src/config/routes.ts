@@ -1,5 +1,11 @@
 export const ROUTES = {
   HOME: '/',
+  AUTH: {
+    LOGIN: '/auth/login',
+    REGISTRATION: '/auth/register',
+    RESET: '/auth/reset-password',
+    NEW_PASSWORD: '/auth/new-password',
+  },
   DASHBOARD: '/dashboard',
   TEACHER: {
     PROFILE: '/dashboard/teacher/profile',

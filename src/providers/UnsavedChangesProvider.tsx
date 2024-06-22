@@ -13,7 +13,7 @@ import {
   IUnsavedChangesContext,
   IUnsavedChangesModalContent,
 } from '@/lib/types/UnsavedChanges.types';
-import UnsavedChangesModal from '@/components/UnsavedChangesModal';
+import UnsavedChangesModal from '@/components/unsaved-changes/UnsavedChangesModal';
 
 const UnsavedChangesContext = createContext<IUnsavedChangesContext | undefined>(
   undefined,
@@ -65,7 +65,6 @@ export function useSetUnsavedChanges() {
 
   const clearUnsavedChanges = useCallback(() => {
     setModalContent(undefined);
-    console.log('huy vo rtu');
   }, [setModalContent]);
 
   return useMemo(

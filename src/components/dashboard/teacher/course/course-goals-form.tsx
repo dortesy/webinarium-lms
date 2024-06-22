@@ -6,63 +6,6 @@ import { Separator } from '@/components/ui/separator';
 
 const CourseGoalsForm = ({ course }: { course: Course }) => {
   const t = useTranslations('CourseGoalsForm');
-  // const [isPending, startTransition] = useTransition();
-  //
-  // const formSchema = DynamicGoalsSchema(t);
-  //
-  // const defaultValues: DynamicGoalsType = {
-  //   learnings: [
-  //     {
-  //       text: '',
-  //       placeholder: 'Пример: Создавать веб-сайты с нуля',
-  //     },
-  //     {
-  //       text: '',
-  //       placeholder: 'Пример: Разбираться в алгоритмах',
-  //     },
-  //     {
-  //       text: '',
-  //       placeholder: 'Пример: Проходить технические интервью',
-  //     },
-  //   ],
-  // };
-
-  // const form = useForm<z.infer<typeof formSchema>>({
-  //   defaultValues:
-  //     courseLearnings && courseLearnings.length > 1
-  //       ? {
-  //           learnings: courseLearnings.map((learning: { text: string }) => ({
-  //             text: learning.text,
-  //           })),
-  //         }
-  //       : defaultValues,
-  //   resolver: zodResolver(formSchema),
-  // });
-  //
-  // const { fields, append, remove } = useFieldArray({
-  //   name: 'learnings',
-  //   control: form.control,
-  // });
-  // console.log(typeof CreateLearnings);
-  //
-  // const onSubmit = (values: DynamicGoalsType) => {
-  //   startTransition(() => {
-  //     CreateLearnings(course.id, values).then((data) => {
-  //       if ('success' in data) {
-  //         toast({
-  //           title: t('messages.success'),
-  //           description: t('messages.successDescription'),
-  //         });
-  //       } else {
-  //         toast({
-  //           variant: 'destructive',
-  //           title: t('messages.error'),
-  //           description: t('messages.errorDescription'),
-  //         });
-  //       }
-  //     });
-  //   });
-  // };
 
   const learnings = course.learnings as Array<{ text: string }>;
   const requirements = course.requirements as Array<{ text: string }>;

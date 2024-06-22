@@ -14,6 +14,7 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { SectionWithLessons } from '@/lib/types/course';
 import SectionList from './section-list';
 import { useDragAndDrop } from '@/hooks/use-drag-and-drop';
+import { usePathname } from '@/navigation';
 
 interface CourseSectionsProps {
   initialSections: SectionWithLessons[];
@@ -28,6 +29,7 @@ const OutlineCourseSections = ({
     useState<SectionWithLessons[]>(initialSections);
   const [error, setError] = useState<string | undefined>('');
   const [isPending, startTransition] = useTransition();
+  const pathname = usePathname();
   const t = useTranslations('CourseOutlinePage');
 
   const updateSectionsOrder = useCallback(
@@ -53,6 +55,7 @@ const OutlineCourseSections = ({
     setSections,
     setError,
     updateSectionsOrder,
+    pathname,
   );
 
   const onSubmit = (values: SectionSchemaType) => {
@@ -61,11 +64,21 @@ const OutlineCourseSections = ({
     setError('');
     startTransition(() => {
       if (values.id) {
-        EditSection(values).then((data) => {
+        EditSection(values, pathname).then((data) => {
           if ('error' in data) {
             setError(data.error);
+            toast({
+              variant: 'destructive',
+              title: `${t('errors.genericError')}`,
+              description: data.error,
+            });
           } else {
             if ('section' in data) {
+              toast({
+                title: `${t('sectionEdited')}`,
+                description: `${t('sectionEditedSuccess', { title: values.title })}`,
+              });
+
               setSections((prev) => {
                 return prev.map((section) => {
                   if (section.id === data.section.id) {
@@ -79,19 +92,18 @@ const OutlineCourseSections = ({
                 });
               });
             }
-
-            toast({
-              title: `${t('sectionEdited')}`,
-              description: `${t('sectionEditedSuccess', { title: values.title })}`,
-            });
           }
         });
       } else {
-        CreateSection(values).then((data) => {
+        CreateSection(values, pathname).then((data) => {
           if ('error' in data) {
             setError(data.error);
           } else {
             if ('section' in data) {
+              toast({
+                title: `${t('sectionAdded')}`,
+                description: `${t('sectionAddedSuccess', { title: values.title })}`,
+              });
               setSections((prev) => {
                 return [
                   ...prev,
@@ -103,11 +115,6 @@ const OutlineCourseSections = ({
                 ];
               });
             }
-
-            toast({
-              title: `${t('sectionAdded')}`,
-              description: `${t('sectionAddedSuccess', { title: values.title })}`,
-            });
           }
         });
       }
@@ -118,7 +125,7 @@ const OutlineCourseSections = ({
   const onDelete = (sectionId: string) => () => {
     setError('');
     startTransition(() => {
-      DeleteSection(sectionId).then((data) => {
+      DeleteSection(sectionId, pathname).then((data) => {
         if ('error' in data) {
           setError(data.error);
         } else {

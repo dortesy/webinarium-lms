@@ -1,7 +1,15 @@
-import LoginForm from "@/components/auth/login-form";
+import LoginForm from '@/components/auth/login-form';
+import { getTranslations } from 'next-intl/server';
 
-const LoginPage = () => {
-    return (<LoginForm/>)
+export async function generateMetadata() {
+  const t = await getTranslations('LoginForm');
+  return {
+    title: t('pageTitle'),
+  };
 }
 
-export default LoginPage
+const LoginPage = () => {
+  return <LoginForm />;
+};
+
+export default LoginPage;

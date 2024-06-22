@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useTransition } from 'react';
 import {
   DynamicGoalsSchema,
   DynamicGoalsType,
@@ -19,20 +19,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { Plus, SquareMinus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { updateDynamicGoals } from '@/actions/course/create-learnings';
+import { updateDynamicGoals } from '@/actions/course/create-goals';
 import { useSetUnsavedChanges } from '@/providers/UnsavedChangesProvider';
-//
-// type DynamicGoalsType = {
-//   learnings?: Array<{ text: string; placeholder?: string }>;
-//   requirements?: Array<{ text: string; placeholder?: string }>;
-//   targetAudience?: Array<{ text: string; placeholder?: string }>;
-// };
+import { usePathname } from '@/navigation';
 
 interface DynamicGoalsForm {
   courseId: string;
   courseField: Array<{ text: string; placeholder?: string }> | [];
   fieldName: keyof DynamicGoalsType; // Ensure type safety
-  //serverAction: (courseId: string, values: DynamicGoalsType) => Promise<any>;
 }
 
 const DynamicGoalsForm = ({
@@ -41,10 +35,9 @@ const DynamicGoalsForm = ({
   fieldName,
 }: DynamicGoalsForm) => {
   const t = useTranslations(`CourseGoalsForm.${fieldName}`);
-  const [isFormDirty, setIsFormDirty] = useState(false);
   const { setUnsavedChanges, clearUnsavedChanges } = useSetUnsavedChanges();
-
   const [isPending, startTransition] = useTransition();
+  const pathname = usePathname();
 
   const formSchema = DynamicGoalsSchema(t);
 
@@ -84,7 +77,7 @@ const DynamicGoalsForm = ({
 
   const onSubmit = (values: DynamicGoalsType) => {
     startTransition(() => {
-      updateDynamicGoals(courseId, values, fieldName).then((data) => {
+      updateDynamicGoals(courseId, values, fieldName, pathname).then((data) => {
         if ('success' in data) {
           toast({
             title: t('messages.success'),
@@ -105,30 +98,13 @@ const DynamicGoalsForm = ({
 
   useEffect(() => {
     const subscription = form.watch(() => {
-      setIsFormDirty(form.formState.isDirty);
       setUnsavedChanges({});
-      console.log('DIRTY');
     });
     return () => {
       clearUnsavedChanges();
-
       subscription.unsubscribe();
     };
   }, [form]);
-
-  // useEffect(() => {
-  //   const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-  //     if (isFormDirty) {
-  //       e.preventDefault();
-  //       e.returnValue = '';
-  //     }
-  //   };
-  //
-  //   window.addEventListener('beforeunload', handleBeforeUnload);
-  //   return () => {
-  //     window.removeEventListener('beforeunload', handleBeforeUnload);
-  //   };
-  // }, [isFormDirty]);
 
   return (
     <div className="mt-8 mb-8">

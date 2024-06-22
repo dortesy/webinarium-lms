@@ -1,58 +1,66 @@
-"use server"
-import * as z from "zod"
-import {NewPasswordSchema} from "@/schemas/auth.schema";
-import {getPasswordResetToken, getUserByEmail} from "@/lib/auth/auth-helper";
-import bycrypt from "bcryptjs";
-import {db} from "@/lib/db";
+'use server';
+import * as z from 'zod';
+import { NewPasswordSchema } from '@/schemas/auth.schema';
+import { getPasswordResetToken, getUserByEmail } from '@/lib/auth/auth-helper';
+import { db } from '@/lib/db';
+import { getTranslations } from 'next-intl/server';
+import bcrypt from 'bcryptjs';
 
+export const newPassword = async (
+  values: z.infer<typeof NewPasswordSchema>,
+  token?: string | null,
+) => {
+  const t = await getTranslations('NewPasswordForm');
 
+  if (!token) {
+    return { error: t('messages.invalidToken') };
+  }
 
-export const newPassword = async (values:z.infer<typeof NewPasswordSchema>, token?: string | null) => {
-    if (!token) {
-        return {error: "Неверный токен"}
-    }
-    const validatedFields = NewPasswordSchema.safeParse(values);
+  const validatedFields = NewPasswordSchema.safeParse(values);
 
-    if(!validatedFields.success) {
-        return {error: "Пароль должен быть не менее 6 символов"}
-    }
-    const password = validatedFields.data.password;
+  if (!validatedFields.success) {
+    return { error: t('messages.passwordTooShort') };
+  }
 
-    const existingToken = await getPasswordResetToken(token);
+  const password = validatedFields.data.password;
 
-    if (!existingToken) {
-        return {error: "Неверный токен"}
-    }
+  const existingToken = await getPasswordResetToken(token);
 
-    const hasExpired = new Date() > existingToken.expires;
+  if (!existingToken) {
+    return { error: t('messages.invalidToken') };
+  }
 
-    if (hasExpired) {
-        return {error: "Срок действия токена истек"}
-    }
+  const hasExpired = new Date() > existingToken.expires;
 
-    const existingUser = await getUserByEmail(existingToken.email);
+  if (hasExpired) {
+    return { error: t('messages.tokenExpired') };
+  }
 
-    if (!existingUser) {
-        return {error: "Пользователь не найден"}
-    }
+  const existingUser = await getUserByEmail(existingToken.email);
 
-    const hashedPassword = await bycrypt.hash(password, 10);
+  if (!existingUser) {
+    return { error: t('messages.userNotFound') };
+  }
 
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  try {
     await db.user.update({
-        where: {
-            id: existingUser.id
-        },
-        data: {
-            password: hashedPassword
-        }
-    })
+      where: {
+        id: existingUser.id,
+      },
+      data: {
+        password: hashedPassword,
+      },
+    });
 
     await db.passwordResetToken.delete({
-        where: {
-            id: existingToken.id
-        }
-    })
-
-
-    return {success: "Пароль успешно изменен, вы будете перенаправлены на страницу входа через 3 секунды"}
-}
+      where: {
+        id: existingToken.id,
+      },
+    });
+    return { success: t('messages.success') };
+  } catch {
+    return { error: t('messages.error') };
+  }
+};
