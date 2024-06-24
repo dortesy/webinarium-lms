@@ -5,6 +5,10 @@ export interface CourseWithImage extends Course {
   creator: User;
 }
 
+export interface CourseWithSections extends Course {
+  sections: SectionWithLessons[];
+}
+
 export interface CourseWithCategory extends CourseWithImage {
   category: Category | null;
 }
@@ -12,6 +16,10 @@ export interface CourseWithCategory extends CourseWithImage {
 export interface LessonWithVideo extends Lesson {
   video: Media | null;
   isNew?: boolean;
+}
+
+export interface LessonWithVideoAndSection extends LessonWithVideo {
+  section: Section;
 }
 
 export interface SectionWithLessons extends Section {

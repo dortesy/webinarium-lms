@@ -65,6 +65,7 @@ export const getCourseByIdWithSections = async (id: string) => {
               },
               include: {
                 video: true,
+                section: true,
               },
             },
           },

@@ -92,7 +92,7 @@ export const LoginPanel: FC = () => {
   };
 
   return (
-    <div className="flex items-center gap-x-3 pt-8 pr-4 pb-7 flex-1">
+    <div className="flex items-center gap-x-3 md:pt-8 pr-4 pb-7 flex-1">
       {user ? (
         <DropdownMenu>
           <DropdownMenuTrigger className="focus-visible: outline-none">
@@ -121,13 +121,14 @@ export const LoginPanel: FC = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
-        <div className="space-x-3">
-          <Link href={ROUTES.AUTH.LOGIN} passHref>
-            <Button variant="ghost">{t('login')}</Button>
-          </Link>
-          <Link href={ROUTES.AUTH.REGISTRATION} passHref>
-            <Button variant="outline">{t('register')}</Button>
-          </Link>
+        <div className="space-y-2 md:space-y-0 md:space-x-3 flex flex-col w-full md:flex-row">
+          <Button variant="blueOutline" className="dark:text-white" asChild>
+            <a href={ROUTES.AUTH.LOGIN}>{t('login')}</a>
+          </Button>
+
+          <Button className="dark:text-white" asChild>
+            <a href={ROUTES.AUTH.REGISTRATION}>{t('register')}</a>
+          </Button>
         </div>
       )}
     </div>

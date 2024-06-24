@@ -4,7 +4,7 @@ import { SessionProvider } from 'next-auth/react';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from '@/i18n';
 import { Toaster } from '@/components/ui/toaster';
-import { golos } from '@/config/fonts';
+import { TTNorms } from '@/config/fonts';
 import { LayoutProps } from '@/lib/types/layout';
 import { Sidebar } from '@/components/dashboard/sidebar/sidebar';
 import { Breadcrumbs } from '@/components/dashboard/breadcrumbs/breadcrumbs';
@@ -20,7 +20,7 @@ const RootLayout: React.FC<LayoutProps> = async ({
 
   return (
     <html lang={locale}>
-      <body className={golos.className}>
+      <body className={TTNorms.className}>
         <NextIntlClientProvider messages={messages}>
           <SessionProvider session={session}>
             <UnsavedChangesProvider>

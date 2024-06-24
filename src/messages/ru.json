@@ -471,5 +471,36 @@
     "message": "Если вы покинете эту страницу, ваши изменения не будут сохранены. Вы уверены, что хотите продолжить?",
     "dismissButtonLabel": "Отмена",
     "proceedLinkLabel": "Продолжить"
+  },
+  "CourseCatalog": {
+    "title": "Список курсов"
+  },
+  "CourseInformation": {
+    "courseAuthor": "Автор курса",
+    "courseDescription": "Описание",
+    "courseIncludes": "Курс включает в себя:",
+    "addToBasket": "Добавить в корзину",
+    "beginCourse": "Начать обучение",
+    "whatYouWillLearn": "Чему вы научитесь",
+    "requirements": "Требования к курсу",
+    "targetAudience": "Целевая аудитория",
+    "infoCard": {
+      "dateUpload": "Дата загрузки",
+      "length": "Продолжительность",
+      "level": "Уровень",
+      "views": "Просмотров"
+    }
+  },
+  "LessonContent": {
+    "previousLesson": "Предыдущий урок",
+    "nextLesson": "Следующий урок",
+    "backToCourse": "Вернуться к описанию курса",
+    "sectionLabel": "Раздел",
+    "lessonLabel": "Урок"
+  },
+  "CourseSections": {
+    "mainPage": "Главная страница курса",
+    "lessonTitle": "Урок",
+    "noLessons": "В этом разделе нет уроков"
   }
 }

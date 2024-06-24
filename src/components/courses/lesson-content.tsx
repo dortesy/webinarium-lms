@@ -1,118 +1,87 @@
-'use client'
-import { LessonWithVideo } from '@/lib/types/course';
+'use client';
+import { LessonWithVideoAndSection } from '@/lib/types/course';
 import VideoJS from '@/components/media/videoJS';
-import videojs from 'video.js';
 import React, { useRef } from 'react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/navigation';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { createVideoJsOptions } from '@/lib/media/video-js-options';
+import { useParams, useSearchParams } from 'next/navigation';
 
 interface LessonContentProps {
-    lesson: LessonWithVideo;
+  lesson: LessonWithVideoAndSection;
+  prevLessonLink: string | null;
+  nextLessonLink: string | null;
 }
 
-const LessonContent = ({lesson}: LessonContentProps) => {
+const LessonContent = ({
+  lesson,
+  prevLessonLink,
+  nextLessonLink,
+}: LessonContentProps) => {
+  const t = useTranslations('LessonContent');
   const playerRef = useRef<any>(null);
-  console.log('render lesson content')
-  const videoJsOptions: any = {
-    controls: true,
-    responsive: true,
-    fill: true,
-    experimentalSvgIcons: true,
-    playbackRates: [0.5, 1, 1.5, 2],
-    controlBar: {
-      skipButtons: {
-        forward: 5,
-        backward: 5
-      }
-    },
-    userActions: {
-      hotkeys: function(event: any) {
-        // `this` is the player in this context
-
-        // `x` key = pause
-        if (event.which === 39) {
-          playerRef.current.currentTime(playerRef.current.currentTime() + 5)
-        }
-        // `y` key = play
-        if (event.which === 37) {
-          playerRef.current.currentTime(playerRef.current.currentTime() - 5)
-        }
-      },
-
-      doubleClick: function(event: any) {
-        // const clickedY = event.clientY;
-        const maxWidth = playerRef.current.currentWidth();
-
-        // Proportional edges
-        const rightEdgeProportion = 0.9;
-        const leftEdgeProportion = 0.1;
-
-        const clickedX = event.offsetX / maxWidth;
-
-        if (clickedX > rightEdgeProportion) {
-          playerRef.current.currentTime(playerRef.current.currentTime() + 5);
-        } else if (clickedX < leftEdgeProportion) {
-          playerRef.current.currentTime(playerRef.current.currentTime() - 5);
-        } else {
-          playerRef.current.requestFullscreen()
-        }
-
-
-      }
-    },
-    sources: [
-      {
-        src: lesson.video!.url,
-        type: 'application/x-mpegURL',
-      },
-    ],
-
-    plugins: {
-      httpSourceSelector:
-        {
-          default: 'auto'
-        },
-      spriteThumbnails: {
-        interval: 5,
-        url: `/media/lessons/videos/${lesson.video!.id}/thumbnail-sprite-{index}.jpg`,
-        width: 160,
-        height: 90,
-        columns: 5,
-        rows: 5
-      }
-    },
-
-  };
-
+  const searchParams = useSearchParams();
+  const courseId = useParams().courseId;
+  const lessonIndex = parseInt(searchParams.get('lesson') as string) + 1;
 
   const handlePlayerReady = (player: any) => {
     playerRef.current = player;
-    player.on('play', () => {
-      videojs.log('player is playing');
-    });
-    player.on('waiting', () => {
-      videojs.log('player is waiting');
-    });
-
-    player.on('dispose', () => {
-      videojs.log('player will dispose');
-    });
-
-
+    player.on('play', () => console.log('player is playing'));
+    player.on('waiting', () => console.log('player is waiting'));
+    player.on('dispose', () => console.log('player will dispose'));
   };
 
+  const videoJsOptions = createVideoJsOptions(lesson, playerRef);
 
-    return (
-        <div className="w-full">
-          <div className="relative rounded-xl p-10 bg-white shadow-sm mb-5 w-full h-[80%]">
-            <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+  return (
+    <div className="w-full">
+      <div className="mb-8">
+        <Link href={`/courses/${courseId}`} className="font-bold">
+          {t('backToCourse')}
+        </Link>
+      </div>
+      <div className="flex justify-between mb-4">
+        {prevLessonLink && (
+          <Link
+            href={prevLessonLink}
+            className="flex hover:text-rich-blue text-xs md:text-sm items-center"
+          >
+            <ArrowLeft className="mr-2 w-6 md:w-8" />{' '}
+            <span>{t('previousLesson')}</span>
+          </Link>
+        )}
+
+        {nextLessonLink && (
+          <Link
+            href={nextLessonLink}
+            className="flex hover:text-rich-blue text-xs md:text-sm items-center"
+          >
+            <span>{t('nextLesson')}</span>{' '}
+            <ArrowRight className="ml-2 w-6 md:w-8" />
+          </Link>
+        )}
+      </div>
+      <div className="relative rounded-xl p-10 bg-white shadow-sm w-full h-[80%]">
+        <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+      </div>
+
+      <div className="mt-5">
+        <div className="text-sm ">
+          <div className="text-gray-500">
+            {t('sectionLabel')}: {lesson.section.title}
           </div>
-
-          <h3 className="text-xl font-semibold mb-2">{lesson.title}</h3>
-
-          <div className="text-sm text-gray-600">
-            <p>{lesson.description}</p>
+          <div className="text-xs text-gray-400">
+            {t('lessonLabel')}: #{lessonIndex}
           </div>
         </div>
-    )
-}
+        <h3 className="text-xl font-semibold mb-2">{lesson.title}</h3>
+        <div className="text-sm text-gray-600">
+          <p>{lesson.description}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default LessonContent;

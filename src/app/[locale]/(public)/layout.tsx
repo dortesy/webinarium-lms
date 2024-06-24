@@ -1,6 +1,5 @@
 import '../globals.css';
 import { Header } from '@/app/[locale]/(public)/header';
-import { Footer } from '@/app/[locale]/(public)/footer';
 import { auth } from '@/auth';
 import { SessionProvider } from 'next-auth/react';
 import { NextIntlClientProvider } from 'next-intl';
@@ -64,4 +63,3 @@ const RootLayout: React.FC<LayoutProps> = async ({
 };
 
 export default RootLayout;
-
